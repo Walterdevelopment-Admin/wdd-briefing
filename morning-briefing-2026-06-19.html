@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Briefing — 19 June 2026 | Walter D&amp;D</title>
+<style>
+:root {
+  --p1:#c1ac99; --p2:#49494b; --s1:#e6d5c3; --s2:#b3aea8;
+  --s3:#aea49a; --s4:#d5d5d5; --bg:#fff6ed;
+  --white:#fff; --text:#2a2a2b; --muted:#6e6862;
+  --red:#b83232; --amber:#c4620d; --green:#2d7d4f;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;}
+.hdr{background:var(--p2);border-bottom:3px solid var(--p1);}
+.hdr-inner{display:flex;align-items:center;gap:22px;padding:18px 32px;}
+.logo-svg{height:52px;width:auto;flex-shrink:0;}
+.logo-img{height:52px;width:auto;flex-shrink:0;}
+.hdr-sep{width:1px;height:44px;background:var(--s3);opacity:.45;}
+.hdr-txt h1{font-size:17px;font-weight:600;color:var(--white);}
+.hdr-txt .meta{font-size:11.5px;color:var(--s2);margin-top:3px;}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 18px 52px;}
+.card{background:var(--white);border-radius:8px;
+  box-shadow:0 1px 3px rgba(73,73,75,.07),0 2px 10px rgba(73,73,75,.05);
+  margin-bottom:18px;overflow:hidden;}
+.card-hdr{display:flex;align-items:center;gap:9px;padding:12px 18px;border-bottom:1px solid var(--s1);}
+.card-hdr.style-tan{background:var(--p1);}
+.card-hdr.style-tan h2{color:var(--p2);}
+.card-hdr.style-tan .cnt{background:rgba(42,42,43,.12);color:var(--p2);}
+.card-hdr.style-dark{background:var(--p2);}
+.card-hdr.style-dark h2,.card-hdr.style-dark .icon{color:var(--white);}
+.card-hdr.style-dark .cnt{background:rgba(255,255,255,.15);color:var(--s1);}
+.card-hdr.style-neutral{background:var(--s1);}
+.card-hdr.style-neutral h2{color:var(--p2);}
+.card-hdr h2{font-size:13.5px;font-weight:700;flex:1;}
+.card-hdr .icon{font-size:15px;}
+.cnt{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;
+  background:rgba(73,73,75,.1);color:var(--p2);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+@media(max-width:720px){.two-col{grid-template-columns:1fr;}}
+.person-strip{display:flex;align-items:flex-start;gap:12px;padding:14px 18px 10px;border-bottom:1px solid var(--s1);}
+.av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.av-dan{background:var(--p1);color:var(--p2);}
+.av-david{background:var(--p2);color:var(--white);}
+.person-name{font-size:14px;font-weight:700;line-height:1.3;}
+.person-role{font-size:11px;color:var(--muted);margin-bottom:6px;}
+.proj-chips{display:flex;flex-wrap:wrap;gap:4px;}
+.pchip{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:3px;
+  background:var(--s1);color:var(--p2);letter-spacing:.2px;}
+.slabel{font-size:10px;font-weight:800;text-transform:uppercase;
+  letter-spacing:1.2px;color:var(--s3);padding:10px 18px 4px;}
+.task-block{padding:4px 18px 12px;background:#fdf9f5;border-bottom:1px solid var(--s1);}
+.trow{display:flex;align-items:flex-start;gap:8px;padding:4px 0;transition:opacity .2s;}
+.trow.done{opacity:.38;}
+.trow.done label{text-decoration:line-through;color:var(--s3);}
+.trow input[type=checkbox]{width:13px;height:13px;margin-top:3px;
+  flex-shrink:0;accent-color:var(--p1);cursor:pointer;}
+.trow label{font-size:12.5px;color:var(--text);cursor:pointer;line-height:1.5;}
+.tchip{display:inline-block;background:var(--s1);color:var(--p2);
+  font-size:9px;font-weight:800;padding:1px 5px;border-radius:3px;
+  margin-right:4px;letter-spacing:.2px;vertical-align:middle;}
+.overdue{font-size:10px;font-weight:700;color:var(--red);margin-left:5px;vertical-align:middle;}
+.erow{display:flex;gap:9px;padding:11px 18px;border-bottom:1px solid #f2ebe2;
+  align-items:flex-start;transition:background .12s;}
+.erow:last-child{border-bottom:none;}
+.erow:hover{background:#fdf9f5;}
+.erow.done{opacity:.38;}
+.erow.done .esubj{text-decoration:line-through;}
+.ecb{width:14px;height:14px;margin-top:4px;flex-shrink:0;accent-color:var(--p1);cursor:pointer;}
+.ubar{width:3px;border-radius:2px;align-self:stretch;min-height:38px;flex-shrink:0;}
+.u-red{background:var(--red);} .u-amber{background:var(--amber);}
+.u-tan{background:var(--p1);} .u-grey{background:var(--s4);}
+.ebody{flex:1;min-width:0;}
+.etop{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:2px;}
+.ptag{font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:3px;letter-spacing:.2px;}
+.ptag-dan{background:var(--p1);color:var(--p2);}
+.ptag-david{background:var(--p2);color:var(--white);}
+.esdr{font-size:12.5px;font-weight:700;color:var(--text);}
+.etime{font-size:10.5px;color:var(--s3);margin-left:auto;white-space:nowrap;}
+.etag{font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:6px;}
+.etag-urgent{background:#fde4e4;color:var(--red);}
+.etag-star{background:#fef3c7;color:#92400e;}
+.etag-await{background:#e8f0fe;color:#1a5da8;}
+.etag-review{background:#fef3c7;color:#7c5800;}
+.etag-legal{background:#fde4e4;color:var(--red);}
+.esubj{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.esumm{font-size:12px;color:var(--muted);line-height:1.55;}
+.dtoggle{display:inline-flex;align-items:center;gap:4px;margin-top:7px;
+  padding:4px 10px;font-size:11.5px;font-weight:600;color:var(--p2);
+  background:var(--s1);border:1px solid var(--s2);border-radius:4px;
+  cursor:pointer;transition:background .13s;font-family:inherit;}
+.dtoggle:hover{background:#d4c3b0;}
+.dbox{display:none;margin-top:8px;background:#faf7f3;
+  border:1px solid #ddd0c0;border-left:3px solid var(--p1);border-radius:5px;padding:11px 13px;}
+.dbox.open{display:block;}
+.dlabel{font-size:9px;font-weight:800;text-transform:uppercase;
+  letter-spacing:1px;color:var(--s3);margin-bottom:7px;}
+.dcontent{font-size:12px;color:var(--text);line-height:1.75;white-space:pre-wrap;font-family:Georgia,serif;}
+.crow{display:flex;align-items:flex-start;gap:13px;padding:11px 18px;border-bottom:1px solid #f2ebe2;}
+.crow:last-child{border-bottom:none;}
+.ctime{min-width:76px;font-size:12px;font-weight:700;color:var(--p2);padding-top:2px;}
+.cdot{width:9px;height:9px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.cd-grey{background:var(--s4);} .cd-tan{background:var(--p1);}
+.ctitle{font-size:13px;font-weight:600;} .csub{font-size:11.5px;color:var(--muted);}
+.cbadge{display:inline-block;margin-left:6px;font-size:9.5px;font-weight:700;
+  padding:1px 6px;border-radius:6px;vertical-align:middle;}
+.cb-past{background:#eee;color:#999;}
+.cb-on{background:#e8f5ee;color:var(--green);border:1px solid #a8d5bc;}
+.cf-item{display:flex;align-items:flex-start;gap:9px;padding:8px 18px;border-bottom:1px solid #f2ebe2;}
+.cf-item:last-child{border-bottom:none;}
+.cf-badge{font-size:9.5px;font-weight:700;padding:1px 7px;border-radius:8px;
+  background:#fff3e0;color:#e65100;border:1px solid #ffcc80;white-space:nowrap;margin-top:2px;flex-shrink:0;}
+.footer{text-align:center;font-size:11px;color:var(--s3);padding:6px 0 18px;}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <!--
+      LOGO: Replace the SVG below with this line once walter-logo.png is in this folder:
+      <img src="walter-logo.png" class="logo-img" alt="Walter D&D">
+    -->
+    <svg class="logo-svg" viewBox="0 0 420 72" xmlns="http://www.w3.org/2000/svg">
+      <g fill="#c1ac99">
+        <polygon points="4,52 8,18 12,18 14,52"/>
+        <polygon points="14,52 18,8 22,8 24,52"/>
+        <polygon points="24,52 28,2 32,2 34,52"/>
+        <polygon points="34,52 38,8 42,8 44,52"/>
+        <polygon points="44,52 48,18 52,18 54,52"/>
+        <polygon points="54,52 58,28 62,28 64,52"/>
+        <polygon points="64,52 68,38 72,38 74,52"/>
+        <rect x="4" y="52" width="70" height="3" rx="1"/>
+        <polygon points="4,57 16,57 22,70 28,57 40,57 34,70"/>
+        <polygon points="28,57 40,57 46,70 52,57 64,57 58,70"/>
+      </g>
+      <text x="88" y="46" font-family="'Arial Black','Arial',sans-serif"
+            font-size="38" font-weight="900" letter-spacing="11" fill="#c1ac99">WALTER</text>
+      <text x="90" y="64" font-family="Arial,sans-serif"
+            font-size="11.5" letter-spacing="3.5" fill="#b3aea8">DESIGN &amp; DEVELOPMENT</text>
+    </svg>
+    <div class="hdr-sep"></div>
+    <div class="hdr-txt">
+      <h1>Morning Briefing &nbsp;·&nbsp; Friday, 19 June 2026</h1>
+      <div class="meta">Generated AEST &nbsp;·&nbsp; admin@walterdevelopment.com.au</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="card">
+  <div class="card-hdr style-neutral"><span class="icon">📅</span><h2>Today's Schedule</h2><span class="cnt">2 events</span></div>
+  <div class="crow">
+    <div class="ctime">7:00–8:00 AM</div><div class="cdot cd-grey"></div>
+    <div><div class="ctitle">P21-25 Shower Screen<span class="cbadge cb-past">Done</span></div>
+    <div class="csub">Onsite · Daniel · 36 Morcom Ave, Corinda (P2021-0025)</div></div>
+  </div>
+  <div class="crow">
+    <div class="ctime">All Day</div><div class="cdot cd-tan"></div>
+    <div><div class="ctitle">P21-25 Civic Installation<span class="cbadge cb-on">Ongoing</span></div>
+    <div class="csub">Office · Daniel · Runs 19–20 June (P2021-0025)</div></div>
+  </div>
+</div>
+
+<div class="card" id="cf-card" style="display:none;">
+  <div class="card-hdr style-neutral"><span class="icon">🔁</span><h2>Carried Forward from Yesterday</h2><span class="cnt" id="cf-cnt">0</span></div>
+  <div id="cf-list"></div>
+</div>
+
+<div class="card">
+  <div class="card-hdr style-neutral"><span class="icon">✅</span><h2>Company Tasks (Gmail Tasks)</h2></div>
+  <div class="slabel">General / Unassigned</div>
+  <div class="task-block">
+    <div class="trow" id="gt0"><input type="checkbox" id="gc0" onchange="toggleTask('gt0','gc0')">
+      <label for="gc0">QLD Stairs — Timber Species Price Labelling <span class="overdue">⚠ 1 week overdue</span></label></div>
+    <div class="trow" id="gt1"><input type="checkbox" id="gc1" onchange="toggleTask('gt1','gc1')">
+      <label for="gc1">Backyard slope / Solar energy costs / Sink replacement / Audio system costs / Niche positioning</label></div>
+    <div class="trow" id="gt2"><input type="checkbox" id="gc2" onchange="toggleTask('gt2','gc2')">
+      <label for="gc2">Meeting — schedule or attend (check email for details)</label></div>
+  </div>
+  <div class="slabel">Daniel</div>
+  <div class="task-block">
+    <div class="trow" id="gt3"><input type="checkbox" id="gc3" onchange="toggleTask('gt3','gc3')">
+      <label for="gc3">Box Gutter — does the design require a hydraulic engineer? <span class="overdue">⚠ 1 week overdue</span></label></div>
+    <div class="trow" id="gt4"><input type="checkbox" id="gc4" onchange="toggleTask('gt4','gc4')">
+      <label for="gc4">New Regulation check — Cavity Slider Wall: is tiling still required? <span class="overdue">⚠ 1 week overdue</span></label></div>
+  </div>
+  <div class="slabel">David</div>
+  <div class="task-block" style="border-bottom:none;">
+    <div class="trow" id="gt5"><input type="checkbox" id="gc5" onchange="toggleTask('gt5','gc5')">
+      <label for="gc5"><span class="tchip">P2021-0002</span>Dimension GF PDR Basin drawing required <span class="overdue">⚠ 2 weeks overdue</span></label></div>
+  </div>
+</div>
+
+<div class="two-col">
+
+  <!-- DANIEL -->
+  <div class="card" style="margin-bottom:0;">
+    <div class="card-hdr style-tan"><span class="icon">●</span><h2>Daniel</h2></div>
+    <div class="person-strip">
+      <div class="av av-dan">Dan</div>
+      <div class="person-info">
+        <div class="person-name">Daniel Chen</div>
+        <div class="person-role">Designer</div>
+        <div class="proj-chips">
+          <span class="pchip">P2022-0005</span><span class="pchip">P2021-0025</span>
+          <span class="pchip">P2024-0005</span><span class="pchip">P2024-0020</span>
+          <span class="pchip">P2023-0011</span><span class="pchip">P2024-0015</span>
+          <span class="pchip">P2023-0022</span><span class="pchip">P22-19</span>
+        </div>
+      </div>
+    </div>
+    <div class="slabel">📋 Tasks from Emails</div>
+    <div class="task-block">
+      <div class="trow" id="td1"><input type="checkbox" id="tdc1" onchange="toggleTask('td1','tdc1')">
+        <label for="tdc1"><span class="tchip">P2022-0005</span>Reply to Steven — confirm who arranges tree removal (56 Armadale St)</label></div>
+      <div class="trow" id="td2"><input type="checkbox" id="tdc2" onchange="toggleTask('td2','tdc2')">
+        <label for="tdc2"><span class="tchip">P2022-0005</span>Follow up retaining wall contractor for revised start date, then update Steven</label></div>
+      <div class="trow" id="td3"><input type="checkbox" id="tdc3" onchange="toggleTask('td3','tdc3')">
+        <label for="tdc3"><span class="tchip">P2021-0025</span>Escalate Corinda FIRB dispute to Walter — formal reply needed for Mizhai/Ariel</label></div>
+      <div class="trow" id="td4"><input type="checkbox" id="tdc4" onchange="toggleTask('td4','tdc4')">
+        <label for="tdc4"><span class="tchip">P2024-0020</span>Follow up Philip Ng on DA status — Dorchester St, South Brisbane</label></div>
+      <div class="trow" id="td5"><input type="checkbox" id="tdc5" onchange="toggleTask('td5','tdc5')">
+        <label for="tdc5"><span class="tchip">P2024-0005</span>Follow up Melinda (waterfilter.com.au) — installation stage rec, Capalaba</label></div>
+      <div class="trow" id="td6"><input type="checkbox" id="tdc6" onchange="toggleTask('td6','tdc6')">
+        <label for="tdc6"><span class="tchip">P22-19</span>Follow up Yuki/Walter — P22-19 Joinery &amp; Electrical Plan review status</label></div>
+    </div>
+    <div class="slabel">📨 New Inbox Emails</div>
+    <div class="erow" id="ed1">
+      <input type="checkbox" class="ecb" onchange="toggleEmail('ed1')">
+      <div class="ubar u-red"></div>
+      <div class="ebody">
+        <div class="etop"><span class="ptag ptag-dan">P2022-0005</span><span class="esdr">Steven Chiusun</span>
+          <span class="etag etag-urgent">⚡ Reply Needed</span><span class="etag etag-star">★</span>
+          <span class="etime">Today 2:41 PM</span></div>
+        <div class="esubj">Re: Boundary Tree Roots — 56 Armadale Street, St Lucia</div>
+        <div class="esumm">Steven asks whether he needs to arrange tree removal himself. Clear reply needed confirming your team will handle it.</div>
+        <button class="dtoggle" onclick="tog('dd1',this,'Draft Reply','Hide Draft')">✏️ Draft Reply</button>
+        <div class="dbox" id="dd1"><div class="dlabel">Suggested Reply</div>
+          <div class="dcontent">Hi Steven,
+
+Thank you for your message. To confirm — as the tree and its roots are impacting the boundary works on our side, we will arrange the removal through our contractor. You do not need to organise anything on your end.
+
+We will coordinate the work and keep you updated on timing before anything commences.
+
+Kind regards,
+Daniel Chen | Designer
+Walter Design & Development</div></div>
+      </div>
+    </div>
+    <div class="erow" id="ed2">
+      <input type="checkbox" class="ecb" onchange="toggleEmail('ed2')">
+      <div class="ubar u-amber"></div>
+      <div class="ebody">
+        <div class="etop"><span class="ptag ptag-dan">P2021-0025</span><span class="esdr">Ariel — assistant@mizhai.com</span>
+          <span class="etag etag-urgent">2nd Formal Request</span><span class="etag etag-star">★</span>
+          <span class="etime">Yesterday 4:00 PM</span></div>
+        <div class="esubj">Corinda Job — 2nd Formal Request · 36 Morcom Ave, Corinda</div>
+        <div class="esumm">Client disputes FIRB extension cost responsibility. Replied Walter is on leave. Walter's formal response pending.</div>
+        <button class="dtoggle" onclick="tog('dd2',this,'Draft Follow-Up','Hide Draft')">✏️ Draft Follow-Up</button>
+        <div class="dbox" id="dd2"><div class="dlabel">Follow-Up Reply (once Walter responds)</div>
+          <div class="dcontent">Hi Ariel,
+
+Thank you for your continued correspondence. Walter has now reviewed your message. We are preparing a formal written response regarding the FIRB extension costs and construction delay — we will provide this to you by [DATE].
+
+We appreciate your patience in the meantime.
+
+Kind regards,
+Daniel Chen | Designer
+Walter Design & Development</div></div>
+      </div>
+    </div>
+    <div class="slabel">⏳ Awaiting Reply</div>
+    <div class="erow" id="ed3">
+      <input type="checkbox" class="ecb" onchange="toggleEmail('ed3')">
+      <div class="ubar u-tan"></div>
+      <div class="ebody">
+        <div class="etop"><span class="ptag ptag-dan">P2024-0020</span><span class="esdr">Philip Ng — Amelia RDS</span>
+          <span class="etag etag-await">⏳ Awaiting</span><span class="etime">Chased today</span></div>
+        <div class="esubj">Dorchester St, South Brisbane — SARA Approval / DA Update</div>
+        <div class="esumm">DA status chased this morning. No reply yet — follow up EOD if nothing received.</div>
+        <button class="dtoggle" onclick="tog('dd3',this,'Follow-Up Template','Hide')">✏️ Follow-Up Template</button>
+        <div class="dbox" id="dd3"><div class="dlabel">EOD Follow-Up</div>
+          <div class="dcontent">Hi Philip,
+
+Following up on my earlier email — could you please advise on the current Council DA status when you have a moment?
+
+Thank you.
+Daniel Chen | Walter Design & Development</div></div>
+      </div>
+    </div>
+    <div class="erow" id="ed4">
+      <input type="checkbox" class="ecb" onchange="toggleEmail('ed4')">
+      <div class="ubar u-tan"></div>
+      <div class="ebody">
+        <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">Melinda — waterfilter.com.au</span>
+          <span class="etag etag-await">⏳ 5 Days</span><span class="etime">Sent 14 June</span></div>
+        <div class="esubj">AquaCo Water Softening Filter SEV17 — 511 Redland Bay Rd, Capalaba</div>
+        <div class="esumm">Asked which construction stage the water softener should be installed. No response in 5 days — follow-up overdue.</div>
+        <button class="dtoggle" onclick="tog('dd4',this,'Follow-Up Template','Hide')">✏️ Follow-Up</button>
+        <div class="dbox" id="dd4"><div class="dlabel">Follow-Up Email</div>
+          <div class="dcontent">Hi Melinda,
+
+I'm following up on my email dated 14 June regarding the recommended installation stage for the AquaCo SEV17 at Capalaba. Could you please advise at what construction stage this system is best installed?
+
+Thank you.
+Daniel Chen | Walter Design & Development</div></div>
+      </div>
+    </div>
+    <div class="erow" id="ed5">
+      <input type="checkbox" class="ecb" onchange="toggleEmail('ed5')">
+      <div class="ubar u-tan"></div>
+      <div class="ebody">
+        <div class="etop"><span class="ptag ptag-dan">P2022-0005</span><span class="esdr">Steven Chiusun</span>
+          <span class="etag etag-await">⏳ Reply Overdue 3d</span><span class="etime">16 June</span></div>
+        <div class="esubj">Re: Retaining Wall Progress Delay — 56 Armadale Street</div>
+        <div class="esumm">Steven following up on contractor's revised earthworks start date. Confirm with contractor first, then reply.</div>
+        <button class="dtoggle" onclick="tog('dd5',this,'Draft Reply','Hide Draft')">✏️ Draft Reply</button>
+        <div class="dbox" id="dd5"><div class="dlabel">Reply (fill in date)</div>
+          <div class="dcontent">Hi Steven,
+
+Thank you for following up. We have been in contact with our contractor — the revised commencement date for the earthworks is [DATE]. We apologise for the delay and appreciate your patience.
+
+Kind regards,
+Daniel Chen | Walter Design & Development</div></div>
+      </div>
+    </div>
+    <div class="erow" id="ed6">
+      <input type="checkbox" class="ecb" onchange="toggleEmail('ed6')">
+      <div class="ubar u-grey"></div>
+      <div class="ebody">
+        <div class="etop"><span class="ptag ptag-dan">P22-19</span><span class="esdr">Yuki / Walter (Internal)</span>
+          <span class="etag etag-review">🔍 Pending Review</span><span class="etime">Yesterday 9:54 PM</span></div>
+        <div class="esubj">P22-19 Contract, Joinery &amp; Electrical Plan — 30 Normandy St, Sunnybank Hills</div>
+        <div class="esumm">Sent joinery &amp; electrical package to Yuki/Walter for review before forwarding to client Michelle. No confirmation received.</div>
+        <button class="dtoggle" onclick="tog('dd6',this,'Internal Follow-Up','Hide')">✏️ Follow-Up</button>
+        <div class="dbox" id="dd6"><div class="dlabel">Internal Message</div>
+          <div class="dcontent">Hi Yuki / Walter,
+
+Could you please confirm if you've reviewed the P22-19 joinery and electrical plan? I'll forward to the client once approved.
+
+Daniel</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAVID -->
+  <div class="card" style="margin-bottom:0;">
+    <div class="card-hdr style-dark"><span class="icon" style="color:var(--s1)">●</span><h2>David</h2></div>
+    <div class="person-strip">
+      <div class="av av-david">DV</div>
+      <div class="person-info">
+        <div class="person-name">David Chen</div>
+        <div class="person-role">Designer</div>
+        <div class="proj-chips">
+          <span class="pchip">P2023-0018</span><span class="pchip">P2023-0019</span>
+          <span class="pchip">P2024-0009</span><span class="pchip">P2022-0011</span>
+          <span class="pchip">P2023-0012</span><span class="pchip">P2024-0014</span>
+          <span class="pchip">P2021-0002</span>
+        </div>
+      </div>
+    </div>
+    <div class="slabel">📋 Tasks from Emails</div>
+    <div class="task-block">
+      <div class="trow" id="tv1"><input type="checkbox" id="tvc1" onchange="toggleTask('tv1','tvc1')">
+        <label for="tvc1"><span class="tchip">P2023-0019</span>Review cavity slider quotation from Bennie — confirm specs before proceeding (19 Janda St, Robertson)</label></div>
+      <div class="trow" id="tv2"><input type="checkbox" id="tvc2" onchange="toggleTask('tv2','tvc2')">
+        <label for="tvc2"><span class="tchip">P2023-0018</span>Review Ray Kwong's formal delay acknowledgement with Walter/legal before replying (9 Ferrari Pl, Belmont)</label></div>
+      <div class="trow" id="tv3"><input type="checkbox" id="tvc3" onchange="toggleTask('tv3','tvc3')">
+        <label for="tvc3"><span class="tchip">P2024-0009</span>Await Arise Rochedale response re: Building Covenant application for fence (Lot 16, Premier St)</label></div>
+    </div>
+    <div class="slabel">📨 New Inbox Emails</div>
+    <div class="erow" id="ev1">
+      <input type="checkbox" class="ecb" onchange="toggleEmail('ev1')">
+      <div class="ubar u-red"></div>
+      <div class="ebody">
+        <div class="etop"><span class="ptag ptag-david">P2023-0018</span><span class="esdr">Ray Kwong</span>
+          <span class="etag etag-legal">⚠ Legal Record</span><span class="etime">Yesterday 9:23 PM</span></div>
+        <div class="esubj">Re: P23-18 Formal Delay Notification — 9 Ferrari Place, Belmont QLD</div>
+        <div class="esumm">Ray acknowledges the delay notice but reserves all rights. Does not accept the revised timeline. Review with Walter before replying.</div>
+        <button class="dtoggle" onclick="tog('dv1',this,'Draft Reply','Hide Draft')">✏️ Draft Reply</button>
+        <div class="dbox" id="dv1"><div class="dlabel">Suggested Reply — confirm with Walter before sending</div>
+          <div class="dcontent">Dear Ray and Vicky,
+
+Thank you for acknowledging our Delay Notification dated 15 June 2026. We note your reservation of rights. We are currently reviewing the outstanding matters and will provide a further substantive response by [DATE].
+
+We remain committed to completing the project as efficiently as possible.
+
+Kind regards,
+David Chen | Designer
+Walter Design & Development</div></div>
+      </div>
+    </div>
+    <div class="erow" id="ev2">
+      <input type="checkbox" class="ecb" onchange="toggleEmail('ev2')">
+      <div class="ubar u-amber"></div>
+      <div class="ebody">
+        <div class="etop"><span class="ptag ptag-david">P2023-0019</span><span class="esdr">Bennie — office@walterdevelopment.com.au</span>
+          <span class="etag etag-review">🔍 Review Required</span><span class="etime">Today 12:14 PM</span></div>
+        <div class="esubj">Fwd: Quotation — P23-19 Cavity Slider System · 19 Janda St, Robertson</div>
+        <div class="esumm">Bennie forwarded supplier quote for the complete cavity slider system including door panel dimensions. Review and advise whether to proceed.</div>
+        <button class="dtoggle" onclick="tog('dv2',this,'Draft Reply to Bennie','Hide Draft')">✏️ Draft Reply</button>
+        <div class="dbox" id="dv2"><div class="dlabel">Reply to Bennie — choose Option A or B</div>
+          <div class="dcontent">Hi Bennie,
+
+Thank you for forwarding the P23-19 cavity slider quotation.
+
+[OPTION A — Proceed]
+The quote and dimensions look correct. Please confirm the order — verify door panel dimensions against our drawings before finalising.
+
+[OPTION B — Clarification Needed]
+Please follow up with the supplier to clarify [specific issue] before confirming.
+
+Thank you.
+David Chen | Walter Design & Development</div></div>
+      </div>
+    </div>
+    <div class="slabel">⏳ Awaiting Reply</div>
+    <div class="erow" id="ev3">
+      <input type="checkbox" class="ecb" onchange="toggleEmail('ev3')">
+      <div class="ubar u-tan"></div>
+      <div class="ebody">
+        <div class="etop"><span class="ptag ptag-david">P2024-0009</span><span class="esdr">Sam Chung — Arise Rochedale</span>
+          <span class="etag etag-await">⏳ Awaiting</span><span class="etime">Enquired today</span></div>
+        <div class="esubj">Fence Plan Inquiry — Lot 16, 10 Premier St, Rochedale (Rebecca)</div>
+        <div class="esumm">Enquired whether an additional Building Covenant application is needed for the fence. Awaiting Sam's reply.</div>
+        <button class="dtoggle" onclick="tog('dv3',this,'Follow-Up Template','Hide')">✏️ Follow-Up</button>
+        <div class="dbox" id="dv3"><div class="dlabel">Follow-Up if No Reply by Tomorrow</div>
+          <div class="dcontent">Hi Sam,
+
+Just following up on my email today regarding Lot 16, 10 Premier Street, Rochedale. Could you please advise whether an additional Building Covenant application is required for the fence design?
+
+Thank you.
+David Chen | Walter Design & Development</div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /two-col -->
+
+</div>
+<div class="footer">Walter Design &amp; Development &nbsp;·&nbsp; Morning Briefing 19 June 2026 &nbsp;·&nbsp; Generated by Claude</div>
+
+<script>
+const TODAY='2026-06-19',STORE_KEY='wdd_brief_'+TODAY,CF_KEY='wdd_cf';
+function tog(id,btn,o,c){const b=document.getElementById(id);const open=b.classList.toggle('open');btn.textContent=(open?'✕ ':'✏️ ')+(open?c:o);}
+function toggleTask(r,c){document.getElementById(r).classList.toggle('done',document.getElementById(c).checked);saveState();}
+function toggleEmail(r){const row=document.getElementById(r);row.classList.toggle('done',row.querySelector('.ecb').checked);saveState();}
+function saveState(){const s={};document.querySelectorAll('input[type=checkbox]').forEach(function(c){if(c.id)s[c.id]=c.checked;});try{localStorage.setItem(STORE_KEY,JSON.stringify(s));}catch(e){}}
+function restoreState(){let s={};try{s=JSON.parse(localStorage.getItem(STORE_KEY)||'{}');}catch(e){}Object.keys(s).forEach(function(id){const cb=document.getElementById(id);if(!cb)return;cb.checked=s[id];const row=cb.closest('.trow,.erow');if(row&&s[id])row.classList.add('done');});}
+function loadCarryForward(){let items=[];try{items=JSON.parse(localStorage.getItem(CF_KEY)||'[]');}catch(e){}const prev=items.filter(function(i){return i.date!==TODAY&&!i.done;});if(!prev.length)return;const card=document.getElementById('cf-card');const list=document.getElementById('cf-list');document.getElementById('cf-cnt').textContent=prev.length;card.style.display='';prev.forEach(function(item,idx){const div=document.createElement('div');div.className='cf-item';div.innerHTML='<input type="checkbox" style="width:13px;height:13px;margin-top:3px;accent-color:var(--p1);cursor:pointer;" onchange="markCF('+idx+',this)"><span class="cf-badge">From '+item.date+'</span><span style="font-size:12.5px;margin-left:8px;">'+item.text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</span>';list.appendChild(div);});}
+function markCF(idx,cb){try{const items=JSON.parse(localStorage.getItem(CF_KEY)||'[]');items[idx].done=cb.checked;localStorage.setItem(CF_KEY,JSON.stringify(items));}catch(e){}}
+function saveCF(){const all=[];document.querySelectorAll('.trow:not(.done) label').forEach(function(el){all.push({date:TODAY,text:el.textContent.trim().replace(/⚠.*/,'').trim(),done:false});});document.querySelectorAll('.erow:not(.done) .esubj').forEach(function(el){all.push({date:TODAY,text:el.textContent.trim(),done:false});});let existing=[];try{existing=JSON.parse(localStorage.getItem(CF_KEY)||'[]');}catch(e){}const other=existing.filter(function(i){return i.date!==TODAY;});try{localStorage.setItem(CF_KEY,JSON.stringify(other.concat(all)));}catch(e){}}
+restoreState();loadCarryForward();window.addEventListener('beforeunload',saveCF);
+</script>
+</body>
+</html>
