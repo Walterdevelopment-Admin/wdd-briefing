@@ -160,7 +160,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .proc-chip-dan{background:var(--p1);color:var(--p2);}
 .proc-chip-david{background:var(--p2);color:var(--white);}
 .proc-chip-other{background:var(--s4);color:var(--p2);}
-.proc-chip .pcnote{font-size:8.5px;opacity:.85;}
+.proc-chip .pcnote{display:inline-flex;align-items:center;opacity:.8;}
+.pcdue{display:inline-flex;align-items:center;gap:2px;background:var(--white);color:var(--red);font-size:8.5px;font-weight:800;padding:1px 4px;border-radius:2px;line-height:1.4;}
+.pccur{font-size:8.5px;opacity:.8;font-style:italic;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.proc-chip-add{background:transparent;border:1px dashed var(--s3);color:var(--muted);cursor:pointer;}
+.proc-chip-add:hover{background:var(--s1);color:var(--p2);}
+.proc-chk-row{display:flex;align-items:center;gap:7px;padding:4px 2px;border-bottom:1px solid #f2ebe2;font-size:12px;}
+.proc-chk-row input[type=checkbox]{width:13px;height:13px;accent-color:var(--p1);cursor:pointer;flex-shrink:0;}
+.proc-chk-row.done label{text-decoration:line-through;color:var(--s3);}
+.proc-chk-row label{flex:1;cursor:pointer;line-height:1.4;}
+.proc-chk-pin{cursor:pointer;font-size:9px;font-weight:800;padding:1px 6px;border-radius:6px;border:1px solid var(--s2);color:var(--muted);user-select:none;white-space:nowrap;}
+.proc-chk-pin:hover{background:var(--s1);color:var(--p2);}
+.proc-chk-pin.on{background:var(--p2);color:var(--white);border-color:var(--p2);}
+.proc-chk-del{cursor:pointer;color:var(--s3);font-size:14px;line-height:1;padding:0 3px;flex-shrink:0;}
+.proc-chk-del:hover{color:var(--red);}
+.proc-chk-addrow{display:flex;gap:6px;margin-top:7px;}
+.proc-chk-addrow input{flex:1;font-size:12px;padding:5px 8px;border:1px solid var(--s2);border-radius:4px;font-family:inherit;}
+.proc-chk-addbtn{font-size:11.5px;font-weight:700;padding:5px 12px;border:none;border-radius:4px;background:var(--p2);color:var(--white);cursor:pointer;font-family:inherit;}
+.proc-chk-addbtn:hover{background:#333;}
+.proc-chk-stage-sel{font-size:12px;padding:5px 8px;border:1px solid var(--s2);border-radius:4px;font-family:inherit;background:var(--white);margin-bottom:4px;max-width:100%;}
 .proc-tray{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:10px 18px;background:#fdf9f5;border-bottom:1px solid var(--s1);min-height:20px;transition:background .12s;}
 .proc-tray.drag-over{background:#f0e2d2;}
 .proc-tray-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--s3);margin-right:6px;}
@@ -1538,6 +1556,10 @@ David Chen</div></div>
         <textarea class="proc-note" id="procNoteInput" placeholder="Notes for this project…"></textarea>
         <div class="proc-field-label">Target completion date</div>
         <input type="date" class="proc-date-in" id="procTargetInput">
+        <div class="proc-field-label">Stage checklist</div>
+        <select class="proc-chk-stage-sel" id="procChkStage" onchange="renderProcChecklist()"></select>
+        <div id="procChkList"></div>
+        <div class="proc-chk-addrow"><input type="text" id="procChkNew" placeholder="Add a checklist item…" onkeydown="if(event.key==='Enter')procChkAdd()"><button type="button" class="proc-chk-addbtn" onclick="procChkAdd()">+ Add</button></div>
         <div class="proc-field-label">Stage dates (start → end)</div>
         <table class="proc-dates-table" id="procDatesTable"></table>
       </div>
@@ -1613,6 +1635,24 @@ var PROC_STEPS=[
 ];
 var PROC_STAGE_LIST=[];
 PROC_STEPS.forEach(function(g){g.stages.forEach(function(s){PROC_STAGE_LIST.push(s);});});
+/* Default checklist items per stage (from the 2025 Custom/Package procedure charts).
+   Copied into a project the first time its checklist for that stage is opened; fully editable per project. */
+var PROC_DEFAULT_ITEMS={
+ prelim1:['Concept Design - First Present','Concept Design - Amendments','Construction Drawing','Construction Drawing - Amendments'],
+ prelim2:['Soil Test','Foundation Design','Structure Design','Inclusion List','Colour Selection','Colour Plan','Energy Report (7 Stars)','Electrical Plan','Joinery Plan'],
+ quoting:[],
+ da:[],
+ contract:[],
+ deposit:[],
+ council:[],
+ base:['Site Preparation & Excavation','Sediment Control','Land Set Out','Foundation - Footings','Plumbing Stage 1 (Underground)','Electrician Stage 1 (Underground)','Phone Line - Lead In','Termite Protection','Base Brickwork','Foundation - Concrete Slab','Inspection Approval (Footing & Slab)'],
+ frame:['Termite Protection','Framing Work - Steel Framing','Framing Work - Timber Framing','Trusses Work','Inspection Approval (Framing)','Carpentry Work for Installation'],
+ enclosed1:['Install Fascia & Gutters','Roof Covering Fixed','External Windows & Doors Fixed','Brickwork & Insulation','Scaffolding','External Wall Cladding Fixed'],
+ enclosed2:['Plumbing Stage 2 (Rough-in)','Gas Line - Rough-in','Aircon - Rough-in','Electrician Stage 2 (Rough-in)','Phone Line - Rough-in','Telstra Velocity - Rough-in'],
+ fixing1:['Sheeting & Plastering','Stair Lining','Waterproofing','All Internal Lining','Tiling'],
+ fixing2:['Carpentry Fixing','Painting Work','Built-in Cabinets','Electricity Stage 3 (Fit-off)','Plumbing Stage 3 (Fit-off)'],
+ pc:['Aircon - Fit-off','Joinery - Kitchen & Cabinet','Carpentry Fixing','Install Tank & Pump','Driveway','Final Site Clean','Final Inspection (Certifier)','Final Approval Application (Certifier)']
+};
 /* Seed — used only until tasks.json has a "procedure" key (admin's stage snapshot, 2026-07-08) */
 var cachedProcedure={
  'P2021-0002':{stage:'fixing2',note:'',target:'',dates:{}},
@@ -2084,17 +2124,21 @@ function procDesigner(p){
 function procAllProjects(){
   var all=getAllProjects();
   Object.keys(cachedProcedure).forEach(function(p){ if(all.indexOf(p)===-1) all.push(p); });
+  all=all.filter(function(p){ var e=cachedProcedure[p]; return !(e && e.hidden); });
   all.sort();
   return all;
 }
-function fmtDM(d){ if(!d)return ''; var p=String(d).split('-'); return p.length===3?(p[2]+'/'+p[1]):d; }
+function fmtDM(d){ if(!d)return ''; var p=String(d).split('-'); return p.length===3?(p[2]+'/'+p[1]+'/'+p[0]):d; }
 function procStageName(k){ var n=k; PROC_STAGE_LIST.forEach(function(s){if(s.key===k)n=s.name;}); return n; }
+var SVG_NOTE='<svg width="8" height="8" viewBox="0 0 8 8" style="display:block"><path d="M0 0h8v5.5H4.5L2.5 8V5.5H0z" fill="currentColor"/></svg>';
+var SVG_FLAG='<svg width="8" height="9" viewBox="0 0 8 9" style="display:block"><path d="M0 0h1.2v9H0z" fill="currentColor"/><path d="M1.6 .5H8L6.2 2.2 8 3.9H1.6z" fill="currentColor"/></svg>';
 function procChipHtml(p){
   var e=cachedProcedure[p]||{};
   var extra='';
-  if(e.note){extra+=' <span class="pcnote">📝</span>';}
-  if(e.target){extra+=' <span class="pcnote">🏁'+fmtDM(e.target)+'</span>';}
-  var tip=p+(e.note?(' — '+e.note):'')+(e.target?(' · Target completion: '+e.target):'')+' — drag to move stage · click to edit';
+  if(e.note){extra+=' <span class="pcnote" title="Has note">'+SVG_NOTE+'</span>';}
+  if(e.cur){extra+=' <span class="pccur">· '+esc(e.cur)+'</span>';}
+  if(e.target){extra+=' <span class="pcdue" title="Target completion date">'+SVG_FLAG+fmtDM(e.target)+'</span>';}
+  var tip=p+(e.note?(' — '+e.note):'')+(e.cur?(' · Now at: '+e.cur):'')+(e.target?(' · Target completion: '+e.target):'')+' — drag to move stage · click to edit';
   var pq=p.replace(/'/g,"\\'");
   return '<span class="proc-chip proc-chip-'+procDesigner(p)+'" draggable="true" ondragstart="onChipDragStart(event,\''+pq+'\')" onclick="openProcModal(\''+pq+'\')" title="'+esc(tip)+'">'+esc(p)+extra+'</span>';
 }
@@ -2121,7 +2165,7 @@ function renderProcedure(){
     html+='</div>';
   });
   stepsRoot.innerHTML=html;
-  document.getElementById('procTray').innerHTML='<span class="proc-tray-label">Unplaced</span>'+unplaced.map(procChipHtml).join('');
+  document.getElementById('procTray').innerHTML='<span class="proc-tray-label">Unplaced</span>'+unplaced.map(procChipHtml).join('')+'<span class="proc-chip proc-chip-add" onclick="addProcProject()" title="Add a project label to the board">+ Add</span>';
   var cnt=document.getElementById('procCount');
   if(cnt){cnt.textContent=(procAllProjects().length-unplaced.length)+' on board';}
 }
@@ -2162,6 +2206,12 @@ function openProcModal(p){
       +'<td><input type="date" class="proc-date-in" id="pde_'+s.key+'" value="'+(d.e||'')+'"></td></tr>';
   });
   document.getElementById('procDatesTable').innerHTML=rows;
+  var sel=document.getElementById('procChkStage');
+  var opts='';
+  PROC_STAGE_LIST.forEach(function(s){ opts+='<option value="'+s.key+'"'+((e.stage||'prelim1')===s.key?' selected':'')+'>'+s.name+'</option>'; });
+  sel.innerHTML=opts;
+  document.getElementById('procChkNew').value='';
+  renderProcChecklist();
   document.getElementById('procOverlay').classList.add('open');
 }
 function closeProcModal(){ document.getElementById('procOverlay').classList.remove('open'); procModalProject=null; }
@@ -2183,10 +2233,81 @@ function saveProcModal(){
 }
 function removeProcProject(){
   var p=procModalProject; if(!p){ closeProcModal(); return; }
-  delete cachedProcedure[p];
+  if(!window.confirm('Remove '+p+' from the board? Its notes, dates and checklists are kept, and it can be re-added with "+ Add".')){ return; }
+  var e=cachedProcedure[p]||{stage:'',note:'',target:'',dates:{}};
+  e.hidden=true;
+  cachedProcedure[p]=e;
   closeProcModal();
   renderProcedure();
   pushTasks();
+}
+function addProcProject(){
+  var val=window.prompt('Enter project number to add to the board (e.g. P2026-0012 or T2023-0009):');
+  if(val===null){ return; }
+  val=val.trim();
+  if(!val){ return; }
+  var e=cachedProcedure[val];
+  if(e){ delete e.hidden; }
+  else{ cachedProcedure[val]={stage:'',note:'',target:'',dates:{}}; }
+  renderProcedure();
+  pushTasks();
+}
+/* ---- Per-project stage checklists (default items copied from PROC_DEFAULT_ITEMS on first open; editable per project) ---- */
+function procItemsFor(p,stageKey){
+  var e=cachedProcedure[p];
+  if(!e){ e=cachedProcedure[p]={stage:'',note:'',target:'',dates:{}}; }
+  if(!e.items){ e.items={}; }
+  if(!e.items[stageKey]){
+    e.items[stageKey]=(PROC_DEFAULT_ITEMS[stageKey]||[]).map(function(t){return {t:t,d:false};});
+  }
+  return e.items[stageKey];
+}
+function renderProcChecklist(){
+  var p=procModalProject; if(!p){ return; }
+  var stageKey=document.getElementById('procChkStage').value;
+  var e=cachedProcedure[p]||{};
+  var items=procItemsFor(p,stageKey);
+  var html='';
+  items.forEach(function(it,i){
+    var pinned=(e.cur===it.t);
+    html+='<div class="proc-chk-row'+(it.d?' done':'')+'">'
+      +'<input type="checkbox" '+(it.d?'checked ':'')+'onchange="procChkToggle('+i+')">'
+      +'<label onclick="procChkToggle('+i+')">'+esc(it.t)+'</label>'
+      +'<span class="proc-chk-pin'+(pinned?' on':'')+'" onclick="procChkPin('+i+')" title="Show this item on the project label as its current status">'+(pinned?'✓ On label':'Show on label')+'</span>'
+      +'<span class="proc-chk-del" onclick="procChkDel('+i+')" title="Delete item">×</span>'
+      +'</div>';
+  });
+  document.getElementById('procChkList').innerHTML=html||'<div style="font-size:11.5px;color:var(--muted);padding:4px 2px;">No items for this stage yet — add one below.</div>';
+}
+function procChkToggle(i){
+  var p=procModalProject; if(!p){ return; }
+  var items=procItemsFor(p,document.getElementById('procChkStage').value);
+  if(items[i]){ items[i].d=!items[i].d; }
+  renderProcChecklist(); renderProcedure(); pushTasks();
+}
+function procChkPin(i){
+  var p=procModalProject; if(!p){ return; }
+  var e=cachedProcedure[p]; var items=procItemsFor(p,document.getElementById('procChkStage').value);
+  if(!items[i]){ return; }
+  e.cur=(e.cur===items[i].t)?'':items[i].t;
+  renderProcChecklist(); renderProcedure(); pushTasks();
+}
+function procChkDel(i){
+  var p=procModalProject; if(!p){ return; }
+  var e=cachedProcedure[p]; var items=procItemsFor(p,document.getElementById('procChkStage').value);
+  if(!items[i]){ return; }
+  if(e.cur===items[i].t){ e.cur=''; }
+  items.splice(i,1);
+  renderProcChecklist(); renderProcedure(); pushTasks();
+}
+function procChkAdd(){
+  var p=procModalProject; if(!p){ return; }
+  var inp=document.getElementById('procChkNew');
+  var v=inp.value.trim(); if(!v){ inp.focus(); return; }
+  procItemsFor(p,document.getElementById('procChkStage').value).push({t:v,d:false});
+  inp.value='';
+  renderProcChecklist(); pushTasks();
+  inp.focus();
 }
 function switchTab(t){
   var proc=(t==='procedure');
