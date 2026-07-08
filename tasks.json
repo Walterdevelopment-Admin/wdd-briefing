@@ -203,7 +203,35 @@
       "stage": "fixing1",
       "note": "",
       "target": "2026-08-14",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "fixing1": [
+          {
+            "t": "Sheeting & Plastering",
+            "d": false
+          },
+          {
+            "t": "Stair Lining",
+            "d": false
+          },
+          {
+            "t": "Waterproofing",
+            "d": false
+          },
+          {
+            "t": "All Internal Lining",
+            "d": false
+          },
+          {
+            "t": "Tiling",
+            "d": false
+          },
+          {
+            "t": "Benchtop Installation",
+            "d": false
+          }
+        ]
+      }
     },
     "P2023-0019": {
       "stage": "enclosed1",
