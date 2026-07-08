@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Morning Briefing — Tuesday, 7 July 2026 | Walter D&D</title>
+<title>Morning Briefing — 8 July 2026 | Walter D&amp;D</title>
 <style>
 :root {
   --p1:#c1ac99; --p2:#49494b; --s1:#e6d5c3; --s2:#b3aea8;
@@ -40,7 +40,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .person-name{font-size:14px;font-weight:700;line-height:1.3;}
 .person-role{font-size:11px;color:var(--muted);margin-bottom:6px;}
 .proj-chips{display:flex;flex-wrap:wrap;gap:4px;}
-.pchip{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--s1);color:var(--p2);letter-spacing:.2px;}
+.pchip{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--s1);color:var(--p2);letter-spacing:.2px;cursor:pointer;user-select:none;}
+.pchip:hover{background:#d4c3b0;}
+.pchip-active{background:var(--p2);color:var(--white);}
+.pchip-active:hover{background:#333;}
+.pchip-add{background:transparent;border:1px dashed var(--s3);color:var(--muted);cursor:pointer;}
+.pchip-add:hover{background:var(--s1);color:var(--p2);}
 .slabel{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--s3);padding:10px 18px 4px;}
 .task-block{padding:4px 18px 12px;background:#fdf9f5;border-bottom:1px solid var(--s1);}
 .trow{display:flex;align-items:flex-start;gap:8px;padding:4px 0;transition:opacity .2s;position:relative;}
@@ -53,8 +58,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .overdue{font-size:10px;font-weight:700;color:var(--red);margin-left:5px;vertical-align:middle;}
 .unsched-badge{font-size:9px;font-weight:700;color:var(--amber);background:#fef3c7;padding:1px 6px;border-radius:6px;margin-left:4px;vertical-align:middle;}
 .task-sched-toggle{cursor:pointer;font-size:13px;margin-top:2px;flex-shrink:0;user-select:none;}
+.task-edit-btn{cursor:pointer;font-size:13px;margin-top:2px;flex-shrink:0;user-select:none;color:var(--s3);}
+.task-edit-btn:hover{color:var(--p2);}
 .sched-editor{display:none;gap:6px;margin-top:4px;align-items:center;flex-wrap:wrap;}
 .sched-editor.open{display:flex;}
+.edit-editor{display:none;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap;background:#faf7f3;border:1px solid var(--s2);border-radius:4px;padding:7px 9px;}
+.edit-editor.open{display:flex;}
 .sched-save-btn,.sched-clear-btn{font-size:10.5px;padding:3px 9px;border-radius:4px;border:1px solid var(--s2);background:var(--white);cursor:pointer;font-family:inherit;}
 .sched-save-btn{background:var(--p2);color:var(--white);border:none;}
 .sched-save-btn:hover{background:#333;}
@@ -62,7 +71,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .task-del{margin-left:0;color:var(--s3);font-size:15px;line-height:1;cursor:pointer;padding:0 4px;flex-shrink:0;}
 .task-del:hover{color:var(--red);}
 .assigned-by-tag{display:inline-block;background:#e8f0fe;color:#1a5da8;font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px;margin-left:4px;letter-spacing:.2px;vertical-align:middle;}
-.sync-status{font-size:10px;color:var(--muted);font-weight:600;}
+.sync-status{font-size:10px;color:var(--muted);font-weight:600;cursor:pointer;}
+.sync-status:hover{color:var(--p2);text-decoration:underline;}
 .gantt-nav-btn{font-size:11px;font-weight:700;padding:3px 9px;border-radius:4px;border:1px solid var(--s2);background:var(--white);color:var(--p2);cursor:pointer;font-family:inherit;margin:0 4px;}
 .gantt-nav-btn:hover{background:var(--s1);}
 .task-add-form{display:flex;flex-wrap:wrap;gap:6px;padding:10px 18px;background:#faf7f3;border-bottom:1px solid var(--s1);align-items:center;}
@@ -83,9 +93,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .gantt-daycell-today{background:#fde4e4;color:var(--red);font-weight:800;}
 .gantt-daycell-weekend{background:#f8f2ea;}
 .gantt-track-row{position:relative;}
-.gantt-track-bg{position:absolute;top:0;left:0;width:100%;background:#faf7f3;border-radius:4px;}
+.gantt-track-row.drag-over .gantt-track-bg{background:#f0e2d2;}
+.gantt-track-bg{position:absolute;top:0;left:0;width:100%;background:#faf7f3;border-radius:4px;transition:background .12s;}
 .gantt-today-line{position:absolute;top:0;width:2px;background:var(--red);opacity:.55;z-index:1;}
-.gantt-bar{position:absolute;height:24px;border-radius:4px;font-size:10px;font-weight:700;color:var(--white);padding:2px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 1px 2px rgba(0,0,0,.15);box-sizing:border-box;z-index:2;}
+.gantt-bar{position:absolute;height:24px;border-radius:4px;font-size:10px;font-weight:700;color:var(--white);padding:2px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 1px 2px rgba(0,0,0,.15);box-sizing:border-box;z-index:2;cursor:grab;}
+.gantt-bar:active{cursor:grabbing;}
 .gantt-general{background:var(--s3);}
 .gantt-daniel{background:var(--p1);color:var(--p2);}
 .gantt-david{background:var(--p2);}
@@ -103,6 +115,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .ptag{font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:3px;letter-spacing:.2px;}
 .ptag-dan{background:var(--p1);color:var(--p2);}
 .ptag-david{background:var(--p2);color:var(--white);}
+.ptag-un{background:#fef3c7;color:#7c5800;}
 .esdr{font-size:12.5px;font-weight:700;color:var(--text);}
 .etime{font-size:10.5px;color:var(--s3);margin-left:auto;white-space:nowrap;}
 .etag{font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:6px;}
@@ -131,11 +144,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <body>
 <header class="hdr">
   <div class="hdr-inner">
-    <img src="2025 Logo - H - 1.png" class="logo-img" alt="Walter D&D">
+    <img src="2025 Logo - H - 1.png" class="logo-img" alt="Walter D&amp;D">
     <div class="hdr-sep"></div>
     <div class="hdr-txt">
-      <h1>Morning Briefing &nbsp;·&nbsp; Tuesday, 7 July 2026</h1>
-      <div class="meta">Generated 11:54 AM AEST &nbsp;·&nbsp; admin@walterdevelopment.com.au</div>
+      <h1>Morning Briefing &nbsp;·&nbsp; Wednesday, 8 July 2026</h1>
+      <div class="meta">Generated 10:15 AM AEST &nbsp;·&nbsp; admin@walterdevelopment.com.au</div>
     </div>
   </div>
 </header>
@@ -143,34 +156,66 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
   <!-- CALENDAR CARD -->
   <div class="card">
-    <div class="card-hdr style-neutral"><span class="icon">📅</span><h2>Today's Schedule</h2><span class="cnt">3 events</span></div>
+    <div class="card-hdr style-neutral"><span class="icon">📅</span><h2>Today's Schedule</h2><span class="cnt">7 events</span></div>
     <div class="crow">
-      <div class="ctime">7:00 – 8:00 AM</div>
+      <div class="ctime">7:00 AM</div>
+      <div class="cdot cd-tan"></div>
+      <div>
+        <div class="ctitle">P21-25 final paint<span class="cbadge cb-past">Done</span></div>
+        <div class="csub">onsite@ · 7:00–8:00 AM</div>
+      </div>
+    </div>
+    <div class="crow">
+      <div class="ctime">7:00 AM</div>
       <div class="cdot cd-grey"></div>
       <div>
-        <div class="ctitle">P21-25 Plaster<span class="cbadge cb-past">Done</span></div>
-        <div class="csub">Onsite calendar · 7:00 – 8:00 AM · Daniel</div>
+        <div class="ctitle">P22-11 capping site measures<span class="cbadge cb-past">Done</span></div>
+        <div class="csub">mark.c@ · 7:00–8:30 AM · Mark Chang</div>
+      </div>
+    </div>
+    <div class="crow">
+      <div class="ctime">8:30 AM</div>
+      <div class="cdot cd-grey"></div>
+      <div>
+        <div class="ctitle">P21-02 Check ladder height<span class="cbadge cb-past">Done</span></div>
+        <div class="csub">mark.c@ · 8:30–9:30 AM · Mark Chang</div>
+      </div>
+    </div>
+    <div class="crow">
+      <div class="ctime">10:30 AM</div>
+      <div class="cdot cd-grey"></div>
+      <div>
+        <div class="ctitle">Pick up void guardrail<span class="cbadge cb-now">Soon</span></div>
+        <div class="csub">mark.c@ · 10:30–11:30 AM · Mark Chang</div>
+      </div>
+    </div>
+    <div class="crow">
+      <div class="ctime">12:00 PM</div>
+      <div class="cdot cd-grey"></div>
+      <div>
+        <div class="ctitle">P17-11 Troy<span class="cbadge cb-now">Soon</span></div>
+        <div class="csub">mark.c@ · 12:00–1:00 PM · Mark Chang</div>
+      </div>
+    </div>
+    <div class="crow">
+      <div class="ctime">12:00 PM</div>
+      <div class="cdot cd-tan"></div>
+      <div>
+        <div class="ctitle">P23-18 meet owner<span class="cbadge cb-now">Soon</span></div>
+        <div class="csub">onsite@ · 12:00–1:00 PM</div>
       </div>
     </div>
     <div class="crow">
       <div class="ctime">All Day</div>
-      <div class="cdot cd-tan"></div>
+      <div class="cdot cd-grey"></div>
       <div>
         <div class="ctitle">Bennie Away<span class="cbadge cb-on">Ongoing</span></div>
-        <div class="csub">Account calendar · 6 – 10 Jul · redirect accounts queries to Walter</div>
-      </div>
-    </div>
-    <div class="crow">
-      <div class="ctime">7:00 – 8:00 PM</div>
-      <div class="cdot cd-tan"></div>
-      <div>
-        <div class="ctitle">Airport</div>
-        <div class="csub">Mark Chang's calendar · 7:00 – 8:00 PM</div>
+        <div class="csub">account@ · Mon 6 Jul – Thu 9 Jul</div>
       </div>
     </div>
   </div>
 
-  <!-- DESIGN TEAM GANTT CARD (static widget — rendered live from localStorage by the JS below) -->
+  <!-- DESIGN TEAM GANTT CARD (static widget — do NOT fill with generated data; JS below fetches from GitHub) -->
   <div class="card">
     <div class="card-hdr style-neutral"><span class="icon">📊</span><h2>Design Team Gantt</h2><button type="button" class="gantt-nav-btn" onclick="changeGanttMonth(-1)">◀</button><span class="cnt" id="ganttRangeLabel"></span><button type="button" class="gantt-nav-btn" onclick="changeGanttMonth(1)">▶</button><button type="button" class="gantt-nav-btn" onclick="resetGanttMonth()">Today</button></div>
     <div class="gantt-wrap">
@@ -187,9 +232,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 
-  <!-- DESIGN TEAM TASKS CARD (static widget — manually managed by the user in-browser) -->
+  <!-- DESIGN TEAM TASKS CARD (static widget — shared via GitHub tasks.json, NOT populated from email. JS below fetches/pushes via GitHub API.) -->
   <div class="card">
-    <div class="card-hdr style-neutral"><span class="icon">✅</span><h2>Design Team Tasks</h2><span class="sync-status" id="syncStatus"></span></div>
+    <div class="card-hdr style-neutral"><span class="icon">✅</span><h2>Design Team Tasks</h2><span class="sync-status" id="syncStatus" onclick="setGhToken()" title="Click to set or update the GitHub token (stored only in this browser)"></span></div>
     <div class="task-add-form">
       <input type="text" id="newTaskTitle" class="task-input" placeholder="Task description…">
       <select id="newTaskAssignee" class="task-select">
@@ -197,7 +242,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <option value="daniel">Daniel</option>
         <option value="david">David</option>
       </select>
-      <input type="text" id="newTaskProject" class="task-input task-input-sm" placeholder="Project # (optional)">
+      <select id="newTaskProject" class="task-select task-input-sm"><option value="">Project # (optional)</option></select>
       <input type="text" id="newTaskAssignedBy" class="task-input task-input-sm" placeholder="Assigned by">
       <input type="date" id="newTaskStart" class="task-date" title="Start date">
       <input type="date" id="newTaskEnd" class="task-date" title="End date">
@@ -210,215 +255,1249 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="two-col">
 
     <!-- DANIEL -->
-    <div class="card" style="margin-bottom:0;">
-      <div class="card-hdr style-tan"><span class="icon">●</span><h2>Daniel</h2></div>
+    <div class="card" style="margin-bottom:0;" id="cardDaniel">
+      <div class="card-hdr style-tan"><span class="icon">●</span><h2>Daniel</h2><span class="cnt">28 new · 35 waiting</span></div>
       <div class="person-strip">
         <div class="av av-dan">Dan</div>
         <div class="person-info">
           <div class="person-name">Daniel Chen</div>
           <div class="person-role">Designer</div>
-          <div class="proj-chips">
-            <span class="pchip">P2019-0015</span><span class="pchip">P2021-0025</span><span class="pchip">P2022-0005</span><span class="pchip">P2022-0019</span><span class="pchip">P2023-0011</span><span class="pchip">P2023-0022</span><span class="pchip">P2024-0005</span><span class="pchip">P2024-0015</span><span class="pchip">P2024-0019</span><span class="pchip">P2024-0020</span><span class="pchip">P2025-0005(A)</span><span class="pchip">P2026-0005</span><span class="pchip">P2026-0007</span>
-          </div>
+          <div class="proj-chips" id="chipsDaniel"></div>
         </div>
       </div>
+<div class="slabel">📩 New / Starred</div>
+<div class="erow" id="e_19f3a316614a23ce">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f3a316614a23ce')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">David Lin</span><span class="etag etag-urgent">Starred</span><span class="etime">Tue 7 Jul, 11:28 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: Water Softener Updated Quotation</div>
+    <div style="font-size:12px;color:var(--muted);">Client replied again re water softener installation — he is planning the surrounding concrete himself and needs the exact installation date before proceeding.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f3a316614a23ce',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f3a316614a23ce"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi David,
 
-      <div class="slabel">📩 New / Starred</div>
-
-      <div class="erow" id="ed1">
-        <input type="checkbox" class="ecb" onchange="toggleEmail('ed1')">
-        <div class="ubar u-red"></div>
-        <div class="ebody">
-          <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">Green Choice Consulting</span><span class="etag etag-urgent">Price correction</span><span class="etime">7 Jul</span></div>
-          <div>Corrected the energy reassessment fee — it's actually <strong>$360 + GST</strong>, not $36 as first advised. We already confirmed the $36 figure, so this needs a prompt re-confirmation before Green Choice proceeds.</div>
-          <button class="dtoggle" onclick="tog('dbox_ed1',this)">✏️ Draft Reply</button>
-          <div class="dbox" id="dbox_ed1">
-            <div class="dlabel">Draft Reply</div>
-            <div class="dcontent">Hi Romany,
-
-Thanks for the correction. To confirm, we accept the reassessment fee of $360.00 + GST — please proceed with the reassessment.
+Thank you for your reply. I am confirming the installation date with the water softener contractor now and will come back to you as soon as it is locked in, so you can coordinate the surrounding concrete works around it.
 
 Kind Regards,
-Daniel Chen
-Designer</div>
-          </div>
-        </div>
-      </div>
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f3a6f37f192a70">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f3a6f37f192a70')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">David Lin</span><span class="etag etag-urgent">Starred</span><span class="etime">Tue 7 Jul, 12:36 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: Digital Door Lock Replacement</div>
+    <div style="font-size:12px;color:var(--muted);">Ongoing refund/admin-fee discussion for the discontinued Philips digital lock — client maintains Walter promised no admin charges pre-contract and is awaiting confirmation.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f3a6f37f192a70',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f3a6f37f192a70"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi David,
 
-      <div class="erow" id="ed2">
-        <input type="checkbox" class="ecb" onchange="toggleEmail('ed2')">
-        <div class="ubar u-tan"></div>
-        <div class="ebody">
-          <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">David Lin (Water Softener)</span><span class="etime">6 Jul</span></div>
-          <div>Asking when the water softener will be installed — he may be doing the surrounding concrete himself and wants to check the timing lines up.</div>
-          <button class="dtoggle" onclick="tog('dbox_ed2',this)">✏️ Draft Reply</button>
-          <div class="dbox" id="dbox_ed2">
-            <div class="dlabel">Draft Reply</div>
-            <div class="dcontent">Hi David,
-
-Thank you for the update. We're currently coordinating with the installer and will confirm the exact installation date shortly — I'll make sure to factor in your surrounding concrete works so the timing lines up.
-
-I'll be in touch as soon as I have a confirmed date.
+Thank you for your patience. I have raised the admin-charge question with Walter and will confirm the refund breakdown for the two removed items with you shortly. Please also note the Philips lock compatibility issue with the DECO 4S garage entry door — we will include a compatible option in the confirmation.
 
 Kind Regards,
-Daniel Chen
-Designer</div>
-          </div>
-        </div>
-      </div>
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f37bc89ae092d2">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f37bc89ae092d2')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0020</span><span class="esdr">Phillip Ng (Amelio RDS)</span><span class="etag etag-urgent">Starred</span><span class="etime">Tue 7 Jul, 12:02 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: 40 Dorchester Street Arborist Details</div>
+    <div style="font-size:12px;color:var(--muted);">Phillip has chased Litoria again for the arborist/ecologist fee quote and will issue it as soon as received. Note: a separate fee proposal from Independent Arb is already in hand (see below).</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f37bc89ae092d2',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f37bc89ae092d2"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Phillip,
 
-      <div class="erow" id="ed3">
-        <input type="checkbox" class="ecb" onchange="toggleEmail('ed3')">
-        <div class="ubar u-tan"></div>
-        <div class="ebody">
-          <div class="etop"><span class="ptag ptag-dan">P2021-0015</span><span class="esdr">Diego (Easy Pool Cert)</span><span class="etime">6 Jul</span></div>
-          <div>Confirmed the pool inspection/Form 23 pricing is inclusive of GST for 1/52 Paragon St, Yeronga.</div>
-          <button class="dtoggle" onclick="tog('dbox_ed3',this)">✏️ Draft Reply</button>
-          <div class="dbox" id="dbox_ed3">
-            <div class="dlabel">Draft Reply</div>
-            <div class="dcontent">Hi Diego,
-
-Thanks for confirming the pricing includes GST. We'd like to proceed — please let us know the next steps to book in the inspection.
+Thank you for chasing this up — much appreciated. We will keep an eye out for the quote. In the meantime, we have also received a fee proposal from Independent Arboriculture for the same scope, so we will compare both once Litoria's comes through.
 
 Kind Regards,
-Daniel Chen
-Designer</div>
-          </div>
-        </div>
-      </div>
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f3b38cb08b61f7">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f3b38cb08b61f7')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2021-0015</span><span class="esdr">Charles Fung (PB3)</span><span class="etag etag-urgent">Starred</span><span class="etime">Tue 7 Jul, 4:16 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: New Pool Certificate at Lot 1/52 Paragon Street, Yeronga</div>
+    <div style="font-size:12px;color:var(--muted);">Charles confirms a Form 23 for a private non-shared pool carries another 2 years' validity — decision needed on proceeding with the new certificate vs renewal inspection.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f3b38cb08b61f7',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f3b38cb08b61f7"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Charles,
 
-      <div class="erow" id="ed4">
-        <input type="checkbox" class="ecb" onchange="toggleEmail('ed4')">
-        <div class="ubar u-amber"></div>
-        <div class="ebody">
-          <div class="etop"><span class="ptag ptag-dan">P2024-0020</span><span class="esdr">Phillip Ng (Arborist)</span><span class="etag etag-await">Starred</span><span class="etime">6 Jul</span></div>
-          <div>Chased the arborist quote again — says he'll issue it ASAP. Just needs a brief acknowledgement.</div>
-          <button class="dtoggle" onclick="tog('dbox_ed4',this)">✏️ Draft Reply</button>
-          <div class="dbox" id="dbox_ed4">
-            <div class="dlabel">Draft Reply</div>
-            <div class="dcontent">Hi Phillip,
-
-Thank you for the update and for chasing this up again — much appreciated. Please send the quote through as soon as it's available.
+Thank you for confirming. We would like to proceed with the Form 23 for the private non-shared pool. Could you please advise your fee and what documentation you need from us to issue it?
 
 Kind Regards,
-Daniel Chen
-Designer</div>
-          </div>
-        </div>
-      </div>
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f266480f249378">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f266480f249378')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">Charlie Yan (Peerce)</span><span class="etag etag-urgent">Starred</span><span class="etime">Fri 3 Jul, 3:12 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">30 Normandy Street Structural Engineering</div>
+    <div style="font-size:12px;color:var(--muted);">Charlie replied to the structural engineering follow-up (starred) — review his response against the adjusted plans and confirm next steps.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f266480f249378',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f266480f249378"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Charlie,
 
-      <div class="erow" id="ed5">
-        <input type="checkbox" class="ecb" onchange="toggleEmail('ed5')">
-        <div class="ubar u-amber"></div>
-        <div class="ebody">
-          <div class="etop"><span class="esdr">Rebecca Love (Katana Foundations — Piling, 2613 Virginia Drive)</span><span class="etag etag-await">Starred</span><span class="etime">6 Jul</span></div>
-          <div>Confirmed she's checking on the piling quote and it "won't be long."</div>
-          <button class="dtoggle" onclick="tog('dbox_ed5',this)">✏️ Draft Reply</button>
-          <div class="dbox" id="dbox_ed5">
-            <div class="dlabel">Draft Reply</div>
-            <div class="dcontent">Hi Bec,
-
-Thanks for checking on this for us — appreciate you following up. Please let us know as soon as you have an update.
+Thank you for your reply. We will review the updated structural information against the amended plans and come back to you if any coordination is required before we finalise the drawings.
 
 Kind Regards,
-Daniel Chen
-Designer</div>
-          </div>
-        </div>
-      </div>
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f35aa6595e9c48">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f35aa6595e9c48')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0015</span><span class="esdr">Bec (Katana Foundations)</span><span class="etime">Mon 6 Jul, 2:22 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Piling for 2613 Virginia Drive, Hope Island — Quotation</div>
+    <div style="font-size:12px;color:var(--muted);">Katana confirmed they are still working on the piling quotation — no action needed yet, chase again if nothing received this week.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f35aa6595e9c48',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f35aa6595e9c48"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Bec,
 
-      <div class="slabel">⏳ Awaiting Reply</div>
+Thank you for the update — much appreciated. We will await the quotation; if you could have it through by the end of the week that would help us keep the program on track.
 
-      <div class="erow" id="ed6">
-        <input type="checkbox" class="ecb" onchange="toggleEmail('ed6')">
-        <div class="ubar u-grey"></div>
-        <div class="ebody">
-          <div class="etop"><span class="ptag ptag-dan">P2024-0015</span><span class="esdr">Katana Foundations Q#64101</span><span class="etime">6 Jul</span></div>
-          <div>Quote received and forwarded internally to account@ for processing — note the flagged item in red on the quote. No client-facing reply needed.</div>
-        </div>
-      </div>
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f3610cecf0a0b7">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f3610cecf0a0b7')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2021-0015</span><span class="esdr">Diego (Easy Pool Cert)</span><span class="etime">Mon 6 Jul, 4:14 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Pool Inspection Certificate Renew at 1/52 Paragon St, Yeronga</div>
+    <div style="font-size:12px;color:var(--muted);">Diego confirmed his price includes GST. Compare with Pool Safety Solutions' package (below) and book the preferred inspector.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f3610cecf0a0b7',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f3610cecf0a0b7"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Diego,
 
+Thank you for confirming. We are finalising our arrangements and will come back to you shortly to book the inspection if we proceed with your quote.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f3637baba8c416">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f3637baba8c416')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2021-0015</span><span class="esdr">Pool Safety Solutions</span><span class="etag ">Reply needed</span><span class="etime">Mon 6 Jul, 4:56 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Pool Inspection Certificate Renew at 1/52 Paragon St, Yeronga</div>
+    <div style="font-size:12px;color:var(--muted);">Their inspection package includes issuing the Form 23 if the barrier is compliant — awaiting our booking decision (compare with Easy Pool Cert).</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f3637baba8c416',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f3637baba8c416"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Team,
+
+Thank you for confirming the Form 23 is included. Could you please confirm your total fee including GST and your earliest available inspection date for 1/52 Paragon Street, Yeronga? We will confirm the booking once we have compared availability.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f1ae926485f66b">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1ae926485f66b')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2019-0015</span><span class="esdr">Eliza Court (Sanctuary Cove)</span><span class="etag etag-urgent">Starred</span><span class="etime">Wed 1 Jul, 9:41 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">3081 Forest Hills Drive RE: Minimum Security Alarm Requirements</div>
+    <div style="font-size:12px;color:var(--muted);">Sanctuary Cove confirms FTTH installation is mandatory under the by-laws for all properties — design must allow for it alongside the security alarm requirements.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f1ae926485f66b',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f1ae926485f66b"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Eliza,
+
+Thank you for clarifying the FTTH requirement. We will make provision for the Fibre to the Home installation in our documentation. Could you please advise the approved installer or point of contact so we can coordinate the rough-in at the appropriate stage?
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f1c01e4c4b39c8">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1c01e4c4b39c8')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2026-0005</span><span class="esdr">Charles Fung (PB3)</span><span class="etag etag-review">Review</span><span class="etime">Wed 1 Jul, 2:48 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 2 Legal Street, Sunnybank QLD 4109 BA Quotation</div>
+    <div style="font-size:12px;color:var(--muted);">Charles answered the additional-fees / approval-timeframe question on 1 Jul; our 2 Jul follow-up asked further questions and is also awaiting his reply — monitor both directions.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f1c01e4c4b39c8',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f1c01e4c4b39c8"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Charles,
+
+Just following up on our questions regarding any additional fees and the expected approval timeframe under our name. Once confirmed we will proceed with the application.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19eed2a3832a5c96">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19eed2a3832a5c96')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0005</span><span class="esdr">Steven Chiu</span><span class="etag etag-urgent">Starred</span><span class="etime">Mon 22 Jun, 12:30 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Boundary Tree Roots to be Removed — 56 Armadale Street, St Lucia</div>
+    <div style="font-size:12px;color:var(--muted);">Client (following call with Grace) wants clarification on the proposed boundary tree removal versus what was previously discussed — needs a clear written scope.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19eed2a3832a5c96',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19eed2a3832a5c96"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Steven,
+
+Thank you for your patience. To clarify: the proposal covers removal of the boundary tree roots affecting the retaining wall only; any full tree removal would be subject to the arborist's recommendation and council approval. We will send through the arborist's written scope for your records, and are happy to arrange a call if anything remains unclear.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f15c0bf81845e0">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f15c0bf81845e0')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2021-0025</span><span class="esdr">Ariel Wang (Mizhai)</span><span class="etag etag-urgent">Starred</span><span class="etime">Tue 30 Jun, 9:39 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Corinda job update — Second Formal Request for Response</div>
+    <div style="font-size:12px;color:var(--muted);">Ongoing formal correspondence re FIRB fee ($6,350) and lawyer's fees — Walter to pay lawyer's fees; FIRB to be paid to the ATO on the client's behalf. Ariel replied 30 Jun and is awaiting our confirmation.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f15c0bf81845e0',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f15c0bf81845e0"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Ariel,
+
+Thank you for your reply. To confirm the arrangement: Walter will cover the lawyer's fees, and we will pay the $6,350 FIRB fee directly to the ATO on your behalf. We will provide the payment confirmation once processed. Please let us know if anything further is required for your records.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19ecd12200eaf7de">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19ecd12200eaf7de')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2023-0022</span><span class="esdr">STA Consulting (Inspections)</span><span class="etag etag-urgent">Starred</span><span class="etime">Tue 16 Jun, 6:56 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: STA 244062 — Structural Changes for 36 Hydrangea Avenue, Redland Bay</div>
+    <div style="font-size:12px;color:var(--muted);">STA inspections replied 16 Jun re the structural changes / inspection arrangements and is awaiting our response — thread has been open for three weeks.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19ecd12200eaf7de',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19ecd12200eaf7de"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Team,
+
+Apologies for the delayed reply. Could you please confirm the next available inspection date for 36 Hydrangea Avenue, Redland Bay, following the structural changes? We will ensure site access is arranged accordingly.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f26aaf8b70ed80">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f26aaf8b70ed80')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2026-0005</span><span class="esdr">GZG Engineers</span><span class="etag etag-review">Quote</span><span class="etime">Fri 3 Jul, 4:29 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">2 Legal St, Sunnybank Inspection</div>
+    <div style="font-size:12px;color:var(--muted);">Fee proposal received: footing inspection $350+GST, framing $500+GST, Form 12 $150+GST — needs acceptance so inspections can be scheduled.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f26aaf8b70ed80',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f26aaf8b70ed80"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Ray,
+
+Thank you for the fee breakdown. We are happy to proceed on this basis. We will confirm the footing inspection date once the program firms up — could you please advise how much notice you need for bookings?
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f343af5c003baf">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f343af5c003baf')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2026-0005</span><span class="esdr">Daniel Wright (Tilling)</span><span class="etag ">FYI</span><span class="etime">Mon 6 Jul, 7:41 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: 2 Legal Street, Sunnybank QLD Roof Truss Material</div>
+    <div style="font-size:12px;color:var(--muted);">Tilling confirmed they provide Form 15s for their roof truss design — courtesy confirmation, no action required unless documentation is needed now.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f343af5c003baf',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f343af5c003baf"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Daniel,
+
+Thank you for confirming. Please include the Form 15 with the design documentation when issued.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f266a069058997">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f266a069058997')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">Daniel Wright (Tilling)</span><span class="etag ">FYI</span><span class="etime">Fri 3 Jul, 3:18 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: 30 Normandy Street, Sunnybank Hills QLD Timber Grade</div>
+    <div style="font-size:12px;color:var(--muted);">Courtesy acknowledgement ("Thank you Daniel, I appreciate your help") — no action required.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f25485c4f8ee5f">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f25485c4f8ee5f')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">Polytec Sales</span><span class="etag ">Reply needed</span><span class="etime">Fri 3 Jul, 10:02 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Polytec Cove 50 Curved Design</div>
+    <div style="font-size:12px;color:var(--muted);">Steccawood is only available in the standard website range — Polytec suggests visiting a selection studio to view alternatives for the curved design.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f25485c4f8ee5f',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f25485c4f8ee5f"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Team,
+
+Thank you for clarifying. We will review the standard Steccawood range and arrange a selection studio visit if we need to see the profiles in person before confirming the design.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f35ac39635b82a">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f35ac39635b82a')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">GreenChoice Consulting</span><span class="etag ">Reply needed</span><span class="etime">Mon 6 Jul, 2:23 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Energy Efficiency Report for 30 Normandy Street — ER1-T5366</div>
+    <div style="font-size:12px;color:var(--muted);">Updated report fee corrected to $360.00 + GST (earlier figure was a typo). Awaiting our go-ahead to update the energy report for the amended plans.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f35ac39635b82a',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f35ac39635b82a"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Romany,
+
+Thank you for the correction — $360.00 + GST is approved. Please proceed with updating the energy efficiency report based on the amended plans we provided.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f21136b454ddff">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f21136b454ddff')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2021-0025</span><span class="esdr">Ariel Wang (Mizhai)</span><span class="etag ">FYI</span><span class="etime">Thu 2 Jul, 2:25 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 36 Morcom Avenue, Corinda QLD Driveway Progress Update</div>
+    <div style="font-size:12px;color:var(--muted);">Courtesy acknowledgement — client thanks us for the driveway progress update and hopes for on-time handover. No action required.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1ffa82f7e7f47">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1ffa82f7e7f47')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2021-0015</span><span class="esdr">Marco Chou (Shayher)</span><span class="etag ">FYI</span><span class="etime">Thu 2 Jul, 9:18 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: Pool Certificate — 1/52 Paragon St, Yeronga</div>
+    <div style="font-size:12px;color:var(--muted);">Courtesy acknowledgement ("Thank you Daniel") — no action required.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1b03b188449b3">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1b03b188449b3')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0020</span><span class="esdr">Independent Arboriculture</span><span class="etag etag-review">Quote</span><span class="etime">Wed 1 Jul, 10:10 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Quote for 40 Dorchester St, South Brisbane</div>
+    <div style="font-size:12px;color:var(--muted);">Fee proposal received with an online acceptance link — review and accept (or compare with the Litoria quote Phillip Ng is chasing) so the arborist report can proceed.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f1b03b188449b3',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f1b03b188449b3"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Dear Team,
+
+Thank you for the fee proposal for 40 Dorchester Street. We are reviewing it alongside one other quotation and will confirm acceptance via your online link shortly. Could you please advise your current lead time for the report once engaged?
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19e146236bf9804b">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19e146236bf9804b')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">David Lin</span><span class="etag etag-urgent">Starred</span><span class="etime">Mon 11 May, 10:13 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 511 Redland Bay Rd, Capalaba Pool Quote</div>
+    <div style="font-size:12px;color:var(--muted);">Client's confirmation on the pool/spa pump arrangement was the last message (11 May) — verify the pool variation was finalised and quoted; close off if already actioned.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19e146236bf9804b',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19e146236bf9804b"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi David,
+
+Following up on the pool and spa arrangement we confirmed — the shared main pump has been included in the pool quotation. Please let us know if you would like the updated variation summary reissued for your records.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_198a76103996342a">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_198a76103996342a')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">David Lin</span><span class="etag etag-urgent">Starred</span><span class="etime">14 Aug 2025</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Glass changed as per Energy Report Values</div>
+    <div style="font-size:12px;color:var(--muted);">Old starred thread — client replied last (Aug 2025) re double glazing/Low-E glass per the energy report. Confirm this was resolved in the final selections and unstar if complete.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_198a76103996342a',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_198a76103996342a"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi David,
+
+Closing the loop on the glazing question — the final selections reflect the Energy Report requirement (double glazing with one Low-E panel). Please let us know if you would like the specification sheet for your records.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_196f15bb363dfa4c">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_196f15bb363dfa4c')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0005</span><span class="esdr">Steven Chiu</span><span class="etag etag-urgent">Starred</span><span class="etime">21 May 2025</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Follow up for document signing</div>
+    <div style="font-size:12px;color:var(--muted);">Old starred thread — client's last message (May 2025) asked for the invoice to show 60% now / 40% on completion for the retaining wall. Confirm this was reflected in invoicing; unstar if resolved.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_196f15bb363dfa4c',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_196f15bb363dfa4c"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Steven,
+
+Confirming the invoice was structured as discussed — 60% of the retaining wall cost now, with the remaining 40% payable on completion of the next stage. Please let us know if you need this reissued.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19aeb953f8fe5171">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19aeb953f8fe5171')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2019-0015</span><span class="esdr">Amanda Warltier (Comverge)</span><span class="etag ">Starred</span><span class="etime">5 Dec 2025</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: Lot 81, Forest Hills Drive, Sanctuary Cove Security Installation</div>
+    <div style="font-size:12px;color:var(--muted);">Comverge cannot assist (contracted to Hope Island Resort only) — an alternative security installer is still needed for Sanctuary Cove; relates to the FTTH/alarm requirements above.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19aeb953f8fe5171',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19aeb953f8fe5171"><div class="dlabel">Suggested Reply — Daniel Chen</div><div class="dcontent">Hi Amanda,
+
+Thank you for letting us know — understood. We will engage an alternative installer familiar with the Sanctuary Cove requirements.
+
+Kind Regards,
+Daniel Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19db2e36b9cb835c">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19db2e36b9cb835c')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">MB Awards (Jade)</span><span class="etag ">Awards</span><span class="etime">Wed 22 Apr, 11:52 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: Master Builders Judging Time | 11081-H P23-05 &amp; 11080-H P20-17</div>
+    <div style="font-size:12px;color:var(--muted);">Awards office replied last (Apr) re judging times for the two entries — judging season correspondence; confirm nothing is outstanding and unstar if closed.</div>
+  </div>
+</div>
+<div class="erow" id="e_19dbcd4efb728b83">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19dbcd4efb728b83')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">MB Awards (Jade)</span><span class="etag ">Awards</span><span class="etime">Fri 24 Apr, 10:12 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: Master Builders Judging Time | Entry 11065-H P22-20 Legacy</div>
+    <div style="font-size:12px;color:var(--muted);">Awards office replied last (Apr) re the P22-20 Legacy judging arrangements — confirm closed and unstar if no longer needed.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1be60505e64e0">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1be60505e64e0')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">Australian Outdoor Living</span><span class="etag ">Marketing</span><span class="etime">Wed 1 Jul, 2:18 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Daniel Chen, Let's make your dream project a reality</div>
+    <div style="font-size:12px;color:var(--muted);">Marketing email auto-labelled to the project — no action required; kept only because it carries a Projects label.</div>
+  </div>
+</div>
+<div class="slabel">⏳ Awaiting Reply</div>
+<div class="erow" id="e_19f39ee8b2f48c4e">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f39ee8b2f48c4e')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0005</span><span class="esdr">→ Shane Campbell (STA)</span><span class="etag etag-await">Awaiting</span><span class="etime">Tue 7 Jul, 10:15 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Lot 2, 56 Armadale Street — STA 231897</div>
+    <div style="font-size:12px;color:var(--muted);">Followed up again for the serviced drawings and an ETA — third follow-up; escalate by phone if no reply this week.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f3495bd6e646a3">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f3495bd6e646a3')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2023-0011</span><span class="esdr">→ Erynn Yong</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 6 Jul, 9:20 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P23-11 On-Site Meeting Summary</div>
+    <div style="font-size:12px;color:var(--muted);">Replied to Erynn's latest (break-in report, inspection date, flyscreen samples) — awaiting her response. Erynn is pressing for the inspection date; keep the PM chased.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f35391e46e038c">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f35391e46e038c')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0020</span><span class="esdr">→ Andy Wang (Peerce)</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 6 Jul, 12:19 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: PCE6765 — 40 Dorchester Street Structural</div>
+    <div style="font-size:12px;color:var(--muted);">Long-running structural coordination — replied to Andy 6 Jul; awaiting the next drawing issue.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f35f4066cd0163">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f35f4066cd0163')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0015</span><span class="esdr">→ Katana Foundations</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 6 Jul, 3:43 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: Katana Q#64101 — 2613 Virginia Drive, Hope Island</div>
+    <div style="font-size:12px;color:var(--muted);">Forwarded/actioned the Katana quotation correspondence — piling quote still being prepared (see starred row above).</div>
+  </div>
+</div>
+<div class="erow" id="e_19f2666f4deb02c6">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f2666f4deb02c6')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">→ Charles Fung (PB3)</span><span class="etag etag-await">Awaiting</span><span class="etime">Fri 3 Jul, 3:15 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 30 Normandy Street BA Quotation and Review</div>
+    <div style="font-size:12px;color:var(--muted);">Asked whether renaming the media room to "cellar" is acceptable for the relaxation — awaiting Charles's confirmation.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f351fb075a16d1">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f351fb075a16d1')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2026-0007</span><span class="esdr">→ Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 6 Jul, 11:51 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P26-07 Concept Design</div>
+    <div style="font-size:12px;color:var(--muted);">Final concept design (roof plan + elevations) sent to Yuki for client review and confirmation.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f25bd0cac111fc">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f25bd0cac111fc')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0005</span><span class="esdr">→ Steven Chiu</span><span class="etag etag-await">Awaiting</span><span class="etime">Fri 3 Jul, 12:09 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Concrete Sleeper Confirmation</div>
+    <div style="font-size:12px;color:var(--muted);">Advised Industrial Charcoal also fades over time; awaiting client's final sleeper colour decision.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f2119cbb3bbbdd">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f2119cbb3bbbdd')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">→ GreenChoice Consulting</span><span class="etag etag-await">Awaiting</span><span class="etime">Thu 2 Jul, 2:32 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Energy Efficiency Report for 30 Normandy Street</div>
+    <div style="font-size:12px;color:var(--muted);">Requested the updated energy report for the amended plans (fee since agreed — see New section).</div>
+  </div>
+</div>
+<div class="erow" id="e_19f25aeae99ac813">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f25aeae99ac813')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2021-0025</span><span class="esdr">→ Ariel Wang (Mizhai)</span><span class="etag etag-await">Awaiting</span><span class="etime">Fri 3 Jul, 11:53 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Lot 1, 36 Morcom Avenue, Corinda Clotheshanger Location</div>
+    <div style="font-size:12px;color:var(--muted);">Confirmed the clotheshanger location will be noted on the plans — no further action expected.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f212297206ca2d">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f212297206ca2d')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2021-0025</span><span class="esdr">→ Sam F (DS Pacific)</span><span class="etag etag-await">Awaiting</span><span class="etime">Thu 2 Jul, 2:42 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Lot 1, 36 Morcom Avenue Clotheshanger Location</div>
+    <div style="font-size:12px;color:var(--muted);">Clarified the confusion with the site team — monitoring only.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f2ac1dd637e582">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f2ac1dd637e582')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Sat 4 Jul, 11:32 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: P22-19 Joinery and Electrical Plan Confirmation</div>
+    <div style="font-size:12px;color:var(--muted);">Yuki confirms the client approved the joinery and electrical plans — proceed to finalise construction drawings.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f2084ab7be5ed5">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f2084ab7be5ed5')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Thu 2 Jul, 11:49 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: Final changes for P22-19</div>
+    <div style="font-size:12px;color:var(--muted);">Internal thread — Yuki's last message still needs the design team's answer on the toilet query (item 3) and island bench redesign; treat as action even though it sits under monitoring.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1b1d9f6747dad">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1b1d9f6747dad')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">→ Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 1 Jul, 10:39 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">P22-19 Final Construction Plan Confirmation</div>
+    <div style="font-size:12px;color:var(--muted);">Construction, joinery and electrical plans sent to Yuki for client confirmation (superseded by the 4 Jul approval above).</div>
+  </div>
+</div>
+<div class="erow" id="e_19ea59a0080d5ace">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19ea59a0080d5ace')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0019</span><span class="esdr">Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 8 Jun, 2:59 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P22-19 Integrated Fridge Options</div>
+    <div style="font-size:12px;color:var(--muted);">Client happy with alternative integrated fridge brands — check the P22-21 fridge fits and update the joinery accordingly.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f26c91ae8c0430">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f26c91ae8c0430')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">→ David Lin</span><span class="etag etag-await">Awaiting</span><span class="etime">Fri 3 Jul, 5:02 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Master WIR Air-Con Vent Location Change</div>
+    <div style="font-size:12px;color:var(--muted);">Confirmed the WIR air-con vent will be moved as requested — no further action expected.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f26c8fc14aec38">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f26c8fc14aec38')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">→ David Lin</span><span class="etag etag-await">Awaiting</span><span class="etime">Fri 3 Jul, 5:02 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 511 Redland</div>
+    <div style="font-size:12px;color:var(--muted);">Updated client: roof capping was not completed as scheduled; carpenter/internal works being chased. Thread also carries label P2024-0012. Walter call-back was requested by client.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1bd8d1283404f">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1bd8d1283404f')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">→ Crownblinds</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 1 Jul, 2:03 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Quote for Motorised Zip Screen at 511 Redland Bay Road</div>
+    <div style="font-size:12px;color:var(--muted);">Quote requested from Crownblinds for alfresco motorised zip screens — awaiting their pricing.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1bd4b7cd28b15">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1bd4b7cd28b15')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">→ David Lin</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 1 Jul, 1:59 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">New Supplier for Motorised Zip Screen</div>
+    <div style="font-size:12px;color:var(--muted);">Advised client we are changing zip-screen suppliers due to a substantial price increase — awaiting acknowledgement / new supplier confirmation.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1c1da40b560e9">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1c1da40b560e9')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">→ Kathy Weeks (AOL)</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 1 Jul, 3:18 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Outdoor Blinds</div>
+    <div style="font-size:12px;color:var(--muted);">Sent zip-screen specs and plan for 511 Redland Bay Road alfresco (relates to P2024-0005; thread has no Projects label) — awaiting quotation.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f39a650bdc0733">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f39a650bdc0733')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">→ Pizzica Builders</span><span class="etag etag-await">Awaiting</span><span class="etime">Tue 7 Jul, 8:57 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: Invoice</div>
+    <div style="font-size:12px;color:var(--muted);">Supplier invoice forwarded on (signed Daniel) — monitoring only; no Projects label on the thread.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f354c2957e2e83">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f354c2957e2e83')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2020-0017</span><span class="esdr">→ Terry &amp; Michelle</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 6 Jul, 12:40 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 2026 HIA Awards and Judging Schedule</div>
+    <div style="font-size:12px;color:var(--muted);">Reminder sent: HIA judging is TODAY (Wed 8 Jul) at 2:50 PM — Daniel attending on site with the judges.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f39a714dd64d85">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f39a714dd64d85')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0007</span><span class="esdr">→ Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Tue 7 Jul, 8:57 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 2026 HIA Awards and Judging Schedule</div>
+    <div style="font-size:12px;color:var(--muted);">Homeowner reminder arranged via Yuki: HIA judging is TODAY (Wed 8 Jul) at 2:10 PM — Daniel accompanying the judges on site.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f354cb1675cee9">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f354cb1675cee9')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">→ Karly Tsang (HIA)</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 6 Jul, 12:40 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Brisbane/Toowoomba Kitchen &amp; Bathroom Awards Judging</div>
+    <div style="font-size:12px;color:var(--muted);">K&amp;B awards judging schedule confirmed with HIA — monitoring only.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f01289c6e86b98">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f01289c6e86b98')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0020</span><span class="esdr">→ Phillip Ng &amp; Jenny</span><span class="etag etag-await">Awaiting</span><span class="etime">Fri 26 Jun, 9:41 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 260104 — Dorchester Street — Update / Further Issues</div>
+    <div style="font-size:12px;color:var(--muted);">Acknowledged the further issues and committed to raising them with the arborist — awaiting the arborist engagement (see quotes in New section).</div>
+  </div>
+</div>
+<div class="erow" id="e_19f0291d376cdd3f">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f0291d376cdd3f')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2023-0011</span><span class="esdr">→ Tina Chen</span><span class="etag etag-await">Awaiting</span><span class="etime">Fri 26 Jun, 4:15 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P23-11 Invoice of the Enclosed Stage Part 02</div>
+    <div style="font-size:12px;color:var(--muted);">Invoice queries answered; QBCC inspection took place 30 Jun — awaiting any follow-up from the owners.</div>
+  </div>
+</div>
+<div class="erow" id="e_19ef82c5a403efa6">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19ef82c5a403efa6')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2023-0011</span><span class="esdr">→ Tina Chen</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 24 Jun, 3:48 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Master 1 ENS Door Change</div>
+    <div style="font-size:12px;color:var(--muted);">Replied re the ENS door change and timber flooring/staircase clarification — awaiting client response.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f12141856e85ce">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f12141856e85ce')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2021-0025</span><span class="esdr">→ Ariel Wang (Mizhai)</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 29 Jun, 4:32 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Formal Complaint / FIRB follow-up</div>
+    <div style="font-size:12px;color:var(--muted);">Confirmed Walter pays lawyer's fees and FIRB $6,350 paid to ATO on client's behalf — Ariel has since replied (see New section row).</div>
+  </div>
+</div>
+<div class="erow" id="e_19e3ddde853c0cff">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19e3ddde853c0cff')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2021-0025</span><span class="esdr">→ Assistant (Mizhai)</span><span class="etag etag-await">Awaiting</span><span class="etime">Tue 19 May, 11:32 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Formal Complaint Regarding Failed Inspection Appointment</div>
+    <div style="font-size:12px;color:var(--muted);">Walter/Michelle discussion relayed; FIRB matter prioritised — superseded by the later formal-request thread above.</div>
+  </div>
+</div>
+<div class="erow" id="e_19e1a41d3208b71b">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19e1a41d3208b71b')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">→ MB Awards</span><span class="etag etag-await">Awaiting</span><span class="etime">Tue 12 May, 1:35 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Master Builders Judging P22-22 Paralia</div>
+    <div style="font-size:12px;color:var(--muted);">Asked about earlier judging slots for P22-22 — awards season correspondence, monitoring only.</div>
+  </div>
+</div>
+<div class="erow" id="e_19d94a9505c7840b">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19d94a9505c7840b')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2023-0005</span><span class="esdr">Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Thu 16 Apr, 3:00 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P23-05 Master Builders Judging Time Confirmation</div>
+    <div style="font-size:12px;color:var(--muted);">Client confirmed the judging time — closed; unstar if no longer needed.</div>
+  </div>
+</div>
+<div class="erow" id="e_19dbc7336f553e66">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19dbc7336f553e66')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0020</span><span class="esdr">Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Fri 24 Apr, 8:25 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P22-20 Master Builders Judging Time Confirmation</div>
+    <div style="font-size:12px;color:var(--muted);">Judging time confirmed — closed; unstar if no longer needed.</div>
+  </div>
+</div>
+<div class="erow" id="e_19d941068a15805a">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19d941068a15805a')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">→ Dalibor (Climatelink)</span><span class="etag etag-await">Awaiting</span><span class="etime">Thu 16 Apr, 12:13 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 511 Redland Bay Road Return Air Path</div>
+    <div style="font-size:12px;color:var(--muted);">Return-air path query with the A/C contractor — no reply since April; re-chase if still relevant.</div>
+  </div>
+</div>
+<div class="erow" id="e_19cf4cc410a46973">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19cf4cc410a46973')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">→ David Lin</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 16 Mar, 1:59 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">RE: 511 Redland Bay Road Cladding &amp; Ceiling Quotes</div>
+    <div style="font-size:12px;color:var(--muted);">Cladding and ceiling quote discussion — our reply of 16 Mar was the last message; confirm resolved and unstar if closed.</div>
+  </div>
+</div>
+<div class="erow" id="e_1971f053dbf303f1">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1971f053dbf303f1')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2024-0005</span><span class="esdr">→ Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">30 May 2025</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P24-05 Update Cabinet plan &amp; Electrical Plan</div>
+    <div style="font-size:12px;color:var(--muted);">Old starred coordination thread on cabinet/electrical updates — confirm closed and unstar.</div>
+  </div>
+</div>
+<div class="erow" id="e_19a376b2eead6abc">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19a376b2eead6abc')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2022-0005</span><span class="esdr">→ Charles Fung (PB3)</span><span class="etag etag-await">Awaiting</span><span class="etime">31 Oct 2025</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 56 Armadale Street, St. Lucia Confirmation</div>
+    <div style="font-size:12px;color:var(--muted);">External access detail added to the elevation as requested — old starred thread, confirm closed.</div>
+  </div>
+</div>
     </div>
 
     <!-- DAVID -->
-    <div class="card" style="margin-bottom:0;">
-      <div class="card-hdr style-dark"><span class="icon" style="color:var(--s1)">●</span><h2>David</h2></div>
+    <div class="card" style="margin-bottom:0;" id="cardDavid">
+      <div class="card-hdr style-dark"><span class="icon" style="color:var(--s1)">●</span><h2>David</h2><span class="cnt">12 new · 19 waiting</span></div>
       <div class="person-strip">
         <div class="av av-david">DV</div>
         <div class="person-info">
           <div class="person-name">David Chen</div>
           <div class="person-role">Designer</div>
-          <div class="proj-chips">
-            <span class="pchip">P2021-0002</span><span class="pchip">P2022-0011</span><span class="pchip">P2023-0012</span><span class="pchip">P2023-0018</span><span class="pchip">P2023-0019</span><span class="pchip">P2023-0021</span><span class="pchip">P2024-0009</span><span class="pchip">P2024-0014</span><span class="pchip">P2025-0005(B)</span><span class="pchip">P2025-0005(C)</span><span class="pchip">P2026-0003</span><span class="pchip">P2026-0010</span>
-          </div>
+          <div class="proj-chips" id="chipsDavid"></div>
         </div>
       </div>
+<div class="slabel">📩 New / Starred</div>
+<div class="erow" id="e_19f3619965df374e">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f3619965df374e')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0018</span><span class="esdr">Vicky Kung</span><span class="etag etag-urgent">Reply needed</span><span class="etime">Mon 6 Jul, 4:24 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P23-18 Formal Delay Notification and Detailed Timeline</div>
+    <div style="font-size:12px;color:var(--muted);">Vicky replied to the delay notification — the detailed construction timeline (being confirmed with Walter) is still owed to the owners.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f3619965df374e',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f3619965df374e"><div class="dlabel">Suggested Reply — David Chen</div><div class="dcontent">Hi Vicky,
 
-      <div class="slabel">📩 New / Starred</div>
-
-      <div class="erow" id="ev1">
-        <input type="checkbox" class="ecb" onchange="toggleEmail('ev1')">
-        <div class="ubar u-red"></div>
-        <div class="ebody">
-          <div class="etop"><span class="ptag ptag-david">P2023-0018</span><span class="esdr">Ray &amp; Vicky Kung</span><span class="etag etag-urgent">Unread</span><span class="etime">7 Jul</span></div>
-          <div>Approved the pool fence variation and asked us to confirm the applicable cost ($4,488 + GST as previously quoted).</div>
-          <button class="dtoggle" onclick="tog('dbox_ev1',this)">✏️ Draft Reply</button>
-          <div class="dbox" id="dbox_ev1">
-            <div class="dlabel">Draft Reply</div>
-            <div class="dcontent">Hi Ray and Vicky,
-
-Thank you for confirming your approval of the variation. To confirm, the applicable cost is $4,488 + GST as outlined in our previous email. Please let us know if you have any questions, and we'll proceed with the installation booking.
+Thank you for your patience. We have confirmed the remaining milestones with Walter and will issue the detailed timeline to you and Ray this week, together with the current on-site status. We appreciate your understanding regarding the delay.
 
 Kind Regards,
-David Chen
-Designer</div>
-          </div>
-        </div>
-      </div>
+David Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f35188f8dae3f3">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f35188f8dae3f3')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2024-0014</span><span class="esdr">Vicky Chiu</span><span class="etag ">Confirmed</span><span class="etime">Mon 6 Jul, 11:43 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P24-14 Confirmation Request of 3D View and Stone Cladding</div>
+    <div style="font-size:12px;color:var(--muted);">Client confirmed: "Yes, please proceed" with the proposed stone selection — update the 3D view and progress the cladding documentation.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f35188f8dae3f3',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f35188f8dae3f3"><div class="dlabel">Suggested Reply — David Chen</div><div class="dcontent">Hi Vicky,
 
-      <div class="slabel">⏳ Awaiting Reply</div>
+Thank you for confirming. We will proceed with the selected stone cladding and update the 3D view and documentation accordingly. We will share the updated views once ready.
 
-      <div class="erow" id="ev2">
-        <input type="checkbox" class="ecb" onchange="toggleEmail('ev2')">
-        <div class="ubar u-grey"></div>
-        <div class="ebody">
-          <div class="etop"><span class="ptag" style="background:var(--s1);color:var(--p2);">T2023-0009</span><span class="esdr">Yuki Pan (Sales) — Banner Review</span><span class="etime">7 Jul</span></div>
-          <div>Yuki confirmed on behalf of Walter to proceed with the banner order. No further action needed.</div>
-        </div>
-      </div>
+Kind Regards,
+David Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f367b49b5de745">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f367b49b5de745')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0019</span><span class="esdr">Tony Wang</span><span class="etag etag-urgent">Reply needed</span><span class="etime">Mon 6 Jul, 6:11 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">回覆: Air Conditioning Vent Locations</div>
+    <div style="font-size:12px;color:var(--muted);">Tony replied again re the A/C system upgrade — model numbers for the Daikin ducted systems and the vent location plan are still being finalised with the supplier.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f367b49b5de745',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f367b49b5de745"><div class="dlabel">Suggested Reply — David Chen</div><div class="dcontent">Hi Tony,
 
+Thank you for your reply. We are finalising the indoor and outdoor model numbers for the proposed Daikin systems with our supplier and will send them through together with the vent location plan for your review. We will follow up within the next few days.
+
+Kind Regards,
+David Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f201e675e1d5cf">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f201e675e1d5cf')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0012</span><span class="esdr">Larry Weng</span><span class="etag ">Confirmed</span><span class="etime">Thu 2 Jul, 9:57 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P23-12 Master Bedroom Basin Pop-up Waste</div>
+    <div style="font-size:12px;color:var(--muted);">Larry confirmed: "Thanks David, please proceed" with the basin pop-up waste replacement — action with the plumber.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f201e675e1d5cf',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f201e675e1d5cf"><div class="dlabel">Suggested Reply — David Chen</div><div class="dcontent">Hi Larry,
+
+Thank you for confirming. We will arrange the pop-up waste with the plumber and let you know once it has been installed.
+
+Kind Regards,
+David Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f2535a678cd833">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f2535a678cd833')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">T2023-0009</span><span class="esdr">Hannah Watson (Ampflo)</span><span class="etag etag-review">Review</span><span class="etime">Fri 3 Jul, 9:40 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Ampflo Introduction — 76-86 Higyed Rd, Logan Reserve</div>
+    <div style="font-size:12px;color:var(--muted);">Hannah replied 3 Jul on the Logan Reserve civil coordination (verge levels previously referred to the civil engineers) — review and respond.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f2535a678cd833',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f2535a678cd833"><div class="dlabel">Suggested Reply — David Chen</div><div class="dcontent">Hi Hannah,
+
+Thank you for your email. We have referred the verge level question to our civil engineering team and will come back to you with their advice. Please let us know if there is anything else you need from us in the meantime.
+
+Kind Regards,
+David Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f25fa6cfcfda5b">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f25fa6cfcfda5b')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">T2023-0009</span><span class="esdr">Pansy (Nebula Display)</span><span class="etag etag-review">Quote</span><span class="etime">Fri 3 Jul, 1:12 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Billboards Printings Quote Request</div>
+    <div style="font-size:12px;color:var(--muted);">Nebula confirmed they produce the same mesh banners as our reference picture — request the formal quote and production/installation timeline.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f25fa6cfcfda5b',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f25fa6cfcfda5b"><div class="dlabel">Suggested Reply — David Chen</div><div class="dcontent">Hi Pansy,
+
+Thank you for confirming. Could you please send through your formal quotation for the mesh banner (per the attached size and artwork), along with your production lead time? We would like to place the order once pricing is confirmed.
+
+Kind Regards,
+David Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19f2587896cafc89">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f2587896cafc89')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">Nic (Ukoh Natural Stone)</span><span class="etag ">FYI</span><span class="etime">Fri 3 Jul, 11:10 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Updated Items for Review and Quotation</div>
+    <div style="font-size:12px;color:var(--muted);">Courtesy acknowledgement ("No worries, will do") — Nic is preparing the quotation for the stone cladding, aluminium doors and battens. No Projects label on thread.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f24ca9ea6257bc">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f24ca9ea6257bc')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2025-0005</span><span class="esdr">Louise (Zen Fireplaces)</span><span class="etag etag-review">Follow-up</span><span class="etime">Fri 3 Jul, 7:44 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Google Form Submitted (Fireplace Quote)</div>
+    <div style="font-size:12px;color:var(--muted);">Zen Fireplaces following up on the fireplace quote — current lead time is 2–3 months from order, so confirm timing if the fireplace is still proceeding. (P2025-0005 — correspondence under David Chen.)</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19f24ca9ea6257bc',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19f24ca9ea6257bc"><div class="dlabel">Suggested Reply — David Chen</div><div class="dcontent">Hi Louise,
+
+Thank you for following up. The project is progressing and we are working towards selections confirmation. Given the 2–3 month lead time, we will confirm the fireplace model and place the order as soon as the client signs off — we will be in touch shortly.
+
+Kind Regards,
+David Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19ce22cd6ef2b2a8">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19ce22cd6ef2b2a8')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2021-0002</span><span class="esdr">Raymond (birkdale.tw)</span><span class="etag etag-urgent">Starred</span><span class="etime">Thu 12 Mar, 11:11 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 更新櫃子圖及選材清單</div>
+    <div style="font-size:12px;color:var(--muted);">Old starred thread — Raymond confirmed the 13 Mar meeting re CCTV and garage design (cabinet drawings / material list). Confirm all items were closed out; unstar if complete.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19ce22cd6ef2b2a8',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19ce22cd6ef2b2a8"><div class="dlabel">Suggested Reply — David Chen</div><div class="dcontent">Hi Raymond,
+
+Following up on the items from our March meeting regarding the CCTV and garage design — the updated cabinet drawings and material selection list have been incorporated. Please let us know if anything remains outstanding from your side.
+
+Kind Regards,
+David Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19a801a19f13bc70">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19a801a19f13bc70')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2021-0002</span><span class="esdr">Raymond (birkdale.tw)</span><span class="etag etag-urgent">Starred</span><span class="etime">14 Nov 2025</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 現場調整事項確認</div>
+    <div style="font-size:12px;color:var(--muted);">Old starred thread — Raymond's last reply (Nov 2025) on the on-site adjustment confirmations. Verify all adjustments were carried out; unstar if closed.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_19a801a19f13bc70',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_19a801a19f13bc70"><div class="dlabel">Suggested Reply — David Chen</div><div class="dcontent">Hi Raymond,
+
+Closing the loop on the on-site adjustment items you confirmed — these have been incorporated into the works. Please let us know if you would like an updated summary for your records.
+
+Kind Regards,
+David Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_195eb77ad68f0c16">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_195eb77ad68f0c16')">
+  <div class="ubar u-red"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2021-0002</span><span class="esdr">Raymond (birkdale.tw)</span><span class="etag etag-urgent">Starred</span><span class="etime">31 Mar 2025</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: 洗手台邊裝設毛巾架</div>
+    <div style="font-size:12px;color:var(--muted);">Old starred thread (Mar 2025) — towel rail beside the basin / mirror layout discussion. Confirm the final decision was documented; unstar if closed.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_195eb77ad68f0c16',this)">✏️ Draft Reply</button>
+    <div class="dbox" id="d_e_195eb77ad68f0c16"><div class="dlabel">Suggested Reply — David Chen</div><div class="dcontent">Hi Raymond,
+
+Following up on the towel rail and mirror arrangement beside the basin — the final layout has been documented per our recommendation. Please let us know if you would like the detail drawing reissued.
+
+Kind Regards,
+David Chen</div></div>
+  </div>
+</div>
+<div class="erow" id="e_19d709c66fe73d75">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19d709c66fe73d75')">
+  <div class="ubar u-tan"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">WoodUpp</span><span class="etag ">FYI</span><span class="etime">Thu 9 Apr, 2:59 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">WoodUpp — Welcome to our B2B Client Program</div>
+    <div style="font-size:12px;color:var(--muted);">Starred for reference — B2B shop login details for supplier orders. No reply required.</div>
+  </div>
+</div>
+<div class="slabel">⏳ Awaiting Reply</div>
+<div class="erow" id="e_19f3eda70f73a3c2">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f3eda70f73a3c2')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0018</span><span class="esdr">→ Ray &amp; Vicky</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 8 Jul, 9:12 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Window covering measurement</div>
+    <div style="font-size:12px;color:var(--muted);">Acknowledged the window covering measurement arrangement (Eason also confirmed) — monitoring only.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f3a4bb595f5d56">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f3a4bb595f5d56')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0018</span><span class="esdr">→ Accounts</span><span class="etag etag-await">Awaiting</span><span class="etime">Tue 7 Jul, 11:57 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P23-18 Pool Fence</div>
+    <div style="font-size:12px;color:var(--muted);">Client approved the pool fence variation (subject to pool safety compliance) and asked for the applicable cost — forwarded to accounts for the figure; reply to Vicky once confirmed.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f2615801ce174a">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f2615801ce174a')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0018</span><span class="esdr">→ Accounts</span><span class="etag etag-await">Awaiting</span><span class="etime">Fri 3 Jul, 1:46 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: Invoice for Extra items and Variation</div>
+    <div style="font-size:12px;color:var(--muted);">Vicky raised design-fee credits (~$6.5K ex GST) and other account credits against invoice 1251 — forwarded to accounts; client is awaiting a reconciled response.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1c19b39eed013">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1c19b39eed013')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2021-0002</span><span class="esdr">→ Charles Fung (PB3)</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 1 Jul, 3:14 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: CoGC OPW/2026/602 — 9 Middle Quay Drive (revetment wall)</div>
+    <div style="font-size:12px;color:var(--muted);">Council withdrew the OPW application (goes via private certifier) — engagement continuing with PB3; awaiting Charles's response on the application under our name.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f3515cf8aba98a">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f3515cf8aba98a')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2021-0002</span><span class="esdr">→ Raymond</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 6 Jul, 11:40 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: P21-02 Biggera Waters 案 — 尚待討論事項</div>
+    <div style="font-size:12px;color:var(--muted);">Outstanding discussion items sent to Raymond — awaiting his reply.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1b7abb365e482">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1b7abb365e482')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2021-0002</span><span class="esdr">→ Raymond</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 1 Jul, 12:20 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">P21-02 Biggera Waters — 2026/6月底進度報告</div>
+    <div style="font-size:12px;color:var(--muted);">June progress report with photos issued (internal lining complete; painting/waterproofing nearly done; tiling and cabinetry next) — monitoring only.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f2598eb20f54a8">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f2598eb20f54a8')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2021-0002</span><span class="esdr">→ Raymond</span><span class="etag etag-await">Awaiting</span><span class="etime">Fri 3 Jul, 11:30 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: 提前預付AUD15100</div>
+    <div style="font-size:12px;color:var(--muted);">Advance payment (AUD 15,100) correspondence forwarded — monitoring only.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f39f2afe304589">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f39f2afe304589')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2026-0010</span><span class="esdr">→ 崔先生 (Mr Cui)</span><span class="etag etag-await">Awaiting</span><span class="etime">Tue 7 Jul, 10:20 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Walter 海外出差通知</div>
+    <div style="font-size:12px;color:var(--muted);">Client pressing for the design proposal (4 weeks elapsed). Advised Walter returns to Australia Thursday and will contact him directly with the fee/design discussion — watch for Walter's follow-through.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f39e974772844e">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f39e974772844e')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">T2023-0009</span><span class="esdr">Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Tue 7 Jul, 10:10 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: T23-09 Banner Review</div>
+    <div style="font-size:12px;color:var(--muted);">Yuki approved the banner ("Yes that's fine, please proceed") — proceed with Nebula Display printing once their quote is accepted.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1b9cd967729ab">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1b9cd967729ab')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0019</span><span class="esdr">→ Accounts</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 1 Jul, 12:58 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Quotes for P23-19</div>
+    <div style="font-size:12px;color:var(--muted);">Solar/CCTV quotation package — client's requested re-quote forwarded to accounts/office for supplier pricing; chase supplier response.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f1c5fe0eb33f8c">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f1c5fe0eb33f8c')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2024-0009</span><span class="esdr">→ Rebecca</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 1 Jul, 4:31 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Bricks date</div>
+    <div style="font-size:12px;color:var(--muted);">Confirmed bricklayer status to Rebecca (cc Walter) — she wants the confirmed start date; follow up with the construction team and update her as soon as it is locked.</div>
+  </div>
+</div>
+<div class="erow" id="e_19cabbdabee2280f">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19cabbdabee2280f')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2024-0014</span><span class="esdr">→ Marco (Calvino Design)</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 2 Mar, 9:30 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: The Quarry Lot 19 Preliminary or Final Review</div>
+    <div style="font-size:12px;color:var(--muted);">DRP review coordination (owner name corrected to Chien Yuan Yang) — no movement since March; re-chase if the review is still pending.</div>
+  </div>
+</div>
+<div class="erow" id="e_19c20a814ca6d832">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19c20a814ca6d832')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0019</span><span class="esdr">→ Shane Campbell (STA)</span><span class="etag etag-await">Awaiting</span><span class="etime">Tue 3 Feb, 9:20 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Lot 20, 19 Janda Street — STA 250746</div>
+    <div style="font-size:12px;color:var(--muted);">Structural design fee/timeframe question with STA — our Feb reply was the last message; superseded by the later Janda thread below if resolved.</div>
+  </div>
+</div>
+<div class="erow" id="e_19d8a9a0e66ced3f">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19d8a9a0e66ced3f')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0019</span><span class="esdr">→ Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Tue 14 Apr, 4:06 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: L20 19 Janda Street Robertson</div>
+    <div style="font-size:12px;color:var(--muted);">Frame inspection expected early May per Eason; structural coordination ongoing — confirm inspection happened and close off.</div>
+  </div>
+</div>
+<div class="erow" id="e_19bdeebc1046c663">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19bdeebc1046c663')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0012</span><span class="esdr">→ Larry Weng</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 21 Jan, 2:58 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Invoice for fixing stage part 02 and Extra work</div>
+    <div style="font-size:12px;color:var(--muted);">Explained the Extra vs Variation/Refund treatment — our Jan reply was last; confirm Larry accepted and unstar if closed.</div>
+  </div>
+</div>
+<div class="erow" id="e_19d8ec1a4d96525e">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19d8ec1a4d96525e')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0012</span><span class="esdr">→ Larry Weng</span><span class="etag etag-await">Awaiting</span><span class="etime">Wed 15 Apr, 11:28 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Concrete for the perimeter — 50 Lindis St</div>
+    <div style="font-size:12px;color:var(--muted);">Perimeter concrete extra — quote request relayed to Walter; awaiting pricing/decision since April; re-chase.</div>
+  </div>
+</div>
+<div class="erow" id="e_19bd3d78f333da96">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19bd3d78f333da96')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0018</span><span class="esdr">Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">Mon 19 Jan, 11:21 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Invoice for Enclosed Stage Part 02</div>
+    <div style="font-size:12px;color:var(--muted);">Enclosed Stage Part 02 invoice discussion — last message internal (Yuki); superseded by the current invoice/credits thread above.</div>
+  </div>
+</div>
+<div class="erow" id="e_196a30ec943f4889">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_196a30ec943f4889')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2023-0019</span><span class="esdr">Yuki (Sales)</span><span class="etag etag-await">Awaiting</span><span class="etime">6 May 2025</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: P23-19 Update inclusion list, electrical plan &amp; Joinery details</div>
+    <div style="font-size:12px;color:var(--muted);">Old starred coordination — window W8/W9 change plus inclusion list updates; confirm incorporated and unstar.</div>
+  </div>
+</div>
+<div class="erow" id="e_19a3765808ae5e94">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19a3765808ae5e94')">
+  <div class="ubar u-grey"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-david">P2021-0002</span><span class="esdr">→ Charles Fung (PB3)</span><span class="etag etag-await">Awaiting</span><span class="etime">31 Oct 2025</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Pool Plan Review for 9 Middle Quay Drive</div>
+    <div style="font-size:12px;color:var(--muted);">RPEQ requirement noted for the pool application — our Oct reply was last; superseded by the OPW/revetment wall thread above.</div>
+  </div>
+</div>
     </div>
 
   </div><!-- /two-col -->
 
+  <!-- UNASSIGNED / NEEDS TRIAGE -->
+  <div class="card" id="cardUnassigned">
+    <div class="card-hdr style-neutral"><span class="icon">❓</span><h2>Unassigned / Needs Triage</h2><span class="cnt">10</span></div>
+<div class="erow" id="e_19e1fba5964823ea">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19e1fba5964823ea')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">Dominic Brunet (Brunet Law)</span><span class="etime">Wed 13 May, 3:05 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Walter Design &amp; Development Pty Ltd QBCC Complaint</div>
+    <div style="font-size:12px;color:var(--muted);">Starred legal matter (QBCC complaint, engagement with Brunet Law; lawyer sent last). No Projects label and handled by Walter/admin — no designer owner identified.</div>
+  </div>
+</div>
+<div class="erow" id="e_19a22f068cf5cce5">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19a22f068cf5cce5')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-un">P2022-0022</span><span class="esdr">Ariel Wang (Mizhai)</span><span class="etime">27 Oct 2025</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Fw: 50 Lang Street</div>
+    <div style="font-size:12px;color:var(--muted);">Project P2022-0022 is not in either designer's list; correspondence was handled by Daphne Lee, so the current owner is unclear.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f34ba1c29a04d0">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f34ba1c29a04d0')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">→ Yuki (Sales)</span><span class="etime">Mon 6 Jul, 10:00 AM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Re: Home &amp; Land Package Options (Arise)</div>
+    <div style="font-size:12px;color:var(--muted);">"Projects/Arise Project" label has no project number and no designer name appears in the thread — marketing/inclusion-list task from Yuki (building price to $998,000), owner needs to be confirmed.</div>
+  </div>
+</div>
+<div class="erow" id="e_19f26adfdaf29303">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_19f26adfdaf29303')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-un">P2025-0005</span><span class="esdr">→ Eric (Austron)</span><span class="etime">Fri 3 Jul, 4:32 PM</span></div>
+    <div style="font-size:12.5px;font-weight:600;">P25-05 Updated Concept Design Plans — 24 Calliandra Place</div>
+    <div style="font-size:12px;color:var(--muted);">P2025-0005 is split (A) Daniel / (B)(C) David, and this thread's label has no variant letter — Lot 12 &amp; 13 updated plans sent to Eric; owner unclear.</div>
+  </div>
+</div>
+<div class="erow" id="e_18d6701708722406">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_18d6701708722406')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">Grace Ko (Accounts)</span><span class="etime">1 Feb 2024</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: Cemintel Sample Request</div>
+    <div style="font-size:12px;color:var(--muted);">Starred internal forward from accounts (supplier sample request) — no Projects label, no designer owner; kept because starred items never drop off.</div>
+  </div>
+</div>
+<div class="erow" id="e_18c1dd18d3a783dc">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_18c1dd18d3a783dc')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">Whitney Huang (Office)</span><span class="etime">30 Nov 2023</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: Automatic reply — 7 Star Rated Windows Enquiry</div>
+    <div style="font-size:12px;color:var(--muted);">Starred internal forward — no Projects label, no designer owner.</div>
+  </div>
+</div>
+<div class="erow" id="e_18796d48e73864fe">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_18796d48e73864fe')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">Admin → Walter</span><span class="etime">19 Apr 2023</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Project List</div>
+    <div style="font-size:12px;color:var(--muted);">Starred internal reference email (project stage list) — no Projects label; reference only.</div>
+  </div>
+</div>
+<div class="erow" id="e_1825d6cea0a41775">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1825d6cea0a41775')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">Accounts → All</span><span class="etime">2 Aug 2022</span></div>
+    <div style="font-size:12.5px;font-weight:600;">WDD Contact List</div>
+    <div style="font-size:12px;color:var(--muted);">Starred internal reference email (staff contact list) — no Projects label; reference only.</div>
+  </div>
+</div>
+<div class="erow" id="e_193290b19b1f4f3b">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_193290b19b1f4f3b')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">Whitney Huang (Office)</span><span class="etime">14 Nov 2024</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: Enquiry of Tile Insert Channel Drain</div>
+    <div style="font-size:12px;color:var(--muted);">Starred internal FYI forward — no Projects label, no designer owner.</div>
+  </div>
+</div>
+<div class="erow" id="e_192e5eaa8f853266">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_192e5eaa8f853266')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="esdr">Whitney Huang (Office)</span><span class="etime">1 Nov 2024</span></div>
+    <div style="font-size:12.5px;font-weight:600;">Fwd: Trend Windows — Walter Design &amp; Developments</div>
+    <div style="font-size:12px;color:var(--muted);">Starred internal FYI forward — no Projects label, no designer owner.</div>
+  </div>
+</div>
+  </div>
+
 </div><!-- /wrap -->
-<div class="footer">Walter Design &amp; Development &nbsp;·&nbsp; Morning Briefing Tuesday, 7 July 2026 &nbsp;·&nbsp; Generated by Claude</div>
+<div class="footer">Walter Design &amp; Development &nbsp;·&nbsp; Morning Briefing 8 July 2026 &nbsp;·&nbsp; Generated by Claude</div>
 
 <script>
-var TODAY='2026-07-07',STORE_KEY='wdd_chk_'+TODAY;
+var TODAY='2026-07-08';
 function tog(id,btn){var b=document.getElementById(id);var open=b.classList.toggle('open');btn.textContent=open?'✕ Close Draft':'✏️ Draft Reply';}
-function toggleTask(r,c){document.getElementById(r).classList.toggle('done',document.getElementById(c).checked);saveState();}
-function toggleEmail(r){document.getElementById(r).classList.toggle('done',document.getElementById(r).querySelector('.ecb').checked);saveState();}
-function saveState(){var s={};document.querySelectorAll('input[type=checkbox]').forEach(function(c){if(c.id)s[c.id]=c.checked;});try{localStorage.setItem(STORE_KEY,JSON.stringify(s));}catch(e){}}
-function restoreState(){var s={};try{s=JSON.parse(localStorage.getItem(STORE_KEY)||'{}');}catch(e){}Object.keys(s).forEach(function(id){var cb=document.getElementById(id);if(!cb)return;cb.checked=s[id];var row=cb.closest('.trow,.erow');if(row&&s[id])row.classList.add('done');});}
-restoreState();
 
-/* ---- Design Team Tasks + Gantt — SHARED via GitHub repo (tasks.json), not localStorage ---- */
+/* ---- Design Team Tasks + Gantt + Project lists + shared email checkboxes — SHARED via GitHub repo (tasks.json) ---- */
 /* Anyone on any computer who opens this page reads/writes the same tasks.json in the repo, so
-   all edits are visible to everyone (polled every 20s), not just the browser that made them. */
-var GH_TOKEN='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';
+   all edits are visible to everyone (polled every 20s; 5 min when read-only), not just the browser that made them. */
+
+/* Token is NOT embedded in this file. Each user pastes it once (click the sync badge in the
+   Design Team Tasks header); it lives only in that browser's localStorage — never committed,
+   so GitHub secret-scanning can never revoke it. Without a token the page is read-only. */
+var GH_TOKEN=null;
+try{ GH_TOKEN=localStorage.getItem('wdd_gh_token')||null; }catch(e){}
+var tokenBad=false;
+function setGhToken(){
+  var t=window.prompt('Paste the GitHub fine-grained token for wdd-briefing (stored only in this browser). Leave empty to clear:','');
+  if(t===null){ return; }
+  t=t.trim();
+  try{ if(t){ localStorage.setItem('wdd_gh_token',t); } else { localStorage.removeItem('wdd_gh_token'); } }catch(e){}
+  GH_TOKEN=t||null;
+  tokenBad=false;
+  fetchTasks(function(){ renderAll(); });
+}
+
 var GH_REPO='Walterdevelopment-Admin/wdd-briefing';
 var GH_PATH='tasks.json';
 var GH_API='https://api.github.com/repos/'+GH_REPO+'/contents/'+GH_PATH;
 var currentSha=null;
 var cachedTasks=[];
+var cachedEmails={};
+/* Fallback defaults — used only if tasks.json has no "projects" key yet (pre-migration data) */
+var cachedProjects={
+  daniel:['P2019-0015','P2021-0025','P2022-0005','P2022-0019','P2023-0011','P2023-0022','P2024-0005','P2024-0015','P2024-0019','P2024-0020','P2025-0005(A)','P2026-0005','P2026-0007'],
+  david:['P2021-0002','P2022-0011','P2023-0012','P2023-0018','P2023-0019','P2023-0021','P2024-0009','P2024-0014','P2025-0005(B)','P2025-0005(C)','P2026-0003','P2026-0010']
+};
+var activeEmailFilter={daniel:null,david:null};
 var monthOffset=0;
 var POLL_MS=20000;
 var WEEKDAYS_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 var LANES=[{key:'general',label:'General'},{key:'daniel',label:'Daniel Chen'},{key:'david',label:'David Chen'}];
 
 function ghHeaders(extra){
-  var h={'Authorization':'token '+GH_TOKEN,'Accept':'application/vnd.github+json'};
+  var h={'Accept':'application/vnd.github+json'};
+  if(GH_TOKEN){ h['Authorization']='token '+GH_TOKEN; }
   if(extra){ for(var k in extra){ h[k]=extra[k]; } }
   return h;
 }
@@ -438,26 +1517,48 @@ function setSyncStatus(text){
   var el=document.getElementById('syncStatus');
   if(el){ el.textContent=text; }
 }
+function updateSyncBadge(){
+  if(!GH_TOKEN){ setSyncStatus('Read-only — click to set token 🔑'); }
+  else if(tokenBad){ setSyncStatus('Token invalid — click to update 🔑'); }
+  else{ setSyncStatus('Synced ✓'); }
+}
 function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function weekdayEN(dateStr){return WEEKDAYS_EN[new Date(dateStr+'T00:00:00').getDay()];}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 
-function fetchTasks(cb){
+function fetchTasks(cb,skipAuth){
   setSyncStatus('Syncing…');
-  fetch(GH_API+'?t='+Date.now(), {headers:ghHeaders()})
+  var h={'Accept':'application/vnd.github+json'};
+  if(GH_TOKEN && !skipAuth){ h['Authorization']='token '+GH_TOKEN; }
+  fetch(GH_API+'?t='+Date.now(), {headers:h})
     .then(function(r){
+      if(r.status===401 && !skipAuth && GH_TOKEN){ tokenBad=true; fetchTasks(cb,true); return '__retried__'; }
       if(r.status===404){ currentSha=null; return null; }
       if(!r.ok){ throw new Error('HTTP '+r.status); }
       return r.json();
     })
     .then(function(data){
-      var tasks=[];
+      if(data==='__retried__'){ return; }
+      var parsed=null;
       if(data && data.content){
         currentSha=data.sha;
-        try{ tasks=JSON.parse(b64DecodeUnicode(data.content)); }catch(e){ tasks=[]; }
+        try{ parsed=JSON.parse(b64DecodeUnicode(data.content)); }catch(e){ parsed=null; }
       }
-      cachedTasks=tasks;
-      setSyncStatus('Synced ✓');
-      if(cb){ cb(tasks); }
+      if(Array.isArray(parsed)){
+        /* old format: plain array of tasks */
+        cachedTasks=parsed;
+      } else if(parsed && typeof parsed==='object'){
+        cachedTasks=parsed.tasks||[];
+        cachedEmails=(parsed.emails && typeof parsed.emails==='object')?parsed.emails:{};
+        if(parsed.projects){
+          if(Array.isArray(parsed.projects.daniel)) cachedProjects.daniel=parsed.projects.daniel;
+          if(Array.isArray(parsed.projects.david)) cachedProjects.david=parsed.projects.david;
+        }
+      } else {
+        cachedTasks=[];
+      }
+      updateSyncBadge();
+      if(cb){ cb(cachedTasks); }
     })
     .catch(function(err){
       setSyncStatus('Sync failed — showing last loaded copy');
@@ -465,14 +1566,20 @@ function fetchTasks(cb){
     });
 }
 
-function pushTasks(tasks, isRetry){
+function pushTasks(isRetry){
+  if(!GH_TOKEN || tokenBad){ updateSyncBadge(); return; }
   setSyncStatus('Saving…');
-  var body={ message:'Update design team tasks', content:b64EncodeUnicode(JSON.stringify(tasks,null,2)) };
+  /* prune shared email-check entries older than 30 days */
+  var cutoff=new Date(Date.now()-30*86400000).toISOString().slice(0,10);
+  Object.keys(cachedEmails).forEach(function(k){ if(String(cachedEmails[k])<cutoff){ delete cachedEmails[k]; } });
+  var payload={ tasks:cachedTasks, projects:cachedProjects, emails:cachedEmails };
+  var body={ message:'Update design team tasks', content:b64EncodeUnicode(JSON.stringify(payload,null,2)) };
   if(currentSha){ body.sha=currentSha; }
   fetch(GH_API, { method:'PUT', headers:ghHeaders({'Content-Type':'application/json'}), body:JSON.stringify(body) })
     .then(function(r){
+      if(r.status===401){ tokenBad=true; updateSyncBadge(); throw new Error('__token__'); }
       if((r.status===409 || r.status===422) && !isRetry){
-        return fetchTasks(function(){ pushTasks(tasks, true); });
+        return fetchTasks(function(){ pushTasks(true); });
       }
       if(!r.ok){ throw new Error('HTTP '+r.status); }
       return r.json();
@@ -482,16 +1589,108 @@ function pushTasks(tasks, isRetry){
       setSyncStatus('Synced ✓');
     })
     .catch(function(err){
-      setSyncStatus('Save failed — check connection');
+      if(String(err&&err.message)!=='__token__'){ setSyncStatus('Save failed — check connection'); }
     });
 }
 
+/* ---- Shared email checkbox state (lives in tasks.json "emails" map) ---- */
+function toggleEmail(r){
+  var row=document.getElementById(r);
+  if(!row){ return; }
+  var cb=row.querySelector('.ecb');
+  row.classList.toggle('done',cb.checked);
+  if(cb.checked){ cachedEmails[r]=TODAY; } else { delete cachedEmails[r]; }
+  pushTasks();
+  applyEmailFilter('daniel');
+  applyEmailFilter('david');
+}
+function applyEmailState(){
+  document.querySelectorAll('.erow').forEach(function(row){
+    var cb=row.querySelector('.ecb');
+    if(!cb || !row.id){ return; }
+    var checked=!!cachedEmails[row.id];
+    cb.checked=checked;
+    row.classList.toggle('done',checked);
+  });
+}
+
+/* ---- Project lists (per person) ---- */
+function getAllProjects(){
+  var all=(cachedProjects.daniel||[]).concat(cachedProjects.david||[]);
+  var uniq=[];
+  all.forEach(function(p){ if(p && uniq.indexOf(p)===-1){ uniq.push(p); } });
+  uniq.sort();
+  return uniq;
+}
+function projectOptionsHtml(selected){
+  var opts='<option value="">—</option>';
+  getAllProjects().forEach(function(p){
+    opts+='<option value="'+esc(p)+'"'+(p===selected?' selected':'')+'>'+esc(p)+'</option>';
+  });
+  return opts;
+}
+function refreshProjectDropdowns(){
+  var el=document.getElementById('newTaskProject');
+  if(el){
+    var cur=el.value;
+    el.innerHTML='<option value="">Project # (optional)</option>'+projectOptionsHtml('').replace('<option value="">—</option>','');
+    if(cur && getAllProjects().indexOf(cur)!==-1){ el.value=cur; }
+  }
+}
+function addProjectPrompt(person){
+  var val=window.prompt('Enter new project number for '+cap(person)+' (e.g. P2026-0012):');
+  if(val===null){ return; }
+  val=val.trim();
+  if(!val){ return; }
+  if(!cachedProjects[person]){ cachedProjects[person]=[]; }
+  if(cachedProjects[person].indexOf(val)===-1){
+    cachedProjects[person].push(val);
+    cachedProjects[person].sort();
+  }
+  renderProjectChips();
+  refreshProjectDropdowns();
+  pushTasks();
+}
+function renderProjectChips(){
+  ['daniel','david'].forEach(function(person){
+    var root=document.getElementById('chips'+cap(person));
+    if(!root){ return; }
+    var html='';
+    (cachedProjects[person]||[]).forEach(function(p){
+      var active=(activeEmailFilter[person]===p);
+      html+='<span class="pchip'+(active?' pchip-active':'')+'" onclick="toggleProjectFilter(\''+person+'\',\''+p.replace(/'/g,"\\'")+'\')" title="Click to filter pending emails for this project">'+esc(p)+'</span>';
+    });
+    html+='<span class="pchip pchip-add" onclick="addProjectPrompt(\''+person+'\')" title="Add a new project">+ Add</span>';
+    root.innerHTML=html;
+  });
+}
+function toggleProjectFilter(person,project){
+  activeEmailFilter[person]=(activeEmailFilter[person]===project)?null:project;
+  renderProjectChips();
+  applyEmailFilter(person);
+}
+function applyEmailFilter(person){
+  var containerId=person==='daniel'?'cardDaniel':'cardDavid';
+  var container=document.getElementById(containerId);
+  if(!container){ return; }
+  var filter=activeEmailFilter[person];
+  var rows=container.querySelectorAll('.erow');
+  rows.forEach(function(row){
+    if(!filter){ row.style.display=''; return; }
+    var tagEl=row.querySelector('.ptag');
+    var tagText=tagEl?tagEl.textContent.trim():'';
+    var isDone=row.classList.contains('done');
+    row.style.display=(tagText===filter && !isDone)?'':'none';
+  });
+}
+
+/* ---- Tasks: add / toggle / delete / schedule / edit ---- */
 function addTask(){
   var titleEl=document.getElementById('newTaskTitle');
   var title=titleEl.value.trim();
   if(!title){titleEl.focus();return;}
   var assignee=document.getElementById('newTaskAssignee').value;
-  var project=document.getElementById('newTaskProject').value.trim();
+  var project=document.getElementById('newTaskProject').value;
   var assignedBy=document.getElementById('newTaskAssignedBy').value.trim();
   var start=document.getElementById('newTaskStart').value||'';
   var end=document.getElementById('newTaskEnd').value||'';
@@ -499,23 +1698,23 @@ function addTask(){
   if(start && end && end<start){end=start;}
   cachedTasks.push({id:'t'+Date.now(),title:title,assignee:assignee,project:project,assignedBy:assignedBy,start:start,end:end,done:false});
   renderAll();
-  pushTasks(cachedTasks);
+  pushTasks();
   titleEl.value='';
-  document.getElementById('newTaskProject').value='';
   document.getElementById('newTaskAssignedBy').value='';
   document.getElementById('newTaskStart').value='';
   document.getElementById('newTaskEnd').value='';
+  refreshProjectDropdowns();
   titleEl.focus();
 }
 function toggleTaskDone(id){
   cachedTasks.forEach(function(t){if(t.id===id)t.done=!t.done;});
   renderAll();
-  pushTasks(cachedTasks);
+  pushTasks();
 }
 function deleteTask(id){
   cachedTasks=cachedTasks.filter(function(t){return t.id!==id;});
   renderAll();
-  pushTasks(cachedTasks);
+  pushTasks();
 }
 function toggleScheduleEditor(id){
   var el=document.getElementById('sched_'+id);
@@ -528,12 +1727,29 @@ function scheduleTask(id){
   if(!e || e<s){e=s;}
   cachedTasks.forEach(function(t){if(t.id===id){t.start=s;t.end=e;}});
   renderAll();
-  pushTasks(cachedTasks);
+  pushTasks();
 }
 function clearSchedule(id){
   cachedTasks.forEach(function(t){if(t.id===id){t.start='';t.end='';}});
   renderAll();
-  pushTasks(cachedTasks);
+  pushTasks();
+}
+function toggleEditTask(id){
+  var el=document.getElementById('edit_'+id);
+  if(el){ el.classList.toggle('open'); }
+}
+function saveEditTask(id){
+  var titleEl=document.getElementById('editTitle_'+id);
+  var title=titleEl.value.trim();
+  if(!title){ titleEl.focus(); return; }
+  var assignee=document.getElementById('editAssignee_'+id).value;
+  var project=document.getElementById('editProject_'+id).value;
+  var assignedBy=document.getElementById('editAssignedBy_'+id).value.trim();
+  cachedTasks.forEach(function(t){
+    if(t.id===id){ t.title=title; t.assignee=assignee; t.project=project; t.assignedBy=assignedBy; }
+  });
+  renderAll();
+  pushTasks();
 }
 
 function renderTasks(){
@@ -557,7 +1773,20 @@ function renderTasks(){
           '<button type="button" class="sched-save-btn" onclick="scheduleTask(\''+t.id+'\')">Save</button>'+
           (hasDate?'<button type="button" class="sched-clear-btn" onclick="clearSchedule(\''+t.id+'\')">Clear</button>':'')+
         '</div>'+
+        '<div class="edit-editor" id="edit_'+t.id+'">'+
+          '<input type="text" class="task-input" id="editTitle_'+t.id+'" value="'+esc(t.title)+'" placeholder="Task description">'+
+          '<select class="task-select" id="editAssignee_'+t.id+'">'+
+            '<option value="general"'+(t.assignee==='general'?' selected':'')+'>General</option>'+
+            '<option value="daniel"'+(t.assignee==='daniel'?' selected':'')+'>Daniel</option>'+
+            '<option value="david"'+(t.assignee==='david'?' selected':'')+'>David</option>'+
+          '</select>'+
+          '<select class="task-select" id="editProject_'+t.id+'">'+projectOptionsHtml(t.project)+'</select>'+
+          '<input type="text" class="task-input task-input-sm" id="editAssignedBy_'+t.id+'" value="'+esc(t.assignedBy)+'" placeholder="Assigned by">'+
+          '<button type="button" class="sched-save-btn" onclick="saveEditTask(\''+t.id+'\')">Save</button>'+
+          '<button type="button" class="sched-clear-btn" onclick="toggleEditTask(\''+t.id+'\')">Cancel</button>'+
         '</div>'+
+        '</div>'+
+        '<span class="task-edit-btn" onclick="toggleEditTask(\''+t.id+'\')" title="Edit task">✎</span>'+
         '<span class="task-sched-toggle" onclick="toggleScheduleEditor(\''+t.id+'\')" title="Set schedule">📅</span>'+
         '<span class="task-del" onclick="deleteTask(\''+t.id+'\')" title="Delete">×</span>'+
         '</div>';
@@ -586,6 +1815,38 @@ function packRows(tasks){
 
 function changeGanttMonth(delta){ monthOffset+=delta; renderGantt(); }
 function resetGanttMonth(){ monthOffset=0; renderGantt(); }
+
+/* ---- Gantt drag & drop: drag a bar onto a different lane to reassign it ---- */
+var dragTaskId=null;
+function onBarDragStart(ev,taskId){
+  dragTaskId=taskId;
+  try{ ev.dataTransfer.setData('text/plain',taskId); }catch(e){}
+  ev.dataTransfer.effectAllowed='move';
+}
+function onLaneDragOver(ev){
+  ev.preventDefault();
+  ev.dataTransfer.dropEffect='move';
+  ev.currentTarget.classList.add('drag-over');
+}
+function onLaneDragLeave(ev){
+  ev.currentTarget.classList.remove('drag-over');
+}
+function onLaneDrop(ev,laneKey){
+  ev.preventDefault();
+  ev.currentTarget.classList.remove('drag-over');
+  var taskId=dragTaskId;
+  try{ var dt=ev.dataTransfer.getData('text/plain'); if(dt){ taskId=dt; } }catch(e){}
+  dragTaskId=null;
+  if(!taskId){ return; }
+  var changed=false;
+  cachedTasks.forEach(function(t){
+    if(t.id===taskId && t.assignee!==laneKey){ t.assignee=laneKey; changed=true; }
+  });
+  if(changed){
+    renderAll();
+    pushTasks();
+  }
+}
 
 function renderGantt(){
   var now=new Date();now.setHours(0,0,0,0);
@@ -626,7 +1887,7 @@ function renderGantt(){
 
     labelsHtml+='<div class="gantt-label-row" style="height:'+rowBoxH+'px;">'+lane.label+'</div>';
 
-    tracksHtml+='<div class="gantt-track-row" style="width:'+totalWidth+'px;height:'+rowBoxH+'px;">';
+    tracksHtml+='<div class="gantt-track-row" style="width:'+totalWidth+'px;height:'+rowBoxH+'px;" ondragover="onLaneDragOver(event)" ondragleave="onLaneDragLeave(event)" ondrop="onLaneDrop(event,\''+lane.key+'\')">';
     tracksHtml+='<div class="gantt-track-bg" style="height:'+trackH+'px;"></div>';
     if(showTodayLine){
       tracksHtml+='<div class="gantt-today-line" style="left:'+todayLeft+'px;height:'+trackH+'px;"></div>';
@@ -640,8 +1901,8 @@ function renderGantt(){
       var left=startIdx*DAY_W+2;
       var width=Math.max((endIdx-startIdx+1)*DAY_W-4, DAY_W-4);
       var top=(pack.assignment[t.id]||0)*ROW_H+3;
-      var titleAttr=esc(t.title)+' ('+t.start+' '+weekdayEN(t.start)+' → '+t.end+' '+weekdayEN(t.end)+')'+(t.assignedBy?(' · Assigned by '+esc(t.assignedBy)):'');
-      tracksHtml+='<div class="gantt-bar gantt-'+lane.key+(t.done?' gantt-done':'')+'" style="left:'+left+'px;top:'+top+'px;width:'+width+'px;" title="'+titleAttr+'">'+esc(t.title)+'</div>';
+      var titleAttr=esc(t.title)+' ('+t.start+' '+weekdayEN(t.start)+' → '+t.end+' '+weekdayEN(t.end)+')'+(t.assignedBy?(' · Assigned by '+esc(t.assignedBy)):'')+' — drag onto another row to reassign';
+      tracksHtml+='<div class="gantt-bar gantt-'+lane.key+(t.done?' gantt-done':'')+'" draggable="true" ondragstart="onBarDragStart(event,\''+t.id+'\')" style="left:'+left+'px;top:'+top+'px;width:'+width+'px;" title="'+titleAttr+'">'+esc(t.title)+'</div>';
     });
     tracksHtml+='</div>';
   });
@@ -652,11 +1913,25 @@ function renderGantt(){
   trackRowsEl.style.width=totalWidth+'px';
 }
 
-function renderAll(){renderTasks();renderGantt();}
+function renderAll(){
+  renderProjectChips();
+  renderTasks();
+  renderGantt();
+  refreshProjectDropdowns();
+  applyEmailState();
+  applyEmailFilter('daniel');
+  applyEmailFilter('david');
+}
+updateSyncBadge();
 fetchTasks(function(){ renderAll(); });
+var pollTick=0;
 setInterval(function(){
+  pollTick++;
+  /* Read-only mode (no/invalid token) uses unauthenticated GitHub reads, which are rate-limited
+     to 60/hr per IP — so poll every 5 minutes instead of every 20s in that case. */
+  if((!GH_TOKEN || tokenBad) && pollTick%15!==0){ return; }
   fetchTasks(function(){
-    if(!document.querySelector('.sched-editor.open')){
+    if(!document.querySelector('.sched-editor.open') && !document.querySelector('.edit-editor.open')){
       renderAll();
     }
   });
