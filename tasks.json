@@ -263,7 +263,28 @@
       "stage": "",
       "note": "",
       "target": "",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "prelim1": [
+          {
+            "t": "Concept Design - First Present",
+            "d": false
+          },
+          {
+            "t": "Concept Design - Amendments",
+            "d": false
+          },
+          {
+            "t": "Construction Drawing",
+            "d": false
+          },
+          {
+            "t": "Construction Drawing - Amendments",
+            "d": false
+          }
+        ]
+      },
+      "hidden": true
     },
     "P2026-0003": {
       "stage": "prelim1",
