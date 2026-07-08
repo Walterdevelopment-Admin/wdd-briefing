@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "id": "t1783484512483",
-      "title": "wadaw",
-      "assignee": "general",
-      "project": "P2026-0005",
-      "assignedBy": "Walter",
-      "start": "2026-07-09",
-      "end": "2026-07-15",
-      "done": false
-    },
-    {
       "id": "t1783484654837",
       "title": "P26-05 Joinery & Electrical Plans",
       "assignee": "daniel",
