@@ -102,5 +102,145 @@
     "e_18796d48e73864fe": "2026-07-08",
     "e_193290b19b1f4f3b": "2026-07-08",
     "e_19f39a650bdc0733": "2026-07-08"
+  },
+  "procedure": {
+    "P2021-0002": {
+      "stage": "fixing2",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2021-0025": {
+      "stage": "pc",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2022-0005": {
+      "stage": "base",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2022-0011": {
+      "stage": "fixing1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2023-0011": {
+      "stage": "fixing1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2023-0012": {
+      "stage": "pc",
+      "note": "",
+      "target": "2026-08-10",
+      "dates": {}
+    },
+    "P2023-0018": {
+      "stage": "fixing1",
+      "note": "",
+      "target": "2026-08-14",
+      "dates": {}
+    },
+    "P2023-0019": {
+      "stage": "enclosed1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2023-0021": {
+      "stage": "prelim1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2023-0022": {
+      "stage": "fixing1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2024-0005": {
+      "stage": "fixing1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2024-0009": {
+      "stage": "enclosed1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2024-0014": {
+      "stage": "base",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2024-0015": {
+      "stage": "base",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2024-0019": {
+      "stage": "pc",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2024-0020": {
+      "stage": "da",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2025-0005": {
+      "stage": "prelim1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2026-0003": {
+      "stage": "prelim1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2026-0005": {
+      "stage": "prelim2",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2026-0007": {
+      "stage": "prelim2",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2026-0010": {
+      "stage": "prelim1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "T2023-0009": {
+      "stage": "prelim1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    },
+    "P2025-0005(A)": {
+      "stage": "prelim1",
+      "note": "",
+      "target": "",
+      "dates": {}
+    }
   }
 }
