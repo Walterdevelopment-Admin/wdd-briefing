@@ -522,7 +522,7 @@
           },
           {
             "t": "Concept Design - Amendments",
-            "d": true
+            "d": false
           },
           {
             "t": "Construction Drawing",
@@ -533,10 +533,7 @@
             "d": false
           }
         ]
-      },
-      "curs": [
-        "Concept Design - Amendments"
-      ]
+      }
     },
     "P2025-0005(A)": {
       "stage": "prelim1",
@@ -597,7 +594,7 @@
       ]
     },
     "P2025-0005(C)": {
-      "stage": "prelim1",
+      "stage": "prelim2",
       "note": "",
       "target": "",
       "dates": {},
