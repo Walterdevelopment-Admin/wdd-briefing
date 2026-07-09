@@ -512,7 +512,11 @@
             "d": false
           }
         ]
-      }
+      },
+      "curs": [
+        "Electrical Plan",
+        "Joinery Plan"
+      ]
     },
     "P2026-0007": {
       "stage": "prelim2",
