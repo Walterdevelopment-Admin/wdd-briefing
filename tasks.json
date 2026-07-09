@@ -509,7 +509,7 @@
           },
           {
             "t": "Joinery Plan",
-            "d": true
+            "d": false
           }
         ]
       }
@@ -518,7 +518,47 @@
       "stage": "prelim2",
       "note": "",
       "target": "",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "prelim2": [
+          {
+            "t": "Soil Test",
+            "d": false
+          },
+          {
+            "t": "Foundation Design",
+            "d": false
+          },
+          {
+            "t": "Structure Design",
+            "d": false
+          },
+          {
+            "t": "Inclusion List",
+            "d": false
+          },
+          {
+            "t": "Colour Selection",
+            "d": false
+          },
+          {
+            "t": "Colour Plan",
+            "d": false
+          },
+          {
+            "t": "Energy Report (7 Stars)",
+            "d": false
+          },
+          {
+            "t": "Electrical Plan",
+            "d": false
+          },
+          {
+            "t": "Joinery Plan",
+            "d": false
+          }
+        ]
+      }
     },
     "P2026-0010": {
       "stage": "prelim1",
