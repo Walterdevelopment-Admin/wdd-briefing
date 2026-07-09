@@ -332,7 +332,38 @@
       "stage": "enclosed1",
       "note": "",
       "target": "",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "enclosed1": [
+          {
+            "t": "Install Fascia & Gutters",
+            "d": false
+          },
+          {
+            "t": "Roof Covering Fixed",
+            "d": false
+          },
+          {
+            "t": "External Windows & Doors Fixed",
+            "d": false
+          },
+          {
+            "t": "Brickwork & Insulation",
+            "d": false
+          },
+          {
+            "t": "Scaffolding",
+            "d": false
+          },
+          {
+            "t": "External Wall Cladding Fixed",
+            "d": false
+          }
+        ]
+      },
+      "curs": [
+        "Brickwork & Insulation"
+      ]
     },
     "P2024-0014": {
       "stage": "base",
