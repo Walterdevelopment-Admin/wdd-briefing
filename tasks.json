@@ -238,11 +238,32 @@
             "t": "Electrician Fit-off",
             "d": false
           }
+        ],
+        "fixing2": [
+          {
+            "t": "Carpentry Fixing",
+            "d": false
+          },
+          {
+            "t": "Painting Work",
+            "d": false
+          },
+          {
+            "t": "Built-in Cabinets",
+            "d": false
+          },
+          {
+            "t": "Electricity Stage 3 (Fit-off)",
+            "d": false
+          },
+          {
+            "t": "Plumbing Stage 3 (Fit-off)",
+            "d": false
+          }
         ]
       },
       "curs": [
         "Benchtop Installation",
-        "Plumbing Fit-off",
         "Electrician Fit-off"
       ]
     },
