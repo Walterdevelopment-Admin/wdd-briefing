@@ -195,7 +195,11 @@
             "d": false
           }
         ]
-      }
+      },
+      "curs": [
+        "Joinery Works",
+        "Tiling"
+      ]
     },
     "P2021-0025": {
       "stage": "pc",
