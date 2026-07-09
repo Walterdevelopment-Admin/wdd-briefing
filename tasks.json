@@ -236,7 +236,10 @@
           }
         ]
       },
-      "cur": "Benchtop Installation"
+      "curs": [
+        "Benchtop Installation",
+        "Plumbing Fit-off"
+      ]
     },
     "P2023-0019": {
       "stage": "enclosed1",
