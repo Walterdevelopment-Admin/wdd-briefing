@@ -258,12 +258,13 @@
           },
           {
             "t": "Plumbing Stage 3 (Fit-off)",
-            "d": true
+            "d": false
           }
         ]
       },
       "curs": [
-        "Electrician Fit-off"
+        "Electrician Fit-off",
+        "Electricity Stage 3 (Fit-off)"
       ]
     },
     "P2023-0019": {
