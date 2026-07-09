@@ -254,7 +254,7 @@
           },
           {
             "t": "Electricity Stage 3 (Fit-off)",
-            "d": false
+            "d": true
           },
           {
             "t": "Plumbing Stage 3 (Fit-off)",
