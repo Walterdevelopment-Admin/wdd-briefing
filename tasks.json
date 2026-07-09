@@ -519,7 +519,7 @@
       ]
     },
     "P2026-0007": {
-      "stage": "prelim2",
+      "stage": "prelim1",
       "note": "",
       "target": "",
       "dates": {},
@@ -719,16 +719,11 @@
           {
             "t": "Tree Report",
             "d": false
-          },
-          {
-            "t": "Garage door",
-            "d": false
           }
         ]
       },
       "curs": [
-        "Tree Report",
-        "Garage door"
+        "Tree Report"
       ]
     },
     "P2019-0015": {
