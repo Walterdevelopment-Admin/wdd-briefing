@@ -447,7 +447,58 @@
       "stage": "base",
       "note": "",
       "target": "",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "base": [
+          {
+            "t": "Site Preparation & Excavation",
+            "d": false
+          },
+          {
+            "t": "Sediment Control",
+            "d": false
+          },
+          {
+            "t": "Land Set Out",
+            "d": false
+          },
+          {
+            "t": "Foundation - Footings",
+            "d": false
+          },
+          {
+            "t": "Plumbing Stage 1 (Underground)",
+            "d": false
+          },
+          {
+            "t": "Electrician Stage 1 (Underground)",
+            "d": false
+          },
+          {
+            "t": "Phone Line - Lead In",
+            "d": false
+          },
+          {
+            "t": "Termite Protection",
+            "d": false
+          },
+          {
+            "t": "Base Brickwork",
+            "d": false
+          },
+          {
+            "t": "Foundation - Concrete Slab",
+            "d": false
+          },
+          {
+            "t": "Inspection Approval (Footing & Slab)",
+            "d": false
+          }
+        ]
+      },
+      "curs": [
+        "Site Preparation & Excavation"
+      ]
     },
     "P2024-0015": {
       "stage": "base",
