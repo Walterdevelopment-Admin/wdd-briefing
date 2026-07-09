@@ -513,7 +513,27 @@
       "stage": "prelim1",
       "note": "",
       "target": "",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "prelim1": [
+          {
+            "t": "Concept Design - First Present",
+            "d": false
+          },
+          {
+            "t": "Concept Design - Amendments",
+            "d": true
+          },
+          {
+            "t": "Construction Drawing",
+            "d": false
+          },
+          {
+            "t": "Construction Drawing - Amendments",
+            "d": false
+          }
+        ]
+      }
     },
     "P2025-0005(A)": {
       "stage": "prelim1",
