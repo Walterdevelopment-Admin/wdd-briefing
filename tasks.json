@@ -719,6 +719,10 @@
           {
             "t": "Tree Report",
             "d": false
+          },
+          {
+            "t": "Garage door",
+            "d": false
           }
         ]
       },
