@@ -444,7 +444,7 @@
           },
           {
             "t": "Construction Drawing",
-            "d": true
+            "d": false
           },
           {
             "t": "Construction Drawing - Amendments",
