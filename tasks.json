@@ -561,8 +561,29 @@
             "t": "Joinery Plan",
             "d": false
           }
+        ],
+        "prelim1": [
+          {
+            "t": "Concept Design - First Present",
+            "d": false
+          },
+          {
+            "t": "Concept Design - Amendments",
+            "d": false
+          },
+          {
+            "t": "Construction Drawing",
+            "d": false
+          },
+          {
+            "t": "Construction Drawing - Amendments",
+            "d": false
+          }
         ]
-      }
+      },
+      "curs": [
+        "Concept Design - Amendments"
+      ]
     },
     "P2026-0010": {
       "stage": "prelim1",
