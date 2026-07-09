@@ -233,6 +233,10 @@
           {
             "t": "Plumbing Fit-off",
             "d": false
+          },
+          {
+            "t": "Electrician Fit-off",
+            "d": false
           }
         ]
       },
