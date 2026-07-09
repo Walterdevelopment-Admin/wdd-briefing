@@ -719,11 +719,16 @@
           {
             "t": "Tree Report",
             "d": false
+          },
+          {
+            "t": "Garage door",
+            "d": false
           }
         ]
       },
       "curs": [
-        "Tree Report"
+        "Tree Report",
+        "Garage door"
       ]
     },
     "P2019-0015": {
