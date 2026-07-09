@@ -451,7 +451,10 @@
             "d": false
           }
         ]
-      }
+      },
+      "curs": [
+        "Construction Drawing"
+      ]
     },
     "P2022-0019": {
       "stage": "da",
