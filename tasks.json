@@ -431,7 +431,27 @@
       "stage": "prelim1",
       "note": "",
       "target": "",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "prelim1": [
+          {
+            "t": "Concept Design - First Present",
+            "d": false
+          },
+          {
+            "t": "Concept Design - Amendments",
+            "d": false
+          },
+          {
+            "t": "Construction Drawing",
+            "d": true
+          },
+          {
+            "t": "Construction Drawing - Amendments",
+            "d": false
+          }
+        ]
+      }
     },
     "P2022-0019": {
       "stage": "da",
