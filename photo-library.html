@@ -46,6 +46,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .lchip{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--s1);color:var(--p2);cursor:pointer;user-select:none;}
 .lchip:hover{background:#d4c3b0;}
 .lchip .lc-n{opacity:.55;font-weight:600;margin-left:3px;}
+.lchip.proj{background:var(--p2);color:var(--white);}
+.lchip.proj:hover{background:#333;}
 .cloud-note{font-size:10.5px;color:var(--s3);padding:0 18px 12px;}
 /* ---- Search summary ---- */
 .summary{padding:10px 18px;background:#fdf9f5;border-bottom:1px solid var(--s1);font-size:12.5px;}
@@ -65,6 +67,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .ph-labels{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;min-height:14px;}
 .ph-labels .tag{font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;background:var(--s1);color:var(--p2);}
 .ph-labels .tag.hit{background:var(--p2);color:var(--white);}
+.ph-labels .tag.proj,.tag-editor .tag.proj{background:var(--p2);color:var(--white);}
 .ph-labels .nolabel{font-size:9px;color:var(--s3);font-style:italic;}
 .empty-state{padding:28px 18px;font-size:13px;color:var(--muted);}
 .empty-state code{background:var(--s1);padding:1px 6px;border-radius:3px;font-size:12px;color:var(--p2);}
@@ -386,16 +389,28 @@ function renderLabelCloud(){
   var all=allLabels();
   var keys=Object.keys(all).sort(function(a,b){ return all[b].count-all[a].count; });
   dl.innerHTML=keys.map(function(k){ return '<option value="'+esc(all[k].display)+'">'; }).join('');
-  if(!keys.length){
+  /* project-name chips first, then material labels */
+  var projCounts={};
+  photoList.forEach(function(p){ projCounts[p.project]=(projCounts[p.project]||0)+1; });
+  var html=Object.keys(projCounts).sort().map(function(pr){
+    return '<span class="lchip proj" onclick="filterProject(\''+esc(pr).replace(/'/g,"\\'")+'\')">'+esc(pr)+'<span class="lc-n">'+projCounts[pr]+'</span></span>';
+  }).join('');
+  if(!keys.length && !html){
     cloud.innerHTML='<span class="cloud-note">No labels yet — click a photo to start tagging materials.</span>';
     return;
   }
-  cloud.innerHTML=keys.map(function(k){
+  html+=keys.map(function(k){
     return '<span class="lchip" onclick="searchLabel(\''+esc(all[k].display).replace(/'/g,"\\'")+'\')">'+esc(all[k].display)+'<span class="lc-n">'+all[k].count+'</span></span>';
   }).join('');
+  cloud.innerHTML=html;
 }
 function searchLabel(l){
   document.getElementById('searchBox').value=l;
+  renderGrid();
+}
+function filterProject(pr){
+  var sel=document.getElementById('projFilter');
+  sel.value=(sel.value===pr)?'':pr;
   renderGrid();
 }
 function renderSummary(matches,f){
@@ -436,16 +451,16 @@ function renderGrid(){
     groups[pr].forEach(function(p){
       var idx=lastRendered.indexOf(p);
       var ls=labelsOf(p.path);
-      var chips=ls.slice(0,4).map(function(l){
+      var chips='<span class="tag proj">'+esc(p.project)+'</span>';
+      chips+=ls.slice(0,4).map(function(l){
         var hit=f.q && l.toLowerCase().indexOf(f.q)>=0;
         return '<span class="tag'+(hit?' hit':'')+'">'+esc(l)+'</span>';
       }).join('');
       if(ls.length>4){ chips+='<span class="tag">+'+(ls.length-4)+'</span>'; }
-      if(!ls.length){ chips='<span class="nolabel">no labels</span>'; }
       html+='<div class="ph'+(selected[p.path]?' selected':'')+'" onclick="photoClick('+idx+')">'+
         '<span class="sel-mark">✓</span>'+
         '<img loading="lazy" src="'+esc(encodeURI(p.path))+'" alt="'+esc(p.name)+'">'+
-        '<div class="ph-meta"><div class="ph-name">'+esc(p.project)+'</div><div class="ph-labels">'+chips+'</div></div>'+
+        '<div class="ph-meta"><div class="ph-labels">'+chips+'</div></div>'+
       '</div>';
     });
     html+='</div>';
@@ -513,13 +528,14 @@ function renderTagEditor(){
   if(!p){ return; }
   var ed=document.getElementById('tagEditor');
   var ls=labelsOf(p.path);
-  if(!ls.length){
-    ed.innerHTML='<span class="cloud-note" style="padding:0;">No labels yet — add the materials/products visible in this photo.</span>';
-    return;
-  }
-  ed.innerHTML=ls.map(function(l){
+  var html='<span class="tag proj">'+esc(p.project)+'</span>';
+  html+=ls.map(function(l){
     return '<span class="tag">'+esc(l)+'<span class="x" onclick="removeLabelClick(\''+esc(l).replace(/'/g,"\\'")+'\')">✕</span></span>';
   }).join('');
+  if(!ls.length){
+    html+='<span class="cloud-note" style="padding:0;">No material labels yet — add the products visible in this photo.</span>';
+  }
+  ed.innerHTML=html;
 }
 function addLabelFromInput(){
   var p=lastRendered[modalIdx];
