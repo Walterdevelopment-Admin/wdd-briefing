@@ -8,3 +8,6 @@ push-briefing-SKILL.md
 claude-code-setup-guide.md
 briefing-cache.json
 SKILL-incremental*
+photos-originals/
+Thumbs.db
+*.psd
