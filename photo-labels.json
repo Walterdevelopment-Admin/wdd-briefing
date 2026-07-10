@@ -1,10 +1,10 @@
 {
-  "photos": {
-    "photos/P2020-0017/Gemini_Generated_Image_60qir160qir160qi.png": {
-      "labels": [
-        "Living Room"
-      ],
-      "note": ""
-    }
-  }
+    "photos":  {
+                   "photos/P2020-0017/P2020-0017-03.png":  {
+                                                               "labels":  [
+                                                                              "Living Room"
+                                                                          ],
+                                                               "note":  ""
+                                                           }
+               }
 }

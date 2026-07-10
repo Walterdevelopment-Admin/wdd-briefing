@@ -78,7 +78,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .modal{background:var(--white);border-radius:8px;max-width:860px;width:100%;overflow:hidden;}
 .modal-img{width:100%;max-height:56vh;object-fit:contain;background:#2a2a2b;display:block;}
 .modal-body{padding:14px 18px 18px;}
-.modal-path{font-size:11px;color:var(--muted);word-break:break-all;margin-bottom:8px;}
 .modal-nav{display:flex;gap:8px;justify-content:space-between;align-items:center;padding:8px 18px;background:var(--s1);}
 .modal-nav b{font-size:12.5px;color:var(--p2);}
 .tag-editor{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:6px 0 10px;}
@@ -150,7 +149,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
     <img class="modal-img" id="modalImg" src="" alt="">
     <div class="modal-body">
-      <div class="modal-path" id="modalPath"></div>
       <div class="field-lbl">Material / product labels</div>
       <div class="tag-editor" id="tagEditor"></div>
       <input type="text" class="tag-input" id="tagInput" list="allLabelsList" placeholder="Type a label and press Enter…" onkeydown="if(event.key==='Enter'){addLabelFromInput();}">
@@ -447,7 +445,7 @@ function renderGrid(){
       html+='<div class="ph'+(selected[p.path]?' selected':'')+'" onclick="photoClick('+idx+')">'+
         '<span class="sel-mark">✓</span>'+
         '<img loading="lazy" src="'+esc(encodeURI(p.path))+'" alt="'+esc(p.name)+'">'+
-        '<div class="ph-meta"><div class="ph-name">'+esc(p.name)+'</div><div class="ph-labels">'+chips+'</div></div>'+
+        '<div class="ph-meta"><div class="ph-name">'+esc(p.project)+'</div><div class="ph-labels">'+chips+'</div></div>'+
       '</div>';
     });
     html+='</div>';
@@ -503,9 +501,8 @@ function openModal(idx){
   modalIdx=idx;
   var p=lastRendered[idx];
   if(!p){ return; }
-  document.getElementById('modalTitle').textContent=p.project+' — '+p.name;
+  document.getElementById('modalTitle').textContent=p.project;
   document.getElementById('modalImg').src=encodeURI(p.path);
-  document.getElementById('modalPath').textContent=p.path;
   document.getElementById('noteInput').value=noteOf(p.path);
   document.getElementById('tagInput').value='';
   renderTagEditor();
