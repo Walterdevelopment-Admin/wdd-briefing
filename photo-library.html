@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Library | Walter D&D</title>
+<style>
+:root {
+  --p1:#c1ac99; --p2:#49494b; --s1:#e6d5c3; --s2:#b3aea8;
+  --s3:#aea49a; --s4:#d5d5d5; --bg:#fff6ed;
+  --white:#fff; --text:#2a2a2b; --muted:#6e6862;
+  --red:#b83232; --amber:#c4620d; --green:#2d7d4f;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;}
+.hdr{background:var(--p2);border-bottom:3px solid var(--p1);}
+.hdr-inner{display:flex;align-items:center;gap:22px;padding:18px 32px;}
+.logo-img{height:52px;width:auto;flex-shrink:0;}
+.hdr-sep{width:1px;height:44px;background:var(--s3);opacity:.45;}
+.hdr-txt h1{font-size:17px;font-weight:600;color:var(--white);}
+.hdr-txt .meta{font-size:11.5px;color:var(--s2);margin-top:3px;}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 18px 52px;}
+.card{background:var(--white);border-radius:8px;box-shadow:0 1px 3px rgba(73,73,75,.07),0 2px 10px rgba(73,73,75,.05);margin-bottom:18px;overflow:hidden;}
+.card-hdr{display:flex;align-items:center;gap:9px;padding:12px 18px;border-bottom:1px solid var(--s1);}
+.card-hdr.style-neutral{background:var(--s1);}
+.card-hdr.style-neutral h2{color:var(--p2);}
+.card-hdr h2{font-size:13.5px;font-weight:700;flex:1;}
+.card-hdr .icon{font-size:15px;}
+.cnt{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;background:rgba(73,73,75,.1);color:var(--p2);}
+.sync-status{font-size:10px;color:var(--muted);font-weight:600;cursor:pointer;}
+.sync-status:hover{color:var(--p2);text-decoration:underline;}
+/* ---- Tabs (same look as morning-briefing.html; Briefing/Procedure buttons navigate back) ---- */
+.tabbar{display:flex;gap:8px;margin-bottom:18px;}
+.tabbtn{font-size:12.5px;font-weight:700;padding:8px 18px;border:1px solid var(--s2);border-radius:6px;background:var(--white);color:var(--muted);cursor:pointer;font-family:inherit;}
+.tabbtn:hover{background:var(--s1);color:var(--p2);}
+.tabbtn.active{background:var(--p2);color:var(--white);border-color:var(--p2);}
+/* ---- Toolbar ---- */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 18px;}
+.search-input{flex:1;min-width:220px;font-size:13px;padding:8px 12px;border:1px solid var(--s2);border-radius:6px;font-family:inherit;}
+.proj-select{font-size:12.5px;padding:7px 9px;border:1px solid var(--s2);border-radius:6px;font-family:inherit;background:var(--white);color:var(--p2);}
+.tool-btn{font-size:11px;font-weight:700;padding:7px 12px;border-radius:6px;border:1px solid var(--s2);background:var(--white);color:var(--p2);cursor:pointer;font-family:inherit;}
+.tool-btn:hover{background:var(--s1);}
+.tool-btn.on{background:var(--p2);color:var(--white);border-color:var(--p2);}
+/* ---- Label cloud ---- */
+.label-cloud{display:flex;flex-wrap:wrap;gap:5px;padding:0 18px 12px;}
+.lchip{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--s1);color:var(--p2);cursor:pointer;user-select:none;}
+.lchip:hover{background:#d4c3b0;}
+.lchip .lc-n{opacity:.55;font-weight:600;margin-left:3px;}
+.cloud-note{font-size:10.5px;color:var(--s3);padding:0 18px 12px;}
+/* ---- Search summary ---- */
+.summary{padding:10px 18px;background:#fdf9f5;border-bottom:1px solid var(--s1);font-size:12.5px;}
+.summary b{color:var(--p2);}
+.sum-proj{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:3px;background:var(--s1);color:var(--p2);margin:2px 4px 0 0;}
+/* ---- Photo grid ---- */
+.proj-group-hdr{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--s3);padding:14px 18px 6px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;padding:6px 18px 18px;}
+.ph{border:1px solid var(--s1);border-radius:6px;overflow:hidden;background:#faf7f3;cursor:pointer;position:relative;}
+.ph:hover{box-shadow:0 2px 8px rgba(73,73,75,.18);}
+.ph img{width:100%;height:140px;object-fit:cover;display:block;background:var(--s4);}
+.ph.selected{outline:3px solid var(--amber);}
+.ph .sel-mark{display:none;position:absolute;top:6px;left:6px;background:var(--amber);color:#fff;font-size:11px;font-weight:800;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;}
+.ph.selected .sel-mark{display:block;}
+.ph-meta{padding:6px 8px;}
+.ph-name{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ph-labels{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;min-height:14px;}
+.ph-labels .tag{font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;background:var(--s1);color:var(--p2);}
+.ph-labels .tag.hit{background:var(--p2);color:var(--white);}
+.ph-labels .nolabel{font-size:9px;color:var(--s3);font-style:italic;}
+.empty-state{padding:28px 18px;font-size:13px;color:var(--muted);}
+.empty-state code{background:var(--s1);padding:1px 6px;border-radius:3px;font-size:12px;color:var(--p2);}
+/* ---- Bulk bar ---- */
+.bulkbar{display:none;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 18px;background:#fef3c7;border-bottom:1px solid var(--s1);font-size:12px;}
+.bulkbar.open{display:flex;}
+.bulk-input{flex:1;min-width:180px;font-size:12.5px;padding:6px 9px;border:1px solid var(--s2);border-radius:4px;font-family:inherit;}
+/* ---- Modal ---- */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(42,42,43,.72);z-index:50;padding:24px;overflow:auto;}
+.modal-bg.open{display:flex;align-items:flex-start;justify-content:center;}
+.modal{background:var(--white);border-radius:8px;max-width:860px;width:100%;overflow:hidden;}
+.modal-img{width:100%;max-height:56vh;object-fit:contain;background:#2a2a2b;display:block;}
+.modal-body{padding:14px 18px 18px;}
+.modal-path{font-size:11px;color:var(--muted);word-break:break-all;margin-bottom:8px;}
+.modal-nav{display:flex;gap:8px;justify-content:space-between;align-items:center;padding:8px 18px;background:var(--s1);}
+.modal-nav b{font-size:12.5px;color:var(--p2);}
+.tag-editor{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:6px 0 10px;}
+.tag-editor .tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:10px;background:var(--s1);color:var(--p2);}
+.tag-editor .tag .x{cursor:pointer;margin-left:5px;color:var(--muted);}
+.tag-editor .tag .x:hover{color:var(--red);}
+.tag-input{font-size:12.5px;padding:6px 9px;border:1px solid var(--s2);border-radius:4px;font-family:inherit;min-width:220px;}
+.note-input{width:100%;font-size:12.5px;padding:7px 9px;border:1px solid var(--s2);border-radius:4px;font-family:inherit;resize:vertical;min-height:48px;}
+.field-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--s3);margin-bottom:3px;}
+@media(max-width:720px){.grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));}}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-inner">
+    <img src="2025 Logo - H - 1.png" class="logo-img" alt="Walter D&amp;D">
+    <div class="hdr-sep"></div>
+    <div class="hdr-txt">
+      <h1>Completed Site Photo Library</h1>
+      <div class="meta">Search by material / product label &nbsp;·&nbsp; admin@walterdevelopment.com.au</div>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+
+  <div class="tabbar">
+    <button type="button" class="tabbtn" onclick="goBriefing('briefing')">📋 Daily Briefing</button>
+    <button type="button" class="tabbtn" onclick="goBriefing('procedure')">🏗️ Build Procedure</button>
+    <button type="button" class="tabbtn active">📷 Photo Library</button>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr style-neutral">
+      <span class="icon">📷</span><h2>Photo Library</h2>
+      <span class="cnt" id="photoCount">–</span>
+      <span class="sync-status" id="syncStatus" onclick="setGhToken()" title="Click to set or update the GitHub token (stored only in this browser)"></span>
+    </div>
+    <div class="toolbar">
+      <input type="text" class="search-input" id="searchBox" placeholder="Search a material or product… e.g. Colorbond Monument, Caesarstone" oninput="renderGrid()">
+      <select class="proj-select" id="projFilter" onchange="renderGrid()"><option value="">All projects</option></select>
+      <button type="button" class="tool-btn" id="bulkToggle" onclick="toggleBulk()">☑ Multi-label mode</button>
+      <button type="button" class="tool-btn" onclick="reloadAll()" title="Re-scan the photos folder and labels">⟳ Refresh</button>
+    </div>
+    <div class="bulkbar" id="bulkBar">
+      <span><b id="bulkCount">0</b> selected — click photos to select, then add a label to all of them:</span>
+      <input type="text" class="bulk-input" id="bulkLabel" list="allLabelsList" placeholder="Label to add, e.g. James Hardie Axon cladding">
+      <button type="button" class="tool-btn" onclick="applyBulkLabel()">Add to selected</button>
+      <button type="button" class="tool-btn" onclick="clearSelection()">Clear selection</button>
+    </div>
+    <div class="label-cloud" id="labelCloud"></div>
+    <div class="summary" id="summaryBar" style="display:none;"></div>
+    <div id="gridArea"></div>
+  </div>
+
+</div>
+
+<datalist id="allLabelsList"></datalist>
+
+<!-- Photo detail / label editor modal -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-nav">
+      <button type="button" class="tool-btn" onclick="navPhoto(-1)">◀ Prev</button>
+      <b id="modalTitle"></b>
+      <span>
+        <button type="button" class="tool-btn" onclick="navPhoto(1)">Next ▶</button>
+        <button type="button" class="tool-btn" onclick="closeModal()">✕ Close</button>
+      </span>
+    </div>
+    <img class="modal-img" id="modalImg" src="" alt="">
+    <div class="modal-body">
+      <div class="modal-path" id="modalPath"></div>
+      <div class="field-lbl">Material / product labels</div>
+      <div class="tag-editor" id="tagEditor"></div>
+      <input type="text" class="tag-input" id="tagInput" list="allLabelsList" placeholder="Type a label and press Enter…" onkeydown="if(event.key==='Enter'){addLabelFromInput();}">
+      <div class="field-lbl" style="margin-top:12px;">Note</div>
+      <textarea class="note-input" id="noteInput" placeholder="Optional note — supplier, colour code, where it was used…" onchange="saveNoteFromInput()"></textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   Walter D&D — Completed Site Photo Library
+   - Photos live in this repo under  photos/<PROJECT>/  (any nesting).
+     The page discovers them via the GitHub git-trees API, so adding
+     photos is just: drop files in photos/<project>/ and git push.
+   - Labels live in photo-labels.json in the repo root, read/written
+     through the GitHub Contents API — the same mechanism (and the
+     same browser-stored token, localStorage key 'wdd_gh_token') as
+     tasks.json on the Daily Briefing page. Without a token the page
+     is read-only.
+   ============================================================ */
+var GH_REPO='Walterdevelopment-Admin/wdd-briefing';
+var GH_BRANCH='main';
+var LABELS_PATH='photo-labels.json';
+var LABELS_API='https://api.github.com/repos/'+GH_REPO+'/contents/'+LABELS_PATH;
+var TREE_API='https://api.github.com/repos/'+GH_REPO+'/git/trees/'+GH_BRANCH+'?recursive=1';
+var IMG_EXT=/\.(jpe?g|png|gif|webp|bmp|avif)$/i;
+
+var GH_TOKEN=null;
+try{ GH_TOKEN=localStorage.getItem('wdd_gh_token')||null; }catch(e){}
+var tokenBad=false;
+
+var photoList=[];            /* [{path, project, name}] */
+var labelData={photos:{}};   /* photo-labels.json contents */
+var labelsSha=null;
+var bulkMode=false;
+var selected={};             /* path -> true */
+var modalIdx=-1;             /* index into last rendered flat list */
+var lastRendered=[];         /* flat list of photos currently shown, for prev/next */
+
+function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function b64EncodeUnicode(str){
+  var bytes=new TextEncoder().encode(str);
+  var binary='';
+  bytes.forEach(function(b){ binary+=String.fromCharCode(b); });
+  return btoa(binary);
+}
+function b64DecodeUnicode(str){
+  var binary=atob(str.replace(/\s/g,''));
+  var bytes=new Uint8Array(binary.length);
+  for(var i=0;i<binary.length;i++){ bytes[i]=binary.charCodeAt(i); }
+  return new TextDecoder('utf-8').decode(bytes);
+}
+function ghHeaders(extra){
+  var h={'Accept':'application/vnd.github+json'};
+  if(GH_TOKEN && !tokenBad){ h['Authorization']='token '+GH_TOKEN; }
+  if(extra){ for(var k in extra){ h[k]=extra[k]; } }
+  return h;
+}
+function setGhToken(){
+  var t=window.prompt('Paste the GitHub fine-grained token for wdd-briefing (stored only in this browser). Leave empty to clear:','');
+  if(t===null){ return; }
+  t=t.trim();
+  try{ if(t){ localStorage.setItem('wdd_gh_token',t); } else { localStorage.removeItem('wdd_gh_token'); } }catch(e){}
+  GH_TOKEN=t||null;
+  tokenBad=false;
+  reloadAll();
+}
+function setSyncStatus(text){
+  var el=document.getElementById('syncStatus');
+  if(el){ el.textContent=text; }
+}
+function updateSyncBadge(){
+  if(!GH_TOKEN){ setSyncStatus('Read-only — click to set token 🔑'); }
+  else if(tokenBad){ setSyncStatus('Token invalid — click to update 🔑'); }
+  else{ setSyncStatus('Synced ✓'); }
+}
+function goBriefing(tab){
+  try{ localStorage.setItem('wdd_active_tab',tab); }catch(e){}
+  location.href='morning-briefing.html';
+}
+
+/* ---- Load photo list from the repo tree ---- */
+function loadTree(cb){
+  fetch(TREE_API+'&t='+Date.now(),{headers:ghHeaders()})
+    .then(function(r){
+      if(r.status===401 && GH_TOKEN && !tokenBad){ tokenBad=true; return loadTree(cb)&&null; }
+      if(!r.ok){ throw new Error('HTTP '+r.status); }
+      return r.json();
+    })
+    .then(function(data){
+      if(!data){ return; }
+      photoList=[];
+      (data.tree||[]).forEach(function(n){
+        if(n.type!=='blob'){ return; }
+        if(n.path.indexOf('photos/')!==0){ return; }
+        if(!IMG_EXT.test(n.path)){ return; }
+        var parts=n.path.split('/');
+        photoList.push({
+          path:n.path,
+          project:parts.length>2?parts[1]:'(unsorted)',
+          name:parts[parts.length-1]
+        });
+      });
+      photoList.sort(function(a,b){ return a.path<b.path?-1:1; });
+      if(cb){ cb(); }
+    })
+    .catch(function(err){
+      setSyncStatus('Photo scan failed — check connection');
+      if(cb){ cb(); }
+    });
+}
+
+/* ---- Load / save photo-labels.json ---- */
+function loadLabels(cb){
+  fetch(LABELS_API+'?t='+Date.now(),{headers:ghHeaders()})
+    .then(function(r){
+      if(r.status===401 && GH_TOKEN && !tokenBad){ tokenBad=true; return loadLabels(cb)&&null; }
+      if(r.status===404){ labelsSha=null; labelData={photos:{}}; return null; }
+      if(!r.ok){ throw new Error('HTTP '+r.status); }
+      return r.json();
+    })
+    .then(function(data){
+      if(data && data.content){
+        labelsSha=data.sha;
+        try{
+          var parsed=JSON.parse(b64DecodeUnicode(data.content));
+          if(parsed && typeof parsed==='object' && parsed.photos){ labelData=parsed; }
+        }catch(e){}
+      }
+      updateSyncBadge();
+      if(cb){ cb(); }
+    })
+    .catch(function(err){
+      setSyncStatus('Label sync failed — showing last loaded copy');
+      if(cb){ cb(); }
+    });
+}
+function pushLabels(isRetry){
+  if(!GH_TOKEN || tokenBad){ updateSyncBadge(); return; }
+  setSyncStatus('Saving…');
+  var body={ message:'Update photo labels', content:b64EncodeUnicode(JSON.stringify(labelData,null,2)) };
+  if(labelsSha){ body.sha=labelsSha; }
+  fetch(LABELS_API,{ method:'PUT', headers:ghHeaders({'Content-Type':'application/json'}), body:JSON.stringify(body) })
+    .then(function(r){
+      if(r.status===401){ tokenBad=true; updateSyncBadge(); throw new Error('__token__'); }
+      if((r.status===409||r.status===422) && !isRetry){
+        /* someone else saved first — merge our in-memory copy over theirs and retry once */
+        var mine=labelData;
+        return loadLabels(function(){
+          Object.keys(mine.photos).forEach(function(p){ labelData.photos[p]=mine.photos[p]; });
+          pushLabels(true);
+        });
+      }
+      if(!r.ok){ throw new Error('HTTP '+r.status); }
+      return r.json();
+    })
+    .then(function(data){
+      if(data && data.content && data.content.sha){ labelsSha=data.content.sha; }
+      setSyncStatus('Synced ✓');
+    })
+    .catch(function(err){
+      if(String(err&&err.message)!=='__token__'){ setSyncStatus('Save failed — check connection'); }
+    });
+}
+
+/* ---- Label helpers ---- */
+function labelsOf(path){
+  var e=labelData.photos[path];
+  return (e && Array.isArray(e.labels))?e.labels:[];
+}
+function noteOf(path){
+  var e=labelData.photos[path];
+  return (e && e.note)?e.note:'';
+}
+function addLabel(path,label){
+  label=String(label||'').trim();
+  if(!label){ return false; }
+  if(!labelData.photos[path]){ labelData.photos[path]={labels:[],note:''}; }
+  var ls=labelData.photos[path].labels;
+  var dup=ls.some(function(l){ return l.toLowerCase()===label.toLowerCase(); });
+  if(dup){ return false; }
+  ls.push(label);
+  return true;
+}
+function removeLabel(path,label){
+  var e=labelData.photos[path];
+  if(!e){ return; }
+  e.labels=e.labels.filter(function(l){ return l!==label; });
+  if(!e.labels.length && !e.note){ delete labelData.photos[path]; }
+}
+function allLabels(){
+  /* label -> {count, projects:{}} across photos that still exist */
+  var out={};
+  photoList.forEach(function(p){
+    labelsOf(p.path).forEach(function(l){
+      var k=l.toLowerCase();
+      if(!out[k]){ out[k]={display:l,count:0,projects:{}}; }
+      out[k].count++;
+      out[k].projects[p.project]=(out[k].projects[p.project]||0)+1;
+    });
+  });
+  return out;
+}
+
+/* ---- Rendering ---- */
+function currentFilter(){
+  return {
+    q:document.getElementById('searchBox').value.trim().toLowerCase(),
+    proj:document.getElementById('projFilter').value
+  };
+}
+function photoMatches(p,f){
+  if(f.proj && p.project!==f.proj){ return false; }
+  if(!f.q){ return true; }
+  if(p.name.toLowerCase().indexOf(f.q)>=0){ return true; }
+  if(p.project.toLowerCase().indexOf(f.q)>=0){ return true; }
+  return labelsOf(p.path).some(function(l){ return l.toLowerCase().indexOf(f.q)>=0; });
+}
+function renderProjFilter(){
+  var sel=document.getElementById('projFilter');
+  var cur=sel.value;
+  var projs={};
+  photoList.forEach(function(p){ projs[p.project]=1; });
+  var html='<option value="">All projects</option>';
+  Object.keys(projs).sort().forEach(function(pr){
+    html+='<option value="'+esc(pr)+'">'+esc(pr)+'</option>';
+  });
+  sel.innerHTML=html;
+  sel.value=cur;
+}
+function renderLabelCloud(){
+  var cloud=document.getElementById('labelCloud');
+  var dl=document.getElementById('allLabelsList');
+  var all=allLabels();
+  var keys=Object.keys(all).sort(function(a,b){ return all[b].count-all[a].count; });
+  dl.innerHTML=keys.map(function(k){ return '<option value="'+esc(all[k].display)+'">'; }).join('');
+  if(!keys.length){
+    cloud.innerHTML='<span class="cloud-note">No labels yet — click a photo to start tagging materials.</span>';
+    return;
+  }
+  cloud.innerHTML=keys.map(function(k){
+    return '<span class="lchip" onclick="searchLabel(\''+esc(all[k].display).replace(/'/g,"\\'")+'\')">'+esc(all[k].display)+'<span class="lc-n">'+all[k].count+'</span></span>';
+  }).join('');
+}
+function searchLabel(l){
+  document.getElementById('searchBox').value=l;
+  renderGrid();
+}
+function renderSummary(matches,f){
+  var bar=document.getElementById('summaryBar');
+  if(!f.q){ bar.style.display='none'; return; }
+  var projs={};
+  matches.forEach(function(p){ projs[p.project]=(projs[p.project]||0)+1; });
+  var names=Object.keys(projs).sort();
+  var html='<b>'+matches.length+'</b> photo'+(matches.length===1?'':'s')+' match “'+esc(f.q)+'” across <b>'+names.length+'</b> project'+(names.length===1?'':'s')+': ';
+  html+=names.map(function(n){ return '<span class="sum-proj">'+esc(n)+' × '+projs[n]+'</span>'; }).join('');
+  bar.innerHTML=html;
+  bar.style.display='block';
+}
+function renderGrid(){
+  var f=currentFilter();
+  var area=document.getElementById('gridArea');
+  var matches=photoList.filter(function(p){ return photoMatches(p,f); });
+  lastRendered=matches;
+  document.getElementById('photoCount').textContent=matches.length+' / '+photoList.length+' photos';
+  renderSummary(matches,f);
+  if(!photoList.length){
+    area.innerHTML='<div class="empty-state">No photos found yet.<br><br>'+
+      'To add photos: put them in this repo under <code>photos/&lt;PROJECT&gt;/</code> '+
+      '(e.g. <code>photos/P2023-0012/kitchen-01.jpg</code>) and push — this page picks them up automatically. '+
+      'Then click any photo to tag the materials used.</div>';
+    return;
+  }
+  if(!matches.length){
+    area.innerHTML='<div class="empty-state">No photos match this search.</div>';
+    return;
+  }
+  /* group by project */
+  var groups={};
+  matches.forEach(function(p){ (groups[p.project]=groups[p.project]||[]).push(p); });
+  var html='';
+  Object.keys(groups).sort().forEach(function(pr){
+    html+='<div class="proj-group-hdr">'+esc(pr)+' · '+groups[pr].length+'</div><div class="grid">';
+    groups[pr].forEach(function(p){
+      var idx=lastRendered.indexOf(p);
+      var ls=labelsOf(p.path);
+      var chips=ls.slice(0,4).map(function(l){
+        var hit=f.q && l.toLowerCase().indexOf(f.q)>=0;
+        return '<span class="tag'+(hit?' hit':'')+'">'+esc(l)+'</span>';
+      }).join('');
+      if(ls.length>4){ chips+='<span class="tag">+'+(ls.length-4)+'</span>'; }
+      if(!ls.length){ chips='<span class="nolabel">no labels</span>'; }
+      html+='<div class="ph'+(selected[p.path]?' selected':'')+'" onclick="photoClick('+idx+')">'+
+        '<span class="sel-mark">✓</span>'+
+        '<img loading="lazy" src="'+esc(encodeURI(p.path))+'" alt="'+esc(p.name)+'">'+
+        '<div class="ph-meta"><div class="ph-name">'+esc(p.name)+'</div><div class="ph-labels">'+chips+'</div></div>'+
+      '</div>';
+    });
+    html+='</div>';
+  });
+  area.innerHTML=html;
+}
+function renderAll(){
+  renderProjFilter();
+  renderLabelCloud();
+  renderGrid();
+}
+
+/* ---- Bulk labelling ---- */
+function toggleBulk(){
+  bulkMode=!bulkMode;
+  document.getElementById('bulkToggle').classList.toggle('on',bulkMode);
+  document.getElementById('bulkBar').classList.toggle('open',bulkMode);
+  if(!bulkMode){ clearSelection(); }
+}
+function clearSelection(){
+  selected={};
+  updateBulkCount();
+  renderGrid();
+}
+function updateBulkCount(){
+  document.getElementById('bulkCount').textContent=Object.keys(selected).length;
+}
+function applyBulkLabel(){
+  var inp=document.getElementById('bulkLabel');
+  var label=inp.value.trim();
+  var paths=Object.keys(selected);
+  if(!label || !paths.length){ return; }
+  var changed=false;
+  paths.forEach(function(p){ if(addLabel(p,label)){ changed=true; } });
+  inp.value='';
+  if(changed){ pushLabels(); }
+  renderAll();
+}
+
+/* ---- Photo click / modal ---- */
+function photoClick(idx){
+  var p=lastRendered[idx];
+  if(!p){ return; }
+  if(bulkMode){
+    if(selected[p.path]){ delete selected[p.path]; } else { selected[p.path]=true; }
+    updateBulkCount();
+    renderGrid();
+    return;
+  }
+  openModal(idx);
+}
+function openModal(idx){
+  modalIdx=idx;
+  var p=lastRendered[idx];
+  if(!p){ return; }
+  document.getElementById('modalTitle').textContent=p.project+' — '+p.name;
+  document.getElementById('modalImg').src=encodeURI(p.path);
+  document.getElementById('modalPath').textContent=p.path;
+  document.getElementById('noteInput').value=noteOf(p.path);
+  document.getElementById('tagInput').value='';
+  renderTagEditor();
+  document.getElementById('modalBg').classList.add('open');
+}
+function renderTagEditor(){
+  var p=lastRendered[modalIdx];
+  if(!p){ return; }
+  var ed=document.getElementById('tagEditor');
+  var ls=labelsOf(p.path);
+  if(!ls.length){
+    ed.innerHTML='<span class="cloud-note" style="padding:0;">No labels yet — add the materials/products visible in this photo.</span>';
+    return;
+  }
+  ed.innerHTML=ls.map(function(l){
+    return '<span class="tag">'+esc(l)+'<span class="x" onclick="removeLabelClick(\''+esc(l).replace(/'/g,"\\'")+'\')">✕</span></span>';
+  }).join('');
+}
+function addLabelFromInput(){
+  var p=lastRendered[modalIdx];
+  var inp=document.getElementById('tagInput');
+  if(!p || !inp.value.trim()){ return; }
+  if(addLabel(p.path,inp.value)){ pushLabels(); }
+  inp.value='';
+  renderTagEditor();
+  renderLabelCloud();
+  renderGrid();
+}
+function removeLabelClick(label){
+  var p=lastRendered[modalIdx];
+  if(!p){ return; }
+  removeLabel(p.path,label);
+  pushLabels();
+  renderTagEditor();
+  renderLabelCloud();
+  renderGrid();
+}
+function saveNoteFromInput(){
+  var p=lastRendered[modalIdx];
+  if(!p){ return; }
+  var note=document.getElementById('noteInput').value.trim();
+  if(!labelData.photos[p.path]){ labelData.photos[p.path]={labels:[],note:''}; }
+  labelData.photos[p.path].note=note;
+  if(!labelData.photos[p.path].labels.length && !note){ delete labelData.photos[p.path]; }
+  pushLabels();
+}
+function navPhoto(dir){
+  if(modalIdx<0){ return; }
+  var n=modalIdx+dir;
+  if(n<0 || n>=lastRendered.length){ return; }
+  openModal(n);
+}
+function closeModal(){
+  modalIdx=-1;
+  document.getElementById('modalBg').classList.remove('open');
+}
+document.addEventListener('keydown',function(e){
+  if(!document.getElementById('modalBg').classList.contains('open')){ return; }
+  if(e.key==='Escape'){ closeModal(); }
+  if(e.key==='ArrowLeft' && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){ navPhoto(-1); }
+  if(e.key==='ArrowRight' && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){ navPhoto(1); }
+});
+
+/* ---- Boot ---- */
+function reloadAll(){
+  setSyncStatus('Loading…');
+  loadTree(function(){
+    loadLabels(function(){ renderAll(); });
+  });
+}
+reloadAll();
+</script>
+</body>
+</html>

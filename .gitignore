@@ -1,0 +1,10 @@
+.github-token
+.claude/
+claude-settings.json
+*.bat
+SKILL-updated.md
+morning-briefing-SKILL.md
+push-briefing-SKILL.md
+claude-code-setup-guide.md
+briefing-cache.json
+SKILL-incremental*
