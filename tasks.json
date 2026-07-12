@@ -27,7 +27,7 @@
       "project": "",
       "assignedBy": "Walter",
       "start": "2026-07-08",
-      "end": "2026-07-10",
+      "end": "2026-07-14",
       "done": false
     },
     {
@@ -175,6 +175,7 @@
     "e_19f3610cecf0a0b7": "2026-07-08",
     "e_19f40785a293f458": "2026-07-10"
   },
+  "meetings": {},
   "procedure": {
     "P2021-0002": {
       "stage": "fixing2",
