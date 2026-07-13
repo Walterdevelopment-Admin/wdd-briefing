@@ -53,9 +53,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .summary{padding:10px 18px;background:#fdf9f5;border-bottom:1px solid var(--s1);font-size:12.5px;}
 .summary b{color:var(--p2);}
 .sum-proj{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:3px;background:var(--s1);color:var(--p2);margin:2px 4px 0 0;}
+/* ---- Project folders ---- */
+.folder{border:1px solid var(--s1);border-radius:8px;margin:10px 18px;overflow:hidden;background:#fdfaf6;}
+.folder:last-child{margin-bottom:18px;}
+.folder-hdr{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;user-select:none;background:var(--white);}
+.folder-hdr:hover{background:var(--s1);}
+.folder-icon{font-size:17px;}
+.folder-name{font-size:13px;font-weight:800;color:var(--p2);letter-spacing:.5px;}
+.folder-cnt{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--s1);color:var(--p2);}
+.folder-spring{flex:1;}
+.folder-chev{font-size:11px;color:var(--s3);}
+.folder.open .folder-hdr{border-bottom:1px solid var(--s1);}
 /* ---- Photo grid ---- */
-.proj-group-hdr{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--s3);padding:14px 18px 6px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;padding:6px 18px 18px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;padding:12px 14px 14px;}
 .ph{border:1px solid var(--s1);border-radius:6px;overflow:hidden;background:#faf7f3;cursor:pointer;position:relative;}
 .ph:hover{box-shadow:0 2px 8px rgba(73,73,75,.18);}
 .ph img{width:100%;height:140px;object-fit:cover;display:block;background:var(--s4);}
@@ -191,6 +201,7 @@ var bulkMode=false;
 var selected={};             /* path -> true */
 var modalIdx=-1;             /* index into last rendered flat list */
 var lastRendered=[];         /* flat list of photos currently shown, for prev/next */
+var openProjects={};         /* project -> true when its folder is expanded */
 
 function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function b64EncodeUnicode(str){
@@ -428,7 +439,6 @@ function renderGrid(){
   var f=currentFilter();
   var area=document.getElementById('gridArea');
   var matches=photoList.filter(function(p){ return photoMatches(p,f); });
-  lastRendered=matches;
   document.getElementById('photoCount').textContent=matches.length+' / '+photoList.length+' photos';
   renderSummary(matches,f);
   if(!photoList.length){
@@ -442,30 +452,50 @@ function renderGrid(){
     area.innerHTML='<div class="empty-state">No photos match this search.</div>';
     return;
   }
-  /* group by project */
+  /* one collapsible folder per project; searching or filtering opens the
+     matching folders automatically, otherwise folders open only on click */
   var groups={};
   matches.forEach(function(p){ (groups[p.project]=groups[p.project]||[]).push(p); });
+  lastRendered=[];
   var html='';
   Object.keys(groups).sort().forEach(function(pr){
-    html+='<div class="proj-group-hdr">'+esc(pr)+' · '+groups[pr].length+'</div><div class="grid">';
-    groups[pr].forEach(function(p){
-      var idx=lastRendered.indexOf(p);
-      var ls=labelsOf(p.path);
-      var chips='<span class="tag proj">'+esc(p.project)+'</span>';
-      chips+=ls.slice(0,4).map(function(l){
-        var hit=f.q && l.toLowerCase().indexOf(f.q)>=0;
-        return '<span class="tag'+(hit?' hit':'')+'">'+esc(l)+'</span>';
-      }).join('');
-      if(ls.length>4){ chips+='<span class="tag">+'+(ls.length-4)+'</span>'; }
-      html+='<div class="ph'+(selected[p.path]?' selected':'')+'" onclick="photoClick('+idx+')">'+
-        '<span class="sel-mark">✓</span>'+
-        '<img loading="lazy" src="'+esc(encodeURI(p.path))+'" alt="'+esc(p.name)+'">'+
-        '<div class="ph-meta"><div class="ph-labels">'+chips+'</div></div>'+
+    var isOpen=!!(f.q || f.proj===pr || openProjects[pr]);
+    var prArg='\''+esc(pr).replace(/'/g,"\\'")+'\'';
+    html+='<div class="folder'+(isOpen?' open':'')+'">'+
+      '<div class="folder-hdr" onclick="toggleProject('+prArg+')">'+
+        '<span class="folder-icon">'+(isOpen?'📂':'📁')+'</span>'+
+        '<span class="folder-name">'+esc(pr)+'</span>'+
+        '<span class="folder-cnt">'+groups[pr].length+' photo'+(groups[pr].length===1?'':'s')+'</span>'+
+        '<span class="folder-spring"></span>'+
+        '<span class="folder-chev">'+(isOpen?'▲ close':'▼ open')+'</span>'+
       '</div>';
-    });
+    if(isOpen){
+      html+='<div class="grid">';
+      groups[pr].forEach(function(p){
+        lastRendered.push(p);
+        var idx=lastRendered.length-1;
+        var ls=labelsOf(p.path);
+        var chips='<span class="tag proj">'+esc(p.project)+'</span>';
+        chips+=ls.slice(0,4).map(function(l){
+          var hit=f.q && l.toLowerCase().indexOf(f.q)>=0;
+          return '<span class="tag'+(hit?' hit':'')+'">'+esc(l)+'</span>';
+        }).join('');
+        if(ls.length>4){ chips+='<span class="tag">+'+(ls.length-4)+'</span>'; }
+        html+='<div class="ph'+(selected[p.path]?' selected':'')+'" onclick="photoClick('+idx+')">'+
+          '<span class="sel-mark">✓</span>'+
+          '<img loading="lazy" src="'+esc(encodeURI(p.path))+'" alt="'+esc(p.name)+'">'+
+          '<div class="ph-meta"><div class="ph-labels">'+chips+'</div></div>'+
+        '</div>';
+      });
+      html+='</div>';
+    }
     html+='</div>';
   });
   area.innerHTML=html;
+}
+function toggleProject(pr){
+  openProjects[pr]=!openProjects[pr];
+  renderGrid();
 }
 function renderAll(){
   renderProjFilter();
