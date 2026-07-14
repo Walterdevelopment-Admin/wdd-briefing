@@ -406,13 +406,7 @@ function renderLabelCloud(){
   var html=Object.keys(projCounts).sort().map(function(pr){
     return '<span class="lchip proj" onclick="filterProject(\''+esc(pr).replace(/'/g,"\\'")+'\')">'+esc(pr)+'<span class="lc-n">'+projCounts[pr]+'</span></span>';
   }).join('');
-  if(!keys.length && !html){
-    cloud.innerHTML='<span class="cloud-note">No labels yet — click a photo to start tagging materials.</span>';
-    return;
-  }
-  html+=keys.map(function(k){
-    return '<span class="lchip" onclick="searchLabel(\''+esc(all[k].display).replace(/'/g,"\\'")+'\')">'+esc(all[k].display)+'<span class="lc-n">'+all[k].count+'</span></span>';
-  }).join('');
+  /* material labels stay searchable (search box + autocomplete) but are not shown as chips */
   cloud.innerHTML=html;
 }
 function searchLabel(l){
