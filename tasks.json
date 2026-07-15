@@ -169,6 +169,16 @@
       "start": "",
       "end": "",
       "done": false
+    },
+    {
+      "id": "t1784078098321",
+      "title": "P26-03 Concept Design-WFH",
+      "assignee": "david",
+      "project": "P2026-0003",
+      "assignedBy": "Walter",
+      "start": "2026-07-15",
+      "end": "2026-07-19",
+      "done": false
     }
   ],
   "projects": {
