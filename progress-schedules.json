@@ -1,0 +1,610 @@
+{
+  "version": 2,
+  "activeId": "ridgeline",
+  "projects": [
+    {
+      "id": "ridgeline",
+      "name": "Ridgeline - 30 Ridgeline Way, Keppera",
+      "meta": {
+        "code": "P2024-0014",
+        "schedDate": "2026-07-14",
+        "note": "工期以每週一至週六計（不含週日）",
+        "noteEn": "Durations counted Mon-Sat (Sun excluded)"
+      },
+      "tasks": [
+        {
+          "name": "建築核准(BA)條件審查",
+          "nameEn": "BA Conditions Review",
+          "durDays": 4,
+          "start": "2026-07-06",
+          "finish": "2026-07-09",
+          "critical": true
+        },
+        {
+          "name": "發放施工圖說",
+          "nameEn": "Issue Construction Set",
+          "durDays": 4,
+          "start": "2026-07-10",
+          "finish": "2026-07-14",
+          "critical": true
+        },
+        {
+          "name": "選材／長交期項目確認",
+          "nameEn": "Selections / Long Lead Sign-off",
+          "durDays": 12,
+          "start": "2026-07-15",
+          "finish": "2026-07-28",
+          "critical": false
+        },
+        {
+          "name": "工地設置／進場準備",
+          "nameEn": "Site Establishment",
+          "durDays": 6,
+          "start": "2026-07-10",
+          "finish": "2026-07-16",
+          "critical": true
+        },
+        {
+          "name": "測量放樣",
+          "nameEn": "Survey Setout",
+          "durDays": 4,
+          "start": "2026-07-17",
+          "finish": "2026-07-21",
+          "critical": false
+        },
+        {
+          "name": "鄰地使用通知",
+          "nameEn": "Neighbour Access Notice",
+          "durDays": 1,
+          "start": "2026-07-17",
+          "finish": "2026-07-17",
+          "critical": false
+        },
+        {
+          "name": "基地開挖／整地",
+          "nameEn": "Site Cut",
+          "durDays": 4,
+          "start": "2026-07-22",
+          "finish": "2026-07-25",
+          "critical": true
+        },
+        {
+          "name": "臨時排水／沖蝕防護",
+          "nameEn": "Temp Stormwater / Erosion",
+          "durDays": 6,
+          "start": "2026-07-22",
+          "finish": "2026-07-28",
+          "critical": false
+        },
+        {
+          "name": "平台／擋土牆準備",
+          "nameEn": "Platform / Retaining Prep",
+          "durDays": 6,
+          "start": "2026-07-27",
+          "finish": "2026-08-01",
+          "critical": true
+        },
+        {
+          "name": "地下給排水管",
+          "nameEn": "Plumbing Inground",
+          "durDays": 9,
+          "start": "2026-07-27",
+          "finish": "2026-08-05",
+          "critical": true
+        },
+        {
+          "name": "地下電氣管線",
+          "nameEn": "Electrical Inground",
+          "durDays": 6,
+          "start": "2026-07-27",
+          "finish": "2026-08-01",
+          "critical": false
+        },
+        {
+          "name": "水電管溝放樣",
+          "nameEn": "Hydraulic Duct Setout",
+          "durDays": 4,
+          "start": "2026-08-06",
+          "finish": "2026-08-10",
+          "critical": true
+        },
+        {
+          "name": "基腳／邊樑",
+          "nameEn": "Footings / Edge Beams",
+          "durDays": 9,
+          "start": "2026-08-06",
+          "finish": "2026-08-17",
+          "critical": true
+        },
+        {
+          "name": "基礎第一階段里程碑",
+          "nameEn": "Base Part 01 Milestone",
+          "durDays": 0,
+          "start": "2026-08-17",
+          "finish": "2026-08-17",
+          "critical": true
+        },
+        {
+          "name": "樓板降板",
+          "nameEn": "Slab Setdowns",
+          "durDays": 6,
+          "start": "2026-08-18",
+          "finish": "2026-08-24",
+          "critical": true
+        },
+        {
+          "name": "白蟻防治",
+          "nameEn": "Termite Treatment",
+          "durDays": 2,
+          "start": "2026-08-25",
+          "finish": "2026-08-26",
+          "critical": true
+        },
+        {
+          "name": "澆置前檢查",
+          "nameEn": "Pre-pour Inspection",
+          "durDays": 4,
+          "start": "2026-08-27",
+          "finish": "2026-08-31",
+          "critical": true
+        },
+        {
+          "name": "樓板混凝土澆置",
+          "nameEn": "Slab Pour",
+          "durDays": 3,
+          "start": "2026-09-01",
+          "finish": "2026-09-03",
+          "critical": true
+        },
+        {
+          "name": "基礎第二階段里程碑",
+          "nameEn": "Base Part 02 Milestone",
+          "durDays": 0,
+          "start": "2026-09-03",
+          "finish": "2026-09-03",
+          "critical": true
+        },
+        {
+          "name": "結構框架進料",
+          "nameEn": "Frame Delivery",
+          "durDays": 3,
+          "start": "2026-09-04",
+          "finish": "2026-09-07",
+          "critical": true
+        },
+        {
+          "name": "地面層框架安裝",
+          "nameEn": "GF Frame Install",
+          "durDays": 12,
+          "start": "2026-09-08",
+          "finish": "2026-09-21",
+          "critical": true
+        },
+        {
+          "name": "鋼構／過樑進料",
+          "nameEn": "Steel / Lintels Delivery",
+          "durDays": 12,
+          "start": "2026-09-22",
+          "finish": "2026-10-06",
+          "critical": true
+        },
+        {
+          "name": "框架第一階段里程碑",
+          "nameEn": "Frame Part 01 Milestone",
+          "durDays": 0,
+          "start": "2026-10-06",
+          "finish": "2026-10-06",
+          "critical": true
+        },
+        {
+          "name": "上層框架安裝",
+          "nameEn": "UF Frame Install",
+          "durDays": 12,
+          "start": "2026-10-07",
+          "finish": "2026-10-20",
+          "critical": true
+        },
+        {
+          "name": "屋架桁架安裝",
+          "nameEn": "Roof Truss Install",
+          "durDays": 12,
+          "start": "2026-10-21",
+          "finish": "2026-11-03",
+          "critical": true
+        },
+        {
+          "name": "框架檢查",
+          "nameEn": "Frame Inspection",
+          "durDays": 4,
+          "start": "2026-11-04",
+          "finish": "2026-11-07",
+          "critical": true
+        },
+        {
+          "name": "框架第二階段里程碑",
+          "nameEn": "Frame Part 02 Milestone",
+          "durDays": 0,
+          "start": "2026-11-07",
+          "finish": "2026-11-07",
+          "critical": true
+        },
+        {
+          "name": "屋頂／落水槽(天溝)",
+          "nameEn": "Roofing / Gutters",
+          "durDays": 15,
+          "start": "2026-11-09",
+          "finish": "2026-11-25",
+          "critical": false
+        },
+        {
+          "name": "窗戶安裝",
+          "nameEn": "Windows Install",
+          "durDays": 20,
+          "start": "2026-11-09",
+          "finish": "2026-12-01",
+          "critical": true
+        },
+        {
+          "name": "封閉第一階段里程碑",
+          "nameEn": "Enclosed Part 01 Milestone",
+          "durDays": 0,
+          "start": "2026-12-01",
+          "finish": "2026-12-01",
+          "critical": true
+        },
+        {
+          "name": "外門安裝／封閉上鎖",
+          "nameEn": "External Doors / Lock-up",
+          "durDays": 15,
+          "start": "2026-12-02",
+          "finish": "2026-12-18",
+          "critical": false
+        },
+        {
+          "name": "車庫門開口檢查",
+          "nameEn": "Garage Opening Check",
+          "durDays": 2,
+          "start": "2026-12-19",
+          "finish": "2026-12-21",
+          "critical": false
+        },
+        {
+          "name": "磚作／粉刷底層",
+          "nameEn": "Brick / Render Substrate",
+          "durDays": 35,
+          "start": "2026-12-02",
+          "finish": "2027-01-15",
+          "critical": false
+        },
+        {
+          "name": "保麗龍(EPS)外牆板",
+          "nameEn": "Polystyrene Cladding",
+          "durDays": 30,
+          "start": "2026-12-02",
+          "finish": "2027-01-09",
+          "critical": false
+        },
+        {
+          "name": "外牆油漆",
+          "nameEn": "External Painting",
+          "durDays": 12,
+          "start": "2027-01-11",
+          "finish": "2027-01-23",
+          "critical": false
+        },
+        {
+          "name": "石材外牆",
+          "nameEn": "Stone Cladding",
+          "durDays": 25,
+          "start": "2027-01-16",
+          "finish": "2027-02-15",
+          "critical": false
+        },
+        {
+          "name": "鋁板外牆／格柵",
+          "nameEn": "Aluminium Cladding / Screen",
+          "durDays": 25,
+          "start": "2027-01-16",
+          "finish": "2027-02-15",
+          "critical": false
+        },
+        {
+          "name": "封閉第二階段里程碑",
+          "nameEn": "Enclosed Part 02 Milestone",
+          "durDays": 0,
+          "start": "2027-02-15",
+          "finish": "2027-02-15",
+          "critical": false
+        },
+        {
+          "name": "給排水初步配管",
+          "nameEn": "Plumbing Rough-in",
+          "durDays": 12,
+          "start": "2026-11-26",
+          "finish": "2026-12-09",
+          "critical": true
+        },
+        {
+          "name": "電氣初步配線",
+          "nameEn": "Electrical Rough-in",
+          "durDays": 12,
+          "start": "2026-12-08",
+          "finish": "2026-12-21",
+          "critical": true
+        },
+        {
+          "name": "空調初步配管",
+          "nameEn": "AC Rough-in",
+          "durDays": 9,
+          "start": "2026-12-22",
+          "finish": "2027-01-05",
+          "critical": false
+        },
+        {
+          "name": "監視系統初步配線",
+          "nameEn": "CCTV Rough-in",
+          "durDays": 6,
+          "start": "2026-12-22",
+          "finish": "2026-12-31",
+          "critical": false
+        },
+        {
+          "name": "初步管線檢查",
+          "nameEn": "Rough-in Inspection",
+          "durDays": 4,
+          "start": "2027-01-06",
+          "finish": "2027-01-09",
+          "critical": true
+        },
+        {
+          "name": "隔熱／保溫",
+          "nameEn": "Insulation",
+          "durDays": 6,
+          "start": "2027-01-11",
+          "finish": "2027-01-16",
+          "critical": true
+        },
+        {
+          "name": "石膏板／批土",
+          "nameEn": "Plasterboard / Setting",
+          "durDays": 15,
+          "start": "2027-01-18",
+          "finish": "2027-02-04",
+          "critical": true
+        },
+        {
+          "name": "固定安裝第一階段里程碑",
+          "nameEn": "Fixing Part 01 Milestone",
+          "durDays": 0,
+          "start": "2027-02-04",
+          "finish": "2027-02-04",
+          "critical": true
+        },
+        {
+          "name": "防水",
+          "nameEn": "Waterproofing",
+          "durDays": 6,
+          "start": "2027-02-05",
+          "finish": "2027-02-11",
+          "critical": true
+        },
+        {
+          "name": "水泥砂漿找平／淋浴壁龕",
+          "nameEn": "Screeds / Shower Niches",
+          "durDays": 9,
+          "start": "2027-02-12",
+          "finish": "2027-02-22",
+          "critical": true
+        },
+        {
+          "name": "濕區磁磚",
+          "nameEn": "Wet Area Tiling",
+          "durDays": 12,
+          "start": "2027-02-23",
+          "finish": "2027-03-08",
+          "critical": true
+        },
+        {
+          "name": "室內固定安裝(木作)",
+          "nameEn": "Internal Fixing",
+          "durDays": 12,
+          "start": "2027-02-05",
+          "finish": "2027-02-18",
+          "critical": false
+        },
+        {
+          "name": "廚房／備餐間櫥櫃",
+          "nameEn": "Kitchen / Butler Joinery",
+          "durDays": 18,
+          "start": "2027-02-05",
+          "finish": "2027-02-25",
+          "critical": false
+        },
+        {
+          "name": "固定安裝第二階段里程碑",
+          "nameEn": "Fixing Part 02 Milestone",
+          "durDays": 0,
+          "start": "2027-02-25",
+          "finish": "2027-02-25",
+          "critical": false
+        },
+        {
+          "name": "洗衣間／浴櫃櫥櫃",
+          "nameEn": "Laundry / Vanity Joinery",
+          "durDays": 18,
+          "start": "2027-03-09",
+          "finish": "2027-04-01",
+          "critical": false
+        },
+        {
+          "name": "石材檯面",
+          "nameEn": "Stone Benchtops",
+          "durDays": 12,
+          "start": "2027-02-26",
+          "finish": "2027-03-11",
+          "critical": false
+        },
+        {
+          "name": "室內油漆",
+          "nameEn": "Internal Painting",
+          "durDays": 18,
+          "start": "2027-03-09",
+          "finish": "2027-04-01",
+          "critical": true
+        },
+        {
+          "name": "木地板／樓梯",
+          "nameEn": "Timber Flooring / Stairs",
+          "durDays": 12,
+          "start": "2027-04-02",
+          "finish": "2027-04-15",
+          "critical": true
+        },
+        {
+          "name": "主要樓地面磁磚",
+          "nameEn": "Main Floor Tiling",
+          "durDays": 12,
+          "start": "2027-04-02",
+          "finish": "2027-04-15",
+          "critical": false
+        },
+        {
+          "name": "欄杆扶手",
+          "nameEn": "Balustrades",
+          "durDays": 9,
+          "start": "2027-04-16",
+          "finish": "2027-04-27",
+          "critical": true
+        },
+        {
+          "name": "車庫門安裝",
+          "nameEn": "Garage Door Install",
+          "durDays": 3,
+          "start": "2027-04-02",
+          "finish": "2027-04-05",
+          "critical": false
+        },
+        {
+          "name": "給排水收尾安裝",
+          "nameEn": "Plumbing Fit-off",
+          "durDays": 9,
+          "start": "2027-03-12",
+          "finish": "2027-03-22",
+          "critical": false
+        },
+        {
+          "name": "電氣收尾安裝",
+          "nameEn": "Electrical Fit-off",
+          "durDays": 9,
+          "start": "2027-03-12",
+          "finish": "2027-03-22",
+          "critical": false
+        },
+        {
+          "name": "家電安裝",
+          "nameEn": "Appliance Install",
+          "durDays": 4,
+          "start": "2027-03-23",
+          "finish": "2027-03-30",
+          "critical": false
+        },
+        {
+          "name": "空調收尾／試車",
+          "nameEn": "AC Fit-off / Commission",
+          "durDays": 6,
+          "start": "2027-04-02",
+          "finish": "2027-04-08",
+          "critical": false
+        },
+        {
+          "name": "監視系統安裝／測試",
+          "nameEn": "CCTV Install / Test",
+          "durDays": 4,
+          "start": "2027-04-02",
+          "finish": "2027-04-06",
+          "critical": false
+        },
+        {
+          "name": "更衣間／衣櫃櫥櫃",
+          "nameEn": "WIR / Robe Joinery",
+          "durDays": 18,
+          "start": "2027-04-02",
+          "finish": "2027-04-22",
+          "critical": false
+        },
+        {
+          "name": "門五金／門鎖",
+          "nameEn": "Door Hardware / Locks",
+          "durDays": 4,
+          "start": "2027-04-02",
+          "finish": "2027-04-06",
+          "critical": false
+        },
+        {
+          "name": "門廊／戶外露台收尾",
+          "nameEn": "Portico / Alfresco Finish",
+          "durDays": 9,
+          "start": "2027-02-16",
+          "finish": "2027-02-25",
+          "critical": false
+        },
+        {
+          "name": "車道混凝土",
+          "nameEn": "Driveway Concrete",
+          "durDays": 9,
+          "start": "2027-02-26",
+          "finish": "2027-03-08",
+          "critical": false
+        },
+        {
+          "name": "圍籬／信箱",
+          "nameEn": "Fence / Letterbox",
+          "durDays": 12,
+          "start": "2027-03-09",
+          "finish": "2027-03-22",
+          "critical": false
+        },
+        {
+          "name": "景觀綠化",
+          "nameEn": "Landscaping",
+          "durDays": 9,
+          "start": "2027-03-09",
+          "finish": "2027-03-18",
+          "critical": false
+        },
+        {
+          "name": "完工清潔",
+          "nameEn": "Final Clean",
+          "durDays": 6,
+          "start": "2027-03-19",
+          "finish": "2027-03-25",
+          "critical": false
+        },
+        {
+          "name": "證明文件／交屋資料包",
+          "nameEn": "Certificates / Handover Pack",
+          "durDays": 6,
+          "start": "2027-03-09",
+          "finish": "2027-03-15",
+          "critical": false
+        },
+        {
+          "name": "建商缺失修繕",
+          "nameEn": "Builder Defects Rectification",
+          "durDays": 6,
+          "start": "2027-03-30",
+          "finish": "2027-04-05",
+          "critical": false
+        },
+        {
+          "name": "完工實質檢查(PC)",
+          "nameEn": "PC Inspection",
+          "durDays": 4,
+          "start": "2027-04-28",
+          "finish": "2027-05-01",
+          "critical": true
+        }
+      ]
+    }
+  ]
+}

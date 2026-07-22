@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>施工進度表 · Progress Schedule (Gantt)</title>
+<style>
+  :root{ --bg:#f3f5f7; --panel:#fff; --line:#d7dde3; --line2:#eef1f4; --ink:#1c2530; --muted:#6b7684; --head:#3c4a5a; --accent:#2e75b6; }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Microsoft JhengHei","Noto Sans TC","Segoe UI",system-ui,sans-serif;font-size:13px;}
+  button,input,select{font-family:inherit;font-size:13px;color:var(--ink);}
+  .wrap{max-width:100%;padding:12px 14px 40px;}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;}
+  .grp{display:flex;gap:6px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 8px;}
+  .grp label{color:var(--muted);font-size:12px;}
+  button{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:5px 10px;transition:.12s;}
+  button:hover{border-color:var(--accent);color:var(--accent);}
+  button.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  button.primary:hover{filter:brightness(1.07);color:#fff;}
+  button.danger:hover{border-color:#c0392b;color:#c0392b;}
+  select,input[type=text],input[type=date],input[type=number]{border:1px solid var(--line);border-radius:6px;padding:4px 6px;background:#fff;}
+  select{min-width:180px;}
+  .sync{font-size:12px;cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:#fff;}
+  .sync.ok{color:#2e7d32;border-color:#bfe0c2;} .sync.dirty{color:#b26a00;border-color:#f0d9a8;background:#fff8ec;} .sync.ro{color:#8a6d3b;} .sync.bad{color:#c0392b;border-color:#e6b0aa;}
+  .meta{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px 16px;}
+  .meta .f{display:flex;flex-direction:column;gap:3px;} .meta .f label{color:var(--muted);font-size:11px;} .meta .f input{width:100%;}
+  .meta .title-f{grid-column:1/-1;} .meta .title-f input{font-size:16px;font-weight:700;}
+  .board{position:relative;overflow:auto;max-height:68vh;border:1px solid var(--line);border-radius:8px;background:#fff;}
+  .content{position:relative;}
+  .overlay{position:absolute;pointer-events:none;z-index:0;} .vline{position:absolute;top:0;bottom:0;width:1px;background:var(--line2);}
+  .row{display:flex;align-items:stretch;border-top:1px solid var(--line2);position:relative;}
+  .row:nth-child(even) .lcells{background:#f8fafb;} .row:nth-child(even) .track{background:#fbfcfd;}
+  .lcells{display:flex;align-items:center;position:sticky;left:0;z-index:2;background:#fff;border-right:1px solid var(--line);}
+  .track{position:relative;z-index:1;}
+  .row.head{position:sticky;top:0;z-index:6;border-top:none;} .row.head .lcells{z-index:7;background:var(--head);color:#fff;border-right:1px solid #2c3744;}
+  .row.head .thead{background:#eef1f4;position:relative;}
+  .lhcell{padding:6px 6px;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;text-align:center;}
+  .c-id{width:38px;flex:0 0 38px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;}
+  .c-name{width:216px;flex:0 0 216px;} .c-dur{width:70px;flex:0 0 70px;} .c-start{width:126px;flex:0 0 126px;} .c-finish{width:126px;flex:0 0 126px;}
+  .c-crit{width:46px;flex:0 0 46px;display:flex;align-items:center;justify-content:center;} .c-act{width:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:center;}
+  .cell{padding:3px 5px;} .cell input{width:100%;border:1px solid transparent;background:transparent;padding:4px 5px;border-radius:5px;}
+  .cell input:hover{border-color:var(--line);} .cell input:focus{border-color:var(--accent);background:#fff;outline:none;}
+  .wd{font-size:10px;color:var(--muted);text-align:center;line-height:1;margin-top:1px;}
+  .qlab{position:absolute;top:0;height:20px;line-height:20px;font-size:12px;font-weight:700;text-align:center;color:#2b3a4a;border-right:1px solid #9aa4b0;border-bottom:1px solid #9aa4b0;overflow:hidden;}
+  .mlab{position:absolute;top:20px;height:20px;line-height:20px;font-size:11px;text-align:center;color:#4a5560;border-right:1px solid #cfd6dd;overflow:hidden;}
+  .bar{position:absolute;top:8px;height:13px;background:#5b9bd5;border:1px solid #2e75b6;border-radius:2px;} .bar.crit{background:#ec7d74;border-color:#c0392b;}
+  .blab{position:absolute;top:6px;font-size:11px;line-height:17px;white-space:nowrap;color:#333;}
+  .ms{position:absolute;top:7px;width:13px;height:13px;background:#2f3b47;transform:rotate(45deg);} .ms.crit{background:#c0392b;}
+  .mslab{position:absolute;top:6px;font-size:11px;line-height:17px;white-space:nowrap;color:#333;font-weight:600;}
+  .today{position:absolute;top:0;bottom:0;width:2px;background:rgba(192,57,43,.55);z-index:3;}
+  .foot{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:10px;color:#444;font-size:12px;}
+  .lg{display:flex;gap:6px;align-items:center;} .sw{width:26px;height:11px;border-radius:2px;} .sw.task{background:#5b9bd5;border:1px solid #2e75b6;} .sw.crit{background:#ec7d74;border:1px solid #c0392b;} .sw.ms{width:12px;height:12px;background:#c0392b;transform:rotate(45deg);}
+  .addbtn{margin-top:10px;} .hint{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.6;}
+  /* print view */
+  #printView{display:none;}
+  .pv{font-family:"Microsoft JhengHei","Noto Sans TC","Segoe UI",sans-serif;color:#1a1a1a;}
+  .pv .ptitle{font-size:15px;font-weight:700;margin:0 0 2px;} .pv .psub{font-size:9px;color:#555;margin:0 0 8px;}
+  .pv .pgrid{display:flex;border:1px solid #6b6b6b;} .pv .pleft{border-right:1px solid #6b6b6b;} .pv .pright{position:relative;}
+  .pv .phrow{display:flex;align-items:center;height:32px;background:#3c4a5a;color:#fff;font-size:9px;font-weight:700;} .pv .phrow>div{padding:0 4px;overflow:hidden;}
+  .pv .p-id{width:30px;flex:0 0 30px;text-align:center;} .pv .p-name{width:150px;flex:0 0 150px;} .pv .p-dur{width:40px;flex:0 0 40px;text-align:center;} .pv .p-date{width:82px;flex:0 0 82px;text-align:center;}
+  .pv .ptrow{display:flex;align-items:center;height:12px;font-size:7.2px;border-top:1px solid #e2e2e2;} .pv .ptrow>div{padding:0 4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;} .pv .pz{background:#f4f6f8;}
+  .pv .prhead{position:relative;height:32px;border-bottom:1px solid #6b6b6b;background:#eef1f4;}
+  .pv .pql{position:absolute;top:0;height:15px;line-height:15px;font-size:8px;font-weight:700;text-align:center;border-right:1px solid #9aa4b0;border-bottom:1px solid #9aa4b0;color:#2b3a4a;overflow:hidden;}
+  .pv .pml{position:absolute;top:15px;height:17px;line-height:17px;font-size:7.5px;text-align:center;border-right:1px solid #cfd6dd;color:#4a5560;overflow:hidden;}
+  .pv .pchart{position:relative;} .pv .pvln{position:absolute;top:0;left:0;right:0;bottom:0;} .pv .pv1{position:absolute;top:0;bottom:0;width:1px;background:#e6e9ec;}
+  .pv .pbrow{position:relative;height:12px;border-top:1px solid #eee;}
+  .pv .pbar{position:absolute;top:2.5px;height:7px;background:#5b9bd5;border:1px solid #2e75b6;border-radius:1px;} .pv .pbar.crit{background:#ec7d74;border-color:#c0392b;}
+  .pv .pbl{position:absolute;top:1px;font-size:6.8px;line-height:10px;white-space:nowrap;color:#333;}
+  .pv .pms{position:absolute;top:2px;width:8px;height:8px;background:#2f3b47;transform:rotate(45deg);} .pv .pms.crit{background:#c0392b;}
+  .pv .pmsl{position:absolute;top:1px;font-size:6.8px;line-height:10px;white-space:nowrap;color:#333;font-weight:600;}
+  .pv .pleg{margin-top:8px;font-size:8px;color:#444;display:flex;gap:18px;align-items:center;} .pv .plg{display:flex;gap:5px;align-items:center;}
+  .pv .psw{width:22px;height:8px;} .pv .psw.t{background:#5b9bd5;border:1px solid #2e75b6;} .pv .psw.c{background:#ec7d74;border:1px solid #c0392b;} .pv .psm{width:9px;height:9px;background:#c0392b;transform:rotate(45deg);}
+  .pv .pfoot{margin-top:6px;font-size:8px;color:#666;}
+  @media print{ @page{size:A3 landscape;margin:8mm;} body{background:#fff;} .toolbar,.meta,.board,.addbtn,.foot,.hint,.no-print{display:none!important;} #printView{display:block!important;} .wrap{padding:0;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="toolbar no-print">
+    <div class="grp"><label id="lblProj"></label><select id="projSel"></select>
+      <button id="pNew"></button><button id="pRename"></button><button id="pDup"></button><button id="pDel" class="danger"></button></div>
+    <div class="grp"><button id="langBtn"></button></div>
+    <div class="grp"><button id="cloudSave" class="primary"></button><button id="cloudReload"></button><span class="sync ro" id="sync" title=""></span></div>
+    <div class="grp"><button id="print"></button><button id="expJson"></button><button id="impJson"></button></div>
+    <div class="grp"><label id="lblZoom"></label><button id="zOut">－</button><button id="zIn">＋</button><button id="recalc"></button></div>
+    <input type="file" id="fileIn" accept="application/json" style="display:none">
+  </div>
+  <div class="meta" id="meta"></div>
+  <div class="board" id="board"><div class="content" id="content"></div></div>
+  <button class="addbtn primary" id="addRow"></button>
+  <div class="foot" id="foot"></div>
+  <div class="hint no-print" id="hint"></div>
+</div>
+<div id="printView"></div>
+
+<script>
+/* ===== bilingual dictionaries ===== */
+var LANGS={
+  zh:{ htmlLang:"zh-Hant", locale:"zh-TW", other:"EN", langBtn:"切換 English",
+    projectLabel:"案子", add:"＋新增", rename:"改名", dup:"複製", del:"刪除",
+    cloudSave:"儲存到雲端", cloudReload:"從雲端重新載入", print:"列印 / 存 PDF", expJson:"匯出 JSON", impJson:"匯入 JSON", zoom:"縮放", recalc:"工期→完成日", addRow:"＋ 新增工作列",
+    metaName:"案名 / 標題", metaCode:"專案代號", metaSchedDate:"排程日期", metaNote:"備註",
+    colId:"#", colName:"工作項目", colDur:"工期", colStart:"開始", colFinish:"完成", colCrit:"關鍵",
+    legCrit:"關鍵路徑 (Critical)", legTask:"一般作業 (Task)", legMs:"里程碑 (Milestone，工期填 0)", legMsShort:"里程碑 (Milestone)", legToday:"紅色直線＝今天",
+    hint:"· 左側編輯、右側即時生成。勾「關鍵」變紅、工期填 0 為里程碑。中/英同一份資料，切換語言即可。<br>· 按「儲存到雲端」把變更 commit 到 GitHub（需先點右上狀態貼上 token）；同事按「從雲端重新載入」即同步。列印請選 A3 橫向。",
+    newProjName:"新案子", newTaskName:"新工作項目", copySuffix:"（複製）", promptNewProj:"新案子的案名：", promptRename:"案名：",
+    importErr:"檔案格式不正確。", alertKeepOne:"至少要保留一個案子。",
+    confirmRecalc:"依工期以每週一至週六（不含週日）重算所有完成日？工期 0 的里程碑不變。",
+    confirmImport:"匯入將取代目前所有案子，確定？", confirmReload:"從雲端重新載入會捨棄尚未儲存的本機變更，確定？",
+    dirtyWarn:"有尚未儲存到雲端的變更，確定離開？",
+    syncSaving:"儲存中…", syncOk:"已同步 ✓", syncDirty:"● 未儲存變更", syncRO:"唯讀 — 點此貼上 token 🔑", syncBad:"token 無效 — 點此更新 🔑", syncSaved:"已儲存到雲端 ✓", syncFail:"儲存失敗 — 檢查連線/token",
+    tokenPrompt:"貼上 wdd-briefing 的 GitHub token（只存在此瀏覽器）。留空可清除：",
+    recoverLocal:"偵測到未儲存的本機變更，要載入本機暫存（而非雲端最新）嗎？",
+    durUnit:function(n){return n+" 天";}, month:function(i){return ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"][i];},
+    quarter:function(y,q){return y+" 第"+["一","二","三","四"][q-1]+"季";}, wdHint:function(d){return "週"+["日","一","二","三","四","五","六"][d];},
+    pdate:function(d){var w=["日","一","二","三","四","五","六"];return d.getFullYear()+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+String(d.getDate()).padStart(2,"0")+" ("+w[d.getDay()]+")";},
+    pTitleSuffix:"｜施工進度表", pSubCode:"專案 ", pSubDate:"排程日期 ", pFoot:function(n,dt){return "Project: "+n+"　　Date: "+dt;} },
+  en:{ htmlLang:"en", locale:"en-AU", other:"中文", langBtn:"切換中文",
+    projectLabel:"Project", add:"+ New", rename:"Rename", dup:"Duplicate", del:"Delete",
+    cloudSave:"Save to cloud", cloudReload:"Reload from cloud", print:"Print / Save PDF", expJson:"Export JSON", impJson:"Import JSON", zoom:"Zoom", recalc:"Duration→Finish", addRow:"+ Add task row",
+    metaName:"Project / Title", metaCode:"Project No.", metaSchedDate:"Schedule date", metaNote:"Note",
+    colId:"#", colName:"Task Name", colDur:"Dur.", colStart:"Start", colFinish:"Finish", colCrit:"Crit.",
+    legCrit:"Critical", legTask:"Task", legMs:"Milestone (Duration = 0)", legMsShort:"Milestone", legToday:"Red line = today",
+    hint:"· Edit on the left, Gantt updates live. Tick Crit. for red, Duration 0 for a milestone. One shared dataset — just switch language.<br>· Click “Save to cloud” to commit to GitHub (set your token via the status chip first); teammates click “Reload from cloud” to sync. Print in A3 Landscape.",
+    newProjName:"New Project", newTaskName:"New Task", copySuffix:" (copy)", promptNewProj:"New project name:", promptRename:"Project name:",
+    importErr:"Invalid file format.", alertKeepOne:"At least one project must remain.",
+    confirmRecalc:"Recalculate all Finish dates from Duration (Mon-Sat working week)? Milestones (0) unchanged.",
+    confirmImport:"Importing replaces all current projects. Continue?", confirmReload:"Reloading from cloud discards unsaved local changes. Continue?",
+    dirtyWarn:"You have changes not saved to the cloud. Leave anyway?",
+    syncSaving:"Saving…", syncOk:"Synced ✓", syncDirty:"● Unsaved changes", syncRO:"Read-only — click to set token 🔑", syncBad:"Token invalid — click to update 🔑", syncSaved:"Saved to cloud ✓", syncFail:"Save failed — check connection/token",
+    tokenPrompt:"Paste the GitHub token for wdd-briefing (stored only in this browser). Leave empty to clear:",
+    recoverLocal:"Unsaved local changes found. Load the local draft instead of the cloud version?",
+    durUnit:function(n){return n+" "+(n==1?"day":"days");}, month:function(i){return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][i];},
+    quarter:function(y,q){return "Q"+q+" "+y;}, wdHint:function(d){return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d];},
+    pdate:function(d){var w=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];return w[d.getDay()]+" "+d.getDate()+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+String(d.getFullYear()).slice(2);},
+    pTitleSuffix:" | Construction Progress Schedule", pSubCode:"Project No. ", pSubDate:"Schedule date ", pFoot:function(n,dt){return "Project: "+n+"    Date: "+dt;} }
+};
+
+/* ===== GitHub sync config (same repo + token as the photo library) ===== */
+var GH_REPO="Walterdevelopment-Admin/wdd-briefing", GH_BRANCH="main", DATA_PATH="progress-schedules.json";
+var DATA_API="https://api.github.com/repos/"+GH_REPO+"/contents/"+DATA_PATH;
+var GH_TOKEN=null; try{ GH_TOKEN=localStorage.getItem("wdd_gh_token")||null; }catch(e){}
+var tokenBad=false, dataSha=null, dirty=false;
+var CACHE_KEY="acg_gantt_cache_v2";
+
+var SEED={"version":2,"activeId":"ridgeline","projects":[{"id":"ridgeline","name":"Ridgeline - 30 Ridgeline Way, Keppera","meta":{"code":"P2024-0014","schedDate":"2026-07-14","note":"工期以每週一至週六計（不含週日）","noteEn":"Durations counted Mon-Sat (Sun excluded)"},"tasks":[{"name":"建築核准(BA)條件審查","nameEn":"BA Conditions Review","durDays":4,"start":"2026-07-06","finish":"2026-07-09","critical":true},{"name":"發放施工圖說","nameEn":"Issue Construction Set","durDays":4,"start":"2026-07-10","finish":"2026-07-14","critical":true},{"name":"選材／長交期項目確認","nameEn":"Selections / Long Lead Sign-off","durDays":12,"start":"2026-07-15","finish":"2026-07-28","critical":false},{"name":"工地設置／進場準備","nameEn":"Site Establishment","durDays":6,"start":"2026-07-10","finish":"2026-07-16","critical":true},{"name":"測量放樣","nameEn":"Survey Setout","durDays":4,"start":"2026-07-17","finish":"2026-07-21","critical":false},{"name":"鄰地使用通知","nameEn":"Neighbour Access Notice","durDays":1,"start":"2026-07-17","finish":"2026-07-17","critical":false},{"name":"基地開挖／整地","nameEn":"Site Cut","durDays":4,"start":"2026-07-22","finish":"2026-07-25","critical":true},{"name":"臨時排水／沖蝕防護","nameEn":"Temp Stormwater / Erosion","durDays":6,"start":"2026-07-22","finish":"2026-07-28","critical":false},{"name":"平台／擋土牆準備","nameEn":"Platform / Retaining Prep","durDays":6,"start":"2026-07-27","finish":"2026-08-01","critical":true},{"name":"地下給排水管","nameEn":"Plumbing Inground","durDays":9,"start":"2026-07-27","finish":"2026-08-05","critical":true},{"name":"地下電氣管線","nameEn":"Electrical Inground","durDays":6,"start":"2026-07-27","finish":"2026-08-01","critical":false},{"name":"水電管溝放樣","nameEn":"Hydraulic Duct Setout","durDays":4,"start":"2026-08-06","finish":"2026-08-10","critical":true},{"name":"基腳／邊樑","nameEn":"Footings / Edge Beams","durDays":9,"start":"2026-08-06","finish":"2026-08-17","critical":true},{"name":"基礎第一階段里程碑","nameEn":"Base Part 01 Milestone","durDays":0,"start":"2026-08-17","finish":"2026-08-17","critical":true},{"name":"樓板降板","nameEn":"Slab Setdowns","durDays":6,"start":"2026-08-18","finish":"2026-08-24","critical":true},{"name":"白蟻防治","nameEn":"Termite Treatment","durDays":2,"start":"2026-08-25","finish":"2026-08-26","critical":true},{"name":"澆置前檢查","nameEn":"Pre-pour Inspection","durDays":4,"start":"2026-08-27","finish":"2026-08-31","critical":true},{"name":"樓板混凝土澆置","nameEn":"Slab Pour","durDays":3,"start":"2026-09-01","finish":"2026-09-03","critical":true},{"name":"基礎第二階段里程碑","nameEn":"Base Part 02 Milestone","durDays":0,"start":"2026-09-03","finish":"2026-09-03","critical":true},{"name":"結構框架進料","nameEn":"Frame Delivery","durDays":3,"start":"2026-09-04","finish":"2026-09-07","critical":true},{"name":"地面層框架安裝","nameEn":"GF Frame Install","durDays":12,"start":"2026-09-08","finish":"2026-09-21","critical":true},{"name":"鋼構／過樑進料","nameEn":"Steel / Lintels Delivery","durDays":12,"start":"2026-09-22","finish":"2026-10-06","critical":true},{"name":"框架第一階段里程碑","nameEn":"Frame Part 01 Milestone","durDays":0,"start":"2026-10-06","finish":"2026-10-06","critical":true},{"name":"上層框架安裝","nameEn":"UF Frame Install","durDays":12,"start":"2026-10-07","finish":"2026-10-20","critical":true},{"name":"屋架桁架安裝","nameEn":"Roof Truss Install","durDays":12,"start":"2026-10-21","finish":"2026-11-03","critical":true},{"name":"框架檢查","nameEn":"Frame Inspection","durDays":4,"start":"2026-11-04","finish":"2026-11-07","critical":true},{"name":"框架第二階段里程碑","nameEn":"Frame Part 02 Milestone","durDays":0,"start":"2026-11-07","finish":"2026-11-07","critical":true},{"name":"屋頂／落水槽(天溝)","nameEn":"Roofing / Gutters","durDays":15,"start":"2026-11-09","finish":"2026-11-25","critical":false},{"name":"窗戶安裝","nameEn":"Windows Install","durDays":20,"start":"2026-11-09","finish":"2026-12-01","critical":true},{"name":"封閉第一階段里程碑","nameEn":"Enclosed Part 01 Milestone","durDays":0,"start":"2026-12-01","finish":"2026-12-01","critical":true},{"name":"外門安裝／封閉上鎖","nameEn":"External Doors / Lock-up","durDays":15,"start":"2026-12-02","finish":"2026-12-18","critical":false},{"name":"車庫門開口檢查","nameEn":"Garage Opening Check","durDays":2,"start":"2026-12-19","finish":"2026-12-21","critical":false},{"name":"磚作／粉刷底層","nameEn":"Brick / Render Substrate","durDays":35,"start":"2026-12-02","finish":"2027-01-15","critical":false},{"name":"保麗龍(EPS)外牆板","nameEn":"Polystyrene Cladding","durDays":30,"start":"2026-12-02","finish":"2027-01-09","critical":false},{"name":"外牆油漆","nameEn":"External Painting","durDays":12,"start":"2027-01-11","finish":"2027-01-23","critical":false},{"name":"石材外牆","nameEn":"Stone Cladding","durDays":25,"start":"2027-01-16","finish":"2027-02-15","critical":false},{"name":"鋁板外牆／格柵","nameEn":"Aluminium Cladding / Screen","durDays":25,"start":"2027-01-16","finish":"2027-02-15","critical":false},{"name":"封閉第二階段里程碑","nameEn":"Enclosed Part 02 Milestone","durDays":0,"start":"2027-02-15","finish":"2027-02-15","critical":false},{"name":"給排水初步配管","nameEn":"Plumbing Rough-in","durDays":12,"start":"2026-11-26","finish":"2026-12-09","critical":true},{"name":"電氣初步配線","nameEn":"Electrical Rough-in","durDays":12,"start":"2026-12-08","finish":"2026-12-21","critical":true},{"name":"空調初步配管","nameEn":"AC Rough-in","durDays":9,"start":"2026-12-22","finish":"2027-01-05","critical":false},{"name":"監視系統初步配線","nameEn":"CCTV Rough-in","durDays":6,"start":"2026-12-22","finish":"2026-12-31","critical":false},{"name":"初步管線檢查","nameEn":"Rough-in Inspection","durDays":4,"start":"2027-01-06","finish":"2027-01-09","critical":true},{"name":"隔熱／保溫","nameEn":"Insulation","durDays":6,"start":"2027-01-11","finish":"2027-01-16","critical":true},{"name":"石膏板／批土","nameEn":"Plasterboard / Setting","durDays":15,"start":"2027-01-18","finish":"2027-02-04","critical":true},{"name":"固定安裝第一階段里程碑","nameEn":"Fixing Part 01 Milestone","durDays":0,"start":"2027-02-04","finish":"2027-02-04","critical":true},{"name":"防水","nameEn":"Waterproofing","durDays":6,"start":"2027-02-05","finish":"2027-02-11","critical":true},{"name":"水泥砂漿找平／淋浴壁龕","nameEn":"Screeds / Shower Niches","durDays":9,"start":"2027-02-12","finish":"2027-02-22","critical":true},{"name":"濕區磁磚","nameEn":"Wet Area Tiling","durDays":12,"start":"2027-02-23","finish":"2027-03-08","critical":true},{"name":"室內固定安裝(木作)","nameEn":"Internal Fixing","durDays":12,"start":"2027-02-05","finish":"2027-02-18","critical":false},{"name":"廚房／備餐間櫥櫃","nameEn":"Kitchen / Butler Joinery","durDays":18,"start":"2027-02-05","finish":"2027-02-25","critical":false},{"name":"固定安裝第二階段里程碑","nameEn":"Fixing Part 02 Milestone","durDays":0,"start":"2027-02-25","finish":"2027-02-25","critical":false},{"name":"洗衣間／浴櫃櫥櫃","nameEn":"Laundry / Vanity Joinery","durDays":18,"start":"2027-03-09","finish":"2027-04-01","critical":false},{"name":"石材檯面","nameEn":"Stone Benchtops","durDays":12,"start":"2027-02-26","finish":"2027-03-11","critical":false},{"name":"室內油漆","nameEn":"Internal Painting","durDays":18,"start":"2027-03-09","finish":"2027-04-01","critical":true},{"name":"木地板／樓梯","nameEn":"Timber Flooring / Stairs","durDays":12,"start":"2027-04-02","finish":"2027-04-15","critical":true},{"name":"主要樓地面磁磚","nameEn":"Main Floor Tiling","durDays":12,"start":"2027-04-02","finish":"2027-04-15","critical":false},{"name":"欄杆扶手","nameEn":"Balustrades","durDays":9,"start":"2027-04-16","finish":"2027-04-27","critical":true},{"name":"車庫門安裝","nameEn":"Garage Door Install","durDays":3,"start":"2027-04-02","finish":"2027-04-05","critical":false},{"name":"給排水收尾安裝","nameEn":"Plumbing Fit-off","durDays":9,"start":"2027-03-12","finish":"2027-03-22","critical":false},{"name":"電氣收尾安裝","nameEn":"Electrical Fit-off","durDays":9,"start":"2027-03-12","finish":"2027-03-22","critical":false},{"name":"家電安裝","nameEn":"Appliance Install","durDays":4,"start":"2027-03-23","finish":"2027-03-30","critical":false},{"name":"空調收尾／試車","nameEn":"AC Fit-off / Commission","durDays":6,"start":"2027-04-02","finish":"2027-04-08","critical":false},{"name":"監視系統安裝／測試","nameEn":"CCTV Install / Test","durDays":4,"start":"2027-04-02","finish":"2027-04-06","critical":false},{"name":"更衣間／衣櫃櫥櫃","nameEn":"WIR / Robe Joinery","durDays":18,"start":"2027-04-02","finish":"2027-04-22","critical":false},{"name":"門五金／門鎖","nameEn":"Door Hardware / Locks","durDays":4,"start":"2027-04-02","finish":"2027-04-06","critical":false},{"name":"門廊／戶外露台收尾","nameEn":"Portico / Alfresco Finish","durDays":9,"start":"2027-02-16","finish":"2027-02-25","critical":false},{"name":"車道混凝土","nameEn":"Driveway Concrete","durDays":9,"start":"2027-02-26","finish":"2027-03-08","critical":false},{"name":"圍籬／信箱","nameEn":"Fence / Letterbox","durDays":12,"start":"2027-03-09","finish":"2027-03-22","critical":false},{"name":"景觀綠化","nameEn":"Landscaping","durDays":9,"start":"2027-03-09","finish":"2027-03-18","critical":false},{"name":"完工清潔","nameEn":"Final Clean","durDays":6,"start":"2027-03-19","finish":"2027-03-25","critical":false},{"name":"證明文件／交屋資料包","nameEn":"Certificates / Handover Pack","durDays":6,"start":"2027-03-09","finish":"2027-03-15","critical":false},{"name":"建商缺失修繕","nameEn":"Builder Defects Rectification","durDays":6,"start":"2027-03-30","finish":"2027-04-05","critical":false},{"name":"完工實質檢查(PC)","nameEn":"PC Inspection","durDays":4,"start":"2027-04-28","finish":"2027-05-01","critical":true}]}]};
+var lang=(function(){ try{ return localStorage.getItem("acg_gantt_lang")||"zh"; }catch(e){ return "zh"; } })();
+var L=LANGS[lang], state=null, pxPerDay=4;
+
+/* ===== helpers ===== */
+function b64enc(str){ var b=new TextEncoder().encode(str),s=""; b.forEach(function(x){s+=String.fromCharCode(x);}); return btoa(s); }
+function b64dec(str){ var bin=atob(str.replace(/\s/g,"")),u=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i); return new TextDecoder("utf-8").decode(u); }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function uid(){ return "p"+Math.random().toString(36).slice(2,8); }
+function active(){ return state.projects.find(function(p){return p.id===state.activeId;})||state.projects[0]; }
+function nameKey(){ return lang==="en"?"nameEn":"name"; }
+function TN(tk){ return (lang==="en"?(tk.nameEn||tk.name):(tk.name||tk.nameEn))||""; }
+function noteKey(){ return lang==="en"?"noteEn":"note"; }
+function pISO(s){ if(!s)return null; var d=new Date(s+"T00:00:00"); return isNaN(d)?null:d; }
+function fISO(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function addDays(d,n){ var x=new Date(d); x.setDate(x.getDate()+n); return x; }
+function isMs(tk){ return Number(tk.durDays)===0; }
+function addWorkingDays(startISO,n){ var d=pISO(startISO); if(!d||!n||n<1)return startISO; var c=(d.getDay()===0)?0:1; while(c<n){ d=addDays(d,1); if(d.getDay()!==0)c++; } return fISO(d); }
+function cacheSave(){ try{ localStorage.setItem(CACHE_KEY, JSON.stringify({data:state,dirty:dirty})); }catch(e){} }
+function markDirty(){ dirty=true; cacheSave(); badge(); }
+
+/* ===== sync badge ===== */
+function badge(){ var el=document.getElementById("sync"); el.className="sync";
+  if(!GH_TOKEN){ el.classList.add("ro"); el.textContent=L.syncRO; }
+  else if(tokenBad){ el.classList.add("bad"); el.textContent=L.syncBad; }
+  else if(dirty){ el.classList.add("dirty"); el.textContent=L.syncDirty; }
+  else { el.classList.add("ok"); el.textContent=L.syncOk; } }
+function setBadge(t,cls){ var el=document.getElementById("sync"); el.className="sync "+(cls||""); el.textContent=t; }
+function ghHeaders(extra){ var h={"Accept":"application/vnd.github+json"}; if(GH_TOKEN&&!tokenBad)h["Authorization"]="token "+GH_TOKEN; if(extra)for(var k in extra)h[k]=extra[k]; return h; }
+function setToken(){ var t=window.prompt(L.tokenPrompt,""); if(t===null)return; t=t.trim();
+  try{ if(t)localStorage.setItem("wdd_gh_token",t); else localStorage.removeItem("wdd_gh_token"); }catch(e){}
+  GH_TOKEN=t||null; tokenBad=false; loadCloud(true); }
+
+/* ===== cloud load / save ===== */
+function useData(d){ state=d; if(!state.activeId||!active())state.activeId=state.projects[0].id; dirty=false; cacheSave(); renderAll(); buildPrint(); badge(); }
+function loadCloud(force){
+  fetch(DATA_API+"?t="+Date.now(),{headers:ghHeaders()})
+   .then(function(r){ if(r.status===401&&GH_TOKEN&&!tokenBad){ tokenBad=true; badge(); return null; }
+     if(r.status===404){ dataSha=null; return {__seed:true}; } if(!r.ok)throw new Error("HTTP "+r.status); return r.json(); })
+   .then(function(data){ if(!data)return;
+     if(data.__seed){ useData(JSON.parse(JSON.stringify(SEED))); badge(); return; }
+     dataSha=data.sha; var parsed=JSON.parse(b64dec(data.content));
+     if(!force){ try{ var c=JSON.parse(localStorage.getItem(CACHE_KEY)||"null"); if(c&&c.dirty&&confirm(L.recoverLocal)){ state=c.data; dirty=true; renderAll(); buildPrint(); badge(); return; } }catch(e){} }
+     useData(parsed); })
+   .catch(function(){ /* offline: fall back to cache or seed */
+     try{ var c=JSON.parse(localStorage.getItem(CACHE_KEY)||"null"); if(c&&c.data){ state=c.data; dirty=!!c.dirty; renderAll(); buildPrint(); badge(); return; } }catch(e){}
+     useData(JSON.parse(JSON.stringify(SEED))); });
+}
+function saveCloud(isRetry){
+  if(!GH_TOKEN||tokenBad){ setToken(); return; }
+  setBadge(L.syncSaving,"dirty");
+  var body={ message:"Update progress schedules ("+new Date().toISOString().slice(0,10)+")", content:b64enc(JSON.stringify(state,null,2)), branch:GH_BRANCH };
+  if(dataSha)body.sha=dataSha;
+  fetch(DATA_API,{method:"PUT",headers:ghHeaders({"Content-Type":"application/json"}),body:JSON.stringify(body)})
+   .then(function(r){ if(r.status===401){ tokenBad=true; badge(); throw new Error("__t"); }
+     if((r.status===409||r.status===422)&&!isRetry){ return fetch(DATA_API+"?t="+Date.now(),{headers:ghHeaders()}).then(function(x){return x.json();}).then(function(d){ dataSha=d.sha; return saveCloud(true); })&&null; }
+     if(!r.ok)throw new Error("HTTP "+r.status); return r.json(); })
+   .then(function(data){ if(!data)return; if(data.content&&data.content.sha)dataSha=data.content.sha; dirty=false; cacheSave(); setBadge(L.syncSaved,"ok"); setTimeout(badge,1500); })
+   .catch(function(err){ if(String(err&&err.message)!=="__t")setBadge(L.syncFail,"bad"); });
+}
+
+/* ===== axis ===== */
+function computeAxis(t){ var min=null,max=null; t.forEach(function(k){ [pISO(k.start),pISO(k.finish)].forEach(function(d){ if(d){ if(!min||d<min)min=d; if(!max||d>max)max=d; } }); });
+  if(!min){ min=new Date(); max=addDays(min,30); } return { axisStart:new Date(min.getFullYear(),min.getMonth(),1), axisEnd:new Date(max.getFullYear(),max.getMonth()+1,0) }; }
+function monthsOf(a,b){ var r=[],c=new Date(a); while(c<=b){ r.push(new Date(c)); c=new Date(c.getFullYear(),c.getMonth()+1,1); } return r; }
+function quartersOf(months,xf,chartW){ var qm={}; months.forEach(function(mo,i){ var xa=xf(mo),nx=(i+1<months.length)?xf(months[i+1]):chartW,q=Math.floor(mo.getMonth()/3)+1,key=mo.getFullYear()+"-"+q; if(!qm[key])qm[key]={label:L.quarter(mo.getFullYear(),q),x0:xa,x1:nx}; else qm[key].x1=nx; }); return Object.keys(qm).map(function(k){return qm[k];}); }
+
+/* ===== interactive render ===== */
+function applyStatic(){
+  document.documentElement.lang=L.htmlLang;
+  document.getElementById("lblProj").textContent=L.projectLabel;
+  document.getElementById("pNew").textContent=L.add; document.getElementById("pRename").textContent=L.rename;
+  document.getElementById("pDup").textContent=L.dup; document.getElementById("pDel").textContent=L.del;
+  document.getElementById("langBtn").textContent=L.other;
+  document.getElementById("cloudSave").textContent=L.cloudSave; document.getElementById("cloudReload").textContent=L.cloudReload;
+  document.getElementById("print").textContent=L.print; document.getElementById("expJson").textContent=L.expJson; document.getElementById("impJson").textContent=L.impJson;
+  document.getElementById("lblZoom").textContent=L.zoom; document.getElementById("recalc").textContent=L.recalc; document.getElementById("addRow").textContent=L.addRow;
+  document.getElementById("foot").innerHTML="<div class='lg'><span class='sw crit'></span>"+L.legCrit+"</div><div class='lg'><span class='sw task'></span>"+L.legTask+"</div><div class='lg'><span class='sw ms'></span>"+L.legMs+"</div><div class='lg' style='color:var(--muted)'>"+L.legToday+"</div>";
+  document.getElementById("hint").innerHTML=L.hint;
+}
+function renderMeta(){ var p=active(),m=p.meta||{};
+  function f(k,label,val,type){ return "<div class='f'><label>"+label+"</label><input data-meta='"+k+"' type='"+(type||"text")+"' value='"+esc(val)+"'></div>"; }
+  document.getElementById("meta").innerHTML="<div class='f title-f'><label>"+L.metaName+"</label><input data-meta='name' type='text' value='"+esc(p.name)+"'></div>"+
+    f("code",L.metaCode,m.code)+f("schedDate",L.metaSchedDate,m.schedDate,"date")+f(noteKey(),L.metaNote,m[noteKey()]);
+}
+function projOption(){ document.getElementById("projSel").innerHTML=state.projects.map(function(p){return "<option value='"+p.id+"' "+(p.id===state.activeId?"selected":"")+">"+esc(p.name)+"</option>";}).join(""); }
+var LEFTW=38+216+70+126+126+46+44;
+function renderStructure(){ var t=active().tasks,nk=nameKey(),rows="";
+  rows+="<div class='row head'><div class='lcells' style='min-width:"+LEFTW+"px'><div class='lhcell c-id'>#</div><div class='lhcell c-name'>"+L.colName+"</div><div class='lhcell c-dur'>"+L.colDur+"</div><div class='lhcell c-start'>"+L.colStart+"</div><div class='lhcell c-finish'>"+L.colFinish+"</div><div class='lhcell c-crit'>"+L.colCrit+"</div><div class='lhcell c-act'></div></div><div class='track thead' id='thead'></div></div>";
+  t.forEach(function(tk,i){
+    rows+="<div class='row' data-i='"+i+"'><div class='lcells' style='min-width:"+LEFTW+"px'><div class='c-id'>"+(i+1)+"</div>"+
+      "<div class='cell c-name'><input type='text' data-f='"+nk+"' data-i='"+i+"' value='"+esc(tk[nk])+"'></div>"+
+      "<div class='cell c-dur'><input type='number' min='0' data-f='durDays' data-i='"+i+"' value='"+(tk.durDays==null?"":tk.durDays)+"'></div>"+
+      "<div class='cell c-start'><input type='date' data-f='start' data-i='"+i+"' value='"+(tk.start||"")+"'><div class='wd' data-wd='s"+i+"'></div></div>"+
+      "<div class='cell c-finish'><input type='date' data-f='finish' data-i='"+i+"' value='"+(tk.finish||"")+"'><div class='wd' data-wd='f"+i+"'></div></div>"+
+      "<div class='c-crit'><input type='checkbox' data-f='critical' data-i='"+i+"' "+(tk.critical?"checked":"")+"></div>"+
+      "<div class='c-act'><button class='danger' data-del='"+i+"'>✕</button></div></div><div class='track' data-track='"+i+"'></div></div>";
+  });
+  document.getElementById("content").innerHTML="<div class='overlay' id='overlay'></div>"+rows; renderGantt();
+}
+function renderGantt(){ var t=active().tasks,ax=computeAxis(t),axisStart=ax.axisStart,axisEnd=ax.axisEnd;
+  var totalDays=Math.round((addDays(axisEnd,1)-axisStart)/86400000),chartW=Math.max(300,totalDays*pxPerDay),rowH=30,headH=40;
+  var x=function(d){return Math.round((d-axisStart)/86400000)*pxPerDay;};
+  var months=monthsOf(axisStart,axisEnd),thead=document.getElementById("thead"); thead.style.width=chartW+"px";
+  var mH="",qH=""; months.forEach(function(mo,i){ var xa=x(mo),nx=(i+1<months.length)?x(months[i+1]):chartW; mH+="<div class='mlab' style='left:"+xa+"px;width:"+(nx-xa)+"px'>"+L.month(mo.getMonth())+"</div>"; });
+  quartersOf(months,x,chartW).forEach(function(q){ qH+="<div class='qlab' style='left:"+q.x0+"px;width:"+(q.x1-q.x0)+"px'>"+q.label+"</div>"; }); thead.innerHTML=qH+mH;
+  var ov=document.getElementById("overlay"); ov.style.left=LEFTW+"px"; ov.style.top=headH+"px"; ov.style.width=chartW+"px"; ov.style.height=(rowH*t.length)+"px";
+  var o=""; months.forEach(function(mo){ o+="<div class='vline' style='left:"+x(mo)+"px'></div>"; });
+  var today=new Date(); today.setHours(0,0,0,0); if(today>=axisStart&&today<=addDays(axisEnd,1)) o+="<div class='today' style='left:"+x(today)+"px'></div>"; ov.innerHTML=o;
+  t.forEach(function(tk,i){ var tr=document.querySelector("[data-track='"+i+"']"); tr.style.width=chartW+"px"; var s=pISO(tk.start),f=pISO(tk.finish),h="";
+    if(s){ if(isMs(tk)){ var xa=x(s); h="<div class='"+(tk.critical?"ms crit":"ms")+"' style='left:"+(xa-6)+"px'></div><div class='mslab' style='left:"+(xa+9)+"px'>"+esc(TN(tk))+"</div>"; }
+      else if(f){ var xa2=x(s),xb=x(addDays(f,1)),w=Math.max(3,xb-xa2); h="<div class='"+(tk.critical?"bar crit":"bar")+"' style='left:"+xa2+"px;width:"+w+"px'></div><div class='blab' style='left:"+(xb+4)+"px'>"+esc(TN(tk))+"</div>"; } }
+    tr.innerHTML=h;
+    var ws=document.querySelector("[data-wd='s"+i+"']"); if(ws)ws.textContent=s?L.wdHint(s.getDay()):"";
+    var wf=document.querySelector("[data-wd='f"+i+"']"); if(wf)wf.textContent=f?L.wdHint(f.getDay()):""; });
+  document.getElementById("content").style.width=(LEFTW+chartW)+"px";
+}
+function buildPrint(){ var p=active(),t=p.tasks,m=p.meta||{},ax=computeAxis(t),axisStart=ax.axisStart,axisEnd=ax.axisEnd;
+  var totalDays=Math.round((addDays(axisEnd,1)-axisStart)/86400000),labelW=30+150+40+82+82,chartW=Math.round(Math.min(1150,Math.max(700,1527-labelW)));
+  var x=function(d){return Math.round((d-axisStart)/86400000/totalDays*chartW);};
+  var months=monthsOf(axisStart,axisEnd),mH="",qH="",vH="";
+  months.forEach(function(mo,i){ var xa=x(mo),nx=(i+1<months.length)?x(months[i+1]):chartW; mH+="<div class='pml' style='left:"+xa+"px;width:"+(nx-xa)+"px'>"+L.month(mo.getMonth())+"</div>"; vH+="<div class='pv1' style='left:"+xa+"px'></div>"; });
+  quartersOf(months,x,chartW).forEach(function(q){ qH+="<div class='pql' style='left:"+q.x0+"px;width:"+(q.x1-q.x0)+"px'>"+q.label+"</div>"; });
+  var pd=function(iso){ var d=pISO(iso); return d?L.pdate(d):""; };
+  var tRows="",bRows=""; t.forEach(function(tk,i){ var z=(i%2)?" pz":"";
+    tRows+="<div class='ptrow"+z+"'><div class='p-id'>"+(i+1)+"</div><div class='p-name' title='"+esc(TN(tk))+"'>"+esc(TN(tk))+"</div><div class='p-dur'>"+L.durUnit(Number(tk.durDays||0))+"</div><div class='p-date'>"+pd(tk.start)+"</div><div class='p-date'>"+pd(tk.finish)+"</div></div>";
+    var s=pISO(tk.start),f=pISO(tk.finish),mk=""; if(s){ if(isMs(tk)){ var xa=x(s); mk="<div class='"+(tk.critical?"pms crit":"pms")+"' style='left:"+(xa-4)+"px'></div><div class='pmsl' style='left:"+(xa+7)+"px'>"+esc(TN(tk))+"</div>"; }
+      else if(f){ var xa2=x(s),xb=x(addDays(f,1)),w=Math.max(2,xb-xa2); mk="<div class='"+(tk.critical?"pbar crit":"pbar")+"' style='left:"+xa2+"px;width:"+w+"px'></div><div class='pbl' style='left:"+(xb+3)+"px'>"+esc(TN(tk))+"</div>"; } }
+    bRows+="<div class='pbrow"+z+"'>"+mk+"</div>"; });
+  var sub=[]; if(m.code)sub.push(L.pSubCode+m.code); if(m.schedDate)sub.push(L.pSubDate+pd(m.schedDate)); if(m[noteKey()])sub.push(m[noteKey()]);
+  document.getElementById("printView").innerHTML="<div class='pv'><div class='ptitle'>"+esc(p.name)+L.pTitleSuffix+"</div><div class='psub'>"+sub.map(esc).join("　·　")+"</div>"+
+    "<div class='pgrid'><div class='pleft' style='width:"+labelW+"px;flex:0 0 "+labelW+"px'><div class='phrow'><div class='p-id'>"+L.colId+"</div><div class='p-name'>"+L.colName+"</div><div class='p-dur'>"+L.colDur+"</div><div class='p-date'>"+L.colStart+"</div><div class='p-date'>"+L.colFinish+"</div></div>"+tRows+"</div>"+
+    "<div class='pright' style='width:"+chartW+"px'><div class='prhead'>"+qH+mH+"</div><div class='pchart'><div class='pvln'>"+vH+"</div>"+bRows+"</div></div></div>"+
+    "<div class='pleg'><div class='plg'><span class='psw c'></span>"+L.legCrit+"</div><div class='plg'><span class='psw t'></span>"+L.legTask+"</div><div class='plg'><span class='psm'></span>"+L.legMsShort+"</div></div>"+
+    "<div class='pfoot'>"+L.pFoot(esc(p.name),pd(m.schedDate))+"</div></div>";
+}
+function renderAll(){ applyStatic(); projOption(); renderMeta(); renderStructure(); }
+
+/* ===== events ===== */
+document.getElementById("board").addEventListener("input",function(e){ var el=e.target; if(el.dataset.f===undefined)return; var i=+el.dataset.i,tk=active().tasks[i];
+  if(el.dataset.f==="critical")tk.critical=el.checked; else if(el.dataset.f==="durDays")tk.durDays=el.value===""?0:Number(el.value); else tk[el.dataset.f]=el.value;
+  markDirty(); renderGantt(); });
+document.getElementById("meta").addEventListener("input",function(e){ var el=e.target; if(el.dataset.meta===undefined)return; var p=active();
+  if(el.dataset.meta==="name"){ p.name=el.value; projOption(); } else { p.meta=p.meta||{}; p.meta[el.dataset.meta]=el.value; } markDirty(); });
+document.getElementById("board").addEventListener("click",function(e){ var d=e.target.dataset.del; if(d!==undefined){ active().tasks.splice(+d,1); markDirty(); renderStructure(); } });
+document.getElementById("addRow").addEventListener("click",function(){ var p=active(),last=p.tasks[p.tasks.length-1],st=last?last.finish:fISO(new Date());
+  p.tasks.push({name:LANGS.zh.newTaskName,nameEn:LANGS.en.newTaskName,durDays:1,start:st,finish:st,critical:false}); markDirty(); renderStructure();
+  document.getElementById("board").scrollTop=document.getElementById("board").scrollHeight; });
+document.getElementById("recalc").addEventListener("click",function(){ if(!confirm(L.confirmRecalc))return; active().tasks.forEach(function(tk){ var n=Number(tk.durDays); if(tk.start&&n>0)tk.finish=addWorkingDays(tk.start,n); }); markDirty(); renderStructure(); });
+document.getElementById("zIn").addEventListener("click",function(){ pxPerDay=Math.min(20,pxPerDay+1); renderGantt(); });
+document.getElementById("zOut").addEventListener("click",function(){ pxPerDay=Math.max(2,pxPerDay-1); renderGantt(); });
+document.getElementById("print").addEventListener("click",function(){ buildPrint(); setTimeout(function(){window.print();},60); });
+document.getElementById("langBtn").addEventListener("click",function(){ lang=(lang==="zh")?"en":"zh"; L=LANGS[lang]; try{localStorage.setItem("acg_gantt_lang",lang);}catch(e){} renderAll(); buildPrint(); badge(); });
+document.getElementById("sync").addEventListener("click",setToken);
+document.getElementById("cloudSave").addEventListener("click",function(){ saveCloud(false); });
+document.getElementById("cloudReload").addEventListener("click",function(){ if(dirty&&!confirm(L.confirmReload))return; loadCloud(true); });
+document.getElementById("projSel").addEventListener("change",function(e){ state.activeId=e.target.value; markDirty(); renderAll(); buildPrint(); });
+document.getElementById("pNew").addEventListener("click",function(){ var name=prompt(L.promptNewProj,L.newProjName); if(!name)return; var today=fISO(new Date());
+  state.projects.push({id:uid(),name:name,meta:{code:"",schedDate:today,note:"",noteEn:""},tasks:[{name:LANGS.zh.newTaskName,nameEn:LANGS.en.newTaskName,durDays:1,start:today,finish:today,critical:false}]});
+  state.activeId=state.projects[state.projects.length-1].id; markDirty(); renderAll(); buildPrint(); });
+document.getElementById("pRename").addEventListener("click",function(){ var p=active(),n=prompt(L.promptRename,p.name); if(n){ p.name=n; markDirty(); renderAll(); } });
+document.getElementById("pDup").addEventListener("click",function(){ var c=JSON.parse(JSON.stringify(active())); c.id=uid(); c.name=active().name+L.copySuffix; state.projects.push(c); state.activeId=c.id; markDirty(); renderAll(); buildPrint(); });
+document.getElementById("pDel").addEventListener("click",function(){ if(state.projects.length<=1){ alert(L.alertKeepOne); return; } var p=active(); if(!confirm(L.del+" \""+p.name+"\" ?"))return; state.projects=state.projects.filter(function(x){return x.id!==p.id;}); state.activeId=state.projects[0].id; markDirty(); renderAll(); buildPrint(); });
+document.getElementById("expJson").addEventListener("click",function(){ var b=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}); var a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download="progress-schedules-"+fISO(new Date())+".json"; a.click(); });
+document.getElementById("impJson").addEventListener("click",function(){ document.getElementById("fileIn").click(); });
+document.getElementById("fileIn").addEventListener("change",function(e){ var file=e.target.files[0]; if(!file)return; var r=new FileReader();
+  r.onload=function(){ try{ var d=JSON.parse(r.result); if(!d.projects||!d.projects.length)throw 0; if(!confirm(L.confirmImport))return; state=d; if(!state.activeId||!active())state.activeId=state.projects[0].id; markDirty(); renderAll(); buildPrint(); }catch(err){ alert(L.importErr); } };
+  r.readAsText(file); e.target.value=""; });
+window.addEventListener("beforeunload",function(e){ if(dirty){ e.preventDefault(); e.returnValue=L.dirtyWarn; return L.dirtyWarn; } });
+
+/* ===== init ===== */
+applyStatic();
+try{ var c=JSON.parse(localStorage.getItem(CACHE_KEY)||"null"); if(c&&c.data){ state=c.data; dirty=!!c.dirty; if(!state.activeId||!active())state.activeId=state.projects[0].id; renderAll(); buildPrint(); } }catch(e){}
+if(!state){ state=JSON.parse(JSON.stringify(SEED)); state.activeId=state.projects[0].id; renderAll(); buildPrint(); }
+badge();
+loadCloud(false);
+</script>
+</body>
+</html>
