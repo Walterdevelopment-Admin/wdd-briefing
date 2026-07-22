@@ -53,12 +53,13 @@
   .addbtn{margin-top:10px;} .hint{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.6;}
   /* print view */
   #printView{display:none;}
-  .pv{font-family:"Microsoft JhengHei","Noto Sans TC","Segoe UI",sans-serif;color:#1a1a1a;}
+  .pv{font-family:"Microsoft JhengHei","Noto Sans TC","Segoe UI",sans-serif;color:#1a1a1a;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .pv *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   .pv .ptitle{font-size:15px;font-weight:700;margin:0 0 2px;} .pv .psub{font-size:9px;color:#555;margin:0 0 8px;}
   .pv .pgrid{display:flex;border:1px solid #6b6b6b;} .pv .pleft{border-right:1px solid #6b6b6b;} .pv .pright{position:relative;}
   .pv .phrow{display:flex;align-items:center;height:32px;background:#3c4a5a;color:#fff;font-size:9px;font-weight:700;} .pv .phrow>div{padding:0 4px;overflow:hidden;}
   .pv .p-id{width:30px;flex:0 0 30px;text-align:center;} .pv .p-name{width:150px;flex:0 0 150px;} .pv .p-dur{width:40px;flex:0 0 40px;text-align:center;} .pv .p-date{width:82px;flex:0 0 82px;text-align:center;}
-  .pv .ptrow{display:flex;align-items:center;height:12px;font-size:7.2px;border-top:1px solid #e2e2e2;} .pv .ptrow>div{padding:0 4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;} .pv .pz{background:#f4f6f8;}
+  .pv .ptrow{display:flex;align-items:center;height:12px;font-size:7.2px;border-top:1px solid #e2e2e2;} .pv .ptrow>div{padding:0 4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;} .pv .pz{background:#e8edf2;}
   .pv .prhead{position:relative;height:32px;border-bottom:1px solid #6b6b6b;background:#eef1f4;}
   .pv .pql{position:absolute;top:0;height:15px;line-height:15px;font-size:8px;font-weight:700;text-align:center;border-right:1px solid #9aa4b0;border-bottom:1px solid #9aa4b0;color:#2b3a4a;overflow:hidden;}
   .pv .pml{position:absolute;top:15px;height:17px;line-height:17px;font-size:7.5px;text-align:center;border-right:1px solid #cfd6dd;color:#4a5560;overflow:hidden;}
@@ -71,7 +72,15 @@
   .pv .pleg{margin-top:8px;font-size:8px;color:#444;display:flex;gap:18px;align-items:center;} .pv .plg{display:flex;gap:5px;align-items:center;}
   .pv .psw{width:22px;height:8px;} .pv .psw.t{background:#5b9bd5;border:1px solid #2e75b6;} .pv .psw.c{background:#ec7d74;border:1px solid #c0392b;} .pv .psm{width:9px;height:9px;background:#c0392b;transform:rotate(45deg);}
   .pv .pfoot{margin-top:6px;font-size:8px;color:#666;}
-  @media print{ @page{size:A3 landscape;margin:8mm;} body{background:#fff;} .toolbar,.meta,.board,.addbtn,.foot,.hint,.no-print{display:none!important;} #printView{display:block!important;} .wrap{padding:0;} }
+  @media print{
+    @page{size:A3 landscape;margin:8mm;}
+    body{background:#fff;}
+    .toolbar,.meta,.board,.addbtn,.foot,.hint,.no-print{display:none!important;}
+    #printView{display:block!important;}
+    .wrap{padding:0;}
+    /* force browsers to print background colours (filled bars + zebra rows) even when "Background graphics" is off */
+    *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+  }
 </style>
 </head>
 <body>
