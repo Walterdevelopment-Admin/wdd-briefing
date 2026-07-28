@@ -269,6 +269,16 @@
       "start": "2026-07-27",
       "end": "2026-07-27",
       "done": true
+    },
+    {
+      "id": "t1785281682715",
+      "title": "P25-05(C) Plan Amendment",
+      "assignee": "david",
+      "project": "P2025-0005(C)",
+      "assignedBy": "Walter",
+      "start": "2026-07-29",
+      "end": "2026-07-29",
+      "done": false
     }
   ],
   "projects": {
