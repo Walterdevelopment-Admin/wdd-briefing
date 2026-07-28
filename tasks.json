@@ -279,6 +279,16 @@
       "start": "2026-07-29",
       "end": "2026-07-29",
       "done": false
+    },
+    {
+      "id": "t1785281863802",
+      "title": "T23-09 Construction Drawing",
+      "assignee": "david",
+      "project": "T2023-0009",
+      "assignedBy": "Walter",
+      "start": "",
+      "end": "",
+      "done": false
     }
   ],
   "projects": {
