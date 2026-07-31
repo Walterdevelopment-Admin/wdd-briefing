@@ -309,6 +309,16 @@
       "start": "",
       "end": "",
       "done": false
+    },
+    {
+      "id": "t1785457416075",
+      "title": "P26-07 BA Drawing",
+      "assignee": "daniel",
+      "project": "P2026-0007",
+      "assignedBy": "Walter",
+      "start": "2026-07-31",
+      "end": "2026-08-14",
+      "done": false
     }
   ],
   "projects": {
