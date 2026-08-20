@@ -379,6 +379,16 @@
       "start": "",
       "end": "",
       "done": false
+    },
+    {
+      "id": "t1787198738913",
+      "title": "T23-09 House Sales Sign",
+      "assignee": "david",
+      "project": "T2023-0009",
+      "assignedBy": "Walter",
+      "start": "",
+      "end": "",
+      "done": false
     }
   ],
   "projects": {
@@ -414,9 +424,6 @@
     ]
   },
   "emails": {
-    "e_19f7c4816b2e5a3b": "2026-07-20",
-    "e_19f68694f64e897a": "2026-07-20",
-    "e_19f6d4831f465363": "2026-07-20",
     "e_19f7dfb1a80e2780": "2026-07-21",
     "e_19f7d1c29dcb2ed3": "2026-07-21",
     "e_19f838e3bc34041b": "2026-07-22",
