@@ -389,6 +389,16 @@
       "start": "",
       "end": "",
       "done": false
+    },
+    {
+      "id": "t1787295079564",
+      "title": "P25-05 Construction Drawings",
+      "assignee": "david",
+      "project": "P2025-0005(B)",
+      "assignedBy": "",
+      "start": "",
+      "end": "",
+      "done": false
     }
   ],
   "projects": {
@@ -424,8 +434,6 @@
     ]
   },
   "emails": {
-    "e_19f7dfb1a80e2780": "2026-07-21",
-    "e_19f7d1c29dcb2ed3": "2026-07-21",
     "e_19f838e3bc34041b": "2026-07-22",
     "e_19f8369a34243728": "2026-07-22",
     "e_19f834bd25e281a5": "2026-07-22",
