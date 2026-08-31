@@ -995,7 +995,12 @@
       "stage": "prelim1",
       "note": "",
       "target": "",
-      "dates": {},
+      "dates": {
+        "prelim1": {
+          "s": "2026-07-30",
+          "e": ""
+        }
+      },
       "items": {
         "prelim1": [
           {
