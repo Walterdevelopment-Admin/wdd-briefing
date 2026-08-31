@@ -584,7 +584,47 @@
       "stage": "pc",
       "note": "",
       "target": "2026-08-10",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "pc": [
+          {
+            "t": "Aircon - Fit-off",
+            "d": false
+          },
+          {
+            "t": "Joinery - Kitchen & Cabinet",
+            "d": false
+          },
+          {
+            "t": "Carpentry Fixing",
+            "d": false
+          },
+          {
+            "t": "Install Tank & Pump",
+            "d": false
+          },
+          {
+            "t": "Driveway",
+            "d": false
+          },
+          {
+            "t": "Final Site Clean",
+            "d": false
+          },
+          {
+            "t": "Final Inspection (Certifier)",
+            "d": false
+          },
+          {
+            "t": "Final Approval Application (Certifier)",
+            "d": false
+          },
+          {
+            "t": "Timber floor install",
+            "d": false
+          }
+        ]
+      }
     },
     "P2023-0018": {
       "stage": "fixing2",
