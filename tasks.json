@@ -788,7 +788,7 @@
           },
           {
             "t": "Foundation - Concrete Slab",
-            "d": false
+            "d": true
           },
           {
             "t": "Inspection Approval (Footing & Slab)",
