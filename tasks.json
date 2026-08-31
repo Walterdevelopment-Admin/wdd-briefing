@@ -736,6 +736,10 @@
           {
             "t": "External Wall Cladding Fixed",
             "d": false
+          },
+          {
+            "t": "Lower Roof",
+            "d": false
           }
         ]
       },
