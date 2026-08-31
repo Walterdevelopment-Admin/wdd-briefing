@@ -1257,7 +1257,7 @@
         "prelim1": [
           {
             "t": "Concept Design - First Present",
-            "d": true
+            "d": false
           },
           {
             "t": "Concept Design - Amendments",
@@ -1272,7 +1272,10 @@
             "d": false
           }
         ]
-      }
+      },
+      "curs": [
+        "Concept Design - First Present"
+      ]
     }
   }
 }
