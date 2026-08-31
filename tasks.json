@@ -663,7 +663,39 @@
       "stage": "enclosed1",
       "note": "",
       "target": "",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "enclosed1": [
+          {
+            "t": "Install Fascia & Gutters",
+            "d": false
+          },
+          {
+            "t": "Roof Covering Fixed",
+            "d": false
+          },
+          {
+            "t": "External Windows & Doors Fixed",
+            "d": false
+          },
+          {
+            "t": "Brickwork & Insulation",
+            "d": false
+          },
+          {
+            "t": "Scaffolding",
+            "d": false
+          },
+          {
+            "t": "External Wall Cladding Fixed",
+            "d": false
+          },
+          {
+            "t": "Framing",
+            "d": false
+          }
+        ]
+      }
     },
     "P2023-0021": {
       "stage": "prelim1",
