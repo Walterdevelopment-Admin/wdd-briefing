@@ -796,7 +796,10 @@
           }
         ]
       },
-      "curs": []
+      "curs": [
+        "Foundation - Footings",
+        "Foundation - Concrete Slab"
+      ]
     },
     "P2024-0015": {
       "stage": "base",
