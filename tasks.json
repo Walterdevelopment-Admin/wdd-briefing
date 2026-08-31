@@ -743,7 +743,9 @@
           }
         ]
       },
-      "curs": []
+      "curs": [
+        "Lower Roof"
+      ]
     },
     "P2024-0014": {
       "stage": "base",
