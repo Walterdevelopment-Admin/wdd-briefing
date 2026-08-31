@@ -695,7 +695,10 @@
             "d": false
           }
         ]
-      }
+      },
+      "curs": [
+        "Framing"
+      ]
     },
     "P2023-0021": {
       "stage": "prelim1",
