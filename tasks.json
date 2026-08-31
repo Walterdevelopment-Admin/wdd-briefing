@@ -1092,7 +1092,9 @@
           }
         ]
       },
-      "curs": []
+      "curs": [
+        "Construction Drawings"
+      ]
     },
     "P2025-0005(A)": {
       "stage": "prelim2",
