@@ -1252,7 +1252,27 @@
       "stage": "prelim1",
       "note": "",
       "target": "",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "prelim1": [
+          {
+            "t": "Concept Design - First Present",
+            "d": true
+          },
+          {
+            "t": "Concept Design - Amendments",
+            "d": false
+          },
+          {
+            "t": "Construction Drawing",
+            "d": false
+          },
+          {
+            "t": "Construction Drawing - Amendments",
+            "d": false
+          }
+        ]
+      }
     }
   }
 }
