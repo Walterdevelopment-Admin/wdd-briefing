@@ -752,7 +752,7 @@
         "base": [
           {
             "t": "Site Preparation & Excavation",
-            "d": false
+            "d": true
           },
           {
             "t": "Sediment Control",
