@@ -1421,9 +1421,45 @@
     },
     "P2019-0015": {
       "stage": "pc",
-      "note": "",
+      "note": "FTTH CONNECTION - Dan",
       "target": "",
-      "dates": {}
+      "dates": {},
+      "items": {
+        "pc": [
+          {
+            "t": "Aircon - Fit-off",
+            "d": false
+          },
+          {
+            "t": "Joinery - Kitchen & Cabinet",
+            "d": false
+          },
+          {
+            "t": "Carpentry Fixing",
+            "d": false
+          },
+          {
+            "t": "Install Tank & Pump",
+            "d": false
+          },
+          {
+            "t": "Driveway",
+            "d": false
+          },
+          {
+            "t": "Final Site Clean",
+            "d": false
+          },
+          {
+            "t": "Final Inspection (Certifier)",
+            "d": false
+          },
+          {
+            "t": "Final Approval Application (Certifier)",
+            "d": false
+          }
+        ]
+      }
     },
     "P2026-0012": {
       "stage": "prelim1",
