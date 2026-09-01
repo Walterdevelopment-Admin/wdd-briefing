@@ -1045,6 +1045,10 @@
           {
             "t": "Joinery Plan",
             "d": false
+          },
+          {
+            "t": "Construction Drawing",
+            "d": false
           }
         ],
         "prelim1": [
