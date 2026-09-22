@@ -409,6 +409,16 @@
       "start": "",
       "end": "",
       "done": false
+    },
+    {
+      "id": "t1790044411604",
+      "title": "Create Variation Sheet for Client",
+      "assignee": "daniel",
+      "project": "",
+      "assignedBy": "Walter",
+      "start": "2026-09-22",
+      "end": "2026-09-22",
+      "done": false
     }
   ],
   "projects": {
@@ -446,9 +456,6 @@
   },
   "emails": {},
   "meetings": {
-    "m_1a013bf3b83c4dee": "2026-08-19",
-    "m_19fd4bab065f9cc8": "2026-08-21",
-    "m_19fd4b50ee1948df": "2026-08-21",
     "m_1a017d72d1767a87": "2026-08-27",
     "m_1a046eea077e6d1f": "2026-08-31",
     "m_1a08dd6c82a47dd2": "2026-09-15",
