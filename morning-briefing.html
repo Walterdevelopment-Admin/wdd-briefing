@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Morning Briefing — 23 September 2026 | Walter D&D</title>
+<title>Morning Briefing — 24 September 2026 | Walter D&D</title>
 <style>
 :root {
   --p1:#c1ac99; --p2:#49494b; --s1:#e6d5c3; --s2:#b3aea8;
@@ -228,8 +228,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <img src="2025 Logo - H - 1.png" class="logo-img" alt="Walter D&D">
     <div class="hdr-sep"></div>
     <div class="hdr-txt">
-      <h1>Morning Briefing &nbsp;·&nbsp; Wednesday, 23 September 2026</h1>
-      <div class="meta">Generated 9:08 AM AEST &nbsp;·&nbsp; admin@walterdevelopment.com.au</div>
+      <h1>Morning Briefing &nbsp;·&nbsp; Thursday, 24 September 2026</h1>
+      <div class="meta">Generated 8:45 AM AEST &nbsp;·&nbsp; admin@walterdevelopment.com.au</div>
     </div>
   </div>
 </header>
@@ -246,12 +246,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
   <!-- CALENDAR CARD -->
   <div class="card">
-    <div class="card-hdr style-neutral"><span class="icon">📅</span><h2>Today's Schedule</h2><span class="cnt">2 events</span></div>
-    <div class="crow"><div class="ctime">7:00 AM</div><div class="cdot cd-grey"></div><div><div class="ctitle">P22-11<span class="cbadge cb-past">Done</span></div><div class="csub">mark.c@ · 7:00–8:00 AM · sheeting list, ply sheet list, cavity slider opening</div></div></div>
-    <div class="crow"><div class="ctime">12:30 PM</div><div class="cdot cd-tan"></div><div><div class="ctitle">P23-12 patch</div><div class="csub">onsite@ · 12:30–1:30 PM</div></div></div>
+    <div class="card-hdr style-neutral"><span class="icon">📅</span><h2>Today's Schedule</h2><span class="cnt">5 events</span></div>
+    <div class="crow"><div class="ctime">7:00 AM</div><div class="cdot cd-grey"></div><div><div class="ctitle">P24-05 meet Tony<span class="cbadge cb-past">Done</span></div><div class="csub">onsite@ &middot; 7:00&ndash;8:00 AM</div></div></div>
+    <div class="crow"><div class="ctime">7:00 AM</div><div class="cdot cd-grey"></div><div><div class="ctitle">P24-05 cavity door delivery<span class="cbadge cb-past">Done</span></div><div class="csub">onsite@ &middot; 7:00&ndash;8:00 AM</div></div></div>
+    <div class="crow"><div class="ctime">7:00 AM</div><div class="cdot cd-grey"></div><div><div class="ctitle">P23-18 Troy finish<span class="cbadge cb-past">Done</span></div><div class="csub">onsite@ &middot; 7:00&ndash;8:00 AM</div></div></div>
+    <div class="crow"><div class="ctime">7:00 AM</div><div class="cdot cd-grey"></div><div><div class="ctitle">P21-02 Stair prep<span class="cbadge cb-past">Done</span></div><div class="csub">mark.c@ &middot; 7:00&ndash;8:00 AM &middot; stair prep: recessed and blocking; shelf levelling</div></div></div>
+    <div class="crow"><div class="ctime">12:00 PM</div><div class="cdot cd-tan"></div><div><div class="ctitle">Pick up material</div><div class="csub">onsite@ &middot; 12:00&ndash;1:00 PM</div></div></div>
   </div>
 
-  <!-- DESIGN TEAM GANTT CARD (static widget — do NOT fill with generated data; JS below fetches from GitHub) -->
+<div class="card" id="cardMeetings">
+    <div class="card-hdr style-neutral"><span class="icon">🗓️</span><h2>Meetings to Confirm</h2><span class="cnt">1 active meeting</span></div>
+    <div class="mhint">Tick a meeting to confirm it &mdash; confirmed meetings are added to the admin@ Google Calendar automatically on the next morning update. No invitations are sent to attendees.</div>
+    <div class="erow" id="m_1a0cc1166efcf50c">
+      <input type="checkbox" class="ecb" onchange="toggleMeeting('m_1a0cc1166efcf50c')">
+      <div class="ubar u-tan"></div>
+      <div class="ebody">
+        <div class="etop"><span class="ptag ptag-dan">P2023-0011</span><span class="esdr">Pre-lining follow-up meeting &mdash; Erynn</span><span class="mstatus mstatus-pending" data-mstatus>Awaiting confirm</span></div>
+        <div class="mmeta"><b>Fri 9 Oct 2026 &middot; 11:00 AM&ndash;12:00 PM</b></div>
+        <div class="mmeta">Attendees: erynn.yongnn@gmail.com, tinachen702@gmail.com, nyetyun@hotmail.com &middot; from &quot;Re: Pre lining Re-inspection report&quot;</div>
+      </div>
+    </div>
+  </div>
+
+    <!-- DESIGN TEAM GANTT CARD (static widget — do NOT fill with generated data; JS below fetches from GitHub) -->
   <div class="card">
     <div class="card-hdr style-neutral"><span class="icon">📊</span><h2>Design Team Gantt</h2><button type="button" class="gantt-nav-btn" onclick="changeGanttMonth(-1)">◀</button><span class="cnt" id="ganttRangeLabel"></span><button type="button" class="gantt-nav-btn" onclick="changeGanttMonth(1)">▶</button><button type="button" class="gantt-nav-btn" onclick="resetGanttMonth()">Today</button></div>
     <div class="gantt-wrap">
@@ -301,15 +318,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
           <div class="proj-chips" id="chipsDaniel"></div>
         </div>
       </div>
-      <div class="slabel">📩 Action Needed</div>
-<div class="erow" id="e_1a0c97fd64a0e716">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0c97fd64a0e716')">
-  <div class="ubar u-tan"></div>
+<div class="slabel">📩 Action Needed</div>
+<div class="erow" id="e_1a0ccdccc747aa88">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0ccdccc747aa88')">
+  <div class="ubar u-red"></div>
   <div class="ebody">
-    <div class="etop"><span class="ptag ptag-dan">P2024-0020</span><span class="esdr">Amelia RDS (Philip Ng)</span><span class="etag etag-review">FYI</span><span class="etime">23 Sep, 12:23 AM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">40 Dorchester St — planner resubmitting LA items to Council this morning</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">After Daniel sent the updated arborist report, Philip Ng confirmed the outstanding LA items will be resubmitted to Council first thing this morning. No action required beyond monitoring Council's response.</div>
-    <button type="button" class="dtoggle" onclick="tog('d_e_1a0c97fd64a0e716',this)">✏️ Draft Reply</button><div class="dbox" id="d_e_1a0c97fd64a0e716"><div class="dlabel">Draft Reply</div><div class="dcontent">Hi Phillip,&#10;&#10;Thank you for the update. Please let us know if Council raises anything further.&#10;&#10;Kind Regards,&#10;Daniel Chen&#10;Walter Design &amp; Development</div></div>
+    <div class="etop"><span class="ptag ptag-dan">P2024-0020</span><span class="esdr">Amelia RDS (Philip Ng)</span><span class="etag etag-urgent">Urgent</span><span class="etime">23 Sep, 4:03 PM</span></div>
+    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">40 Dorchester St &mdash; planner says revised arborist report still doesn't address Council's comments</div>
+    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">After reviewing the revised arborist report Daniel sent, Philip says it still doesn't address the items Council raised, and has asked Daniel to call him back tomorrow morning to discuss before anything is resubmitted.</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_1a0ccdccc747aa88',this)">&#9999;&#65039; Draft Reply</button><div class="dbox" id="d_e_1a0ccdccc747aa88"><div class="dlabel">Draft Reply</div><div class="dcontent">Hi Phillip,&#10;&#10;Thank you for the update &mdash; apologies that the revised report hasn't fully addressed Council's comments. I will give you a call tomorrow morning to go through the outstanding items and agree on next steps before resubmission.&#10;&#10;Kind Regards,&#10;Daniel Chen&#10;Walter Design &amp; Development</div></div>
+  </div>
+</div>
+<div class="erow" id="e_1a0cc1166efcf50c">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0cc1166efcf50c')">
+  <div class="ubar u-amber"></div>
+  <div class="ebody">
+    <div class="etop"><span class="ptag ptag-dan">P2023-0011</span><span class="esdr">Erynn (client, pre-lining)</span><span class="etag etag-review">Action</span><span class="etime">23 Sep, 12:21 PM</span></div>
+    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">Pre-lining re-inspection &mdash; status update requested; next meeting proposed 9 Oct 11am</div>
+    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">Erynn is asking whether the sheeting has arrived on site / work has commenced, and has asked to lock in the next meeting for 9 October at 11am (see Meetings to Confirm card below).</div>
+    <button type="button" class="dtoggle" onclick="tog('d_e_1a0cc1166efcf50c',this)">&#9999;&#65039; Draft Reply</button><div class="dbox" id="d_e_1a0cc1166efcf50c"><div class="dlabel">Draft Reply</div><div class="dcontent">Hi Erynn,&#10;&#10;Thank you for your patience. I will check with the site team on the sheeting delivery and progress and get back to you shortly. 9th October at 11am works well for the next meeting &mdash; I have flagged it for confirmation and will send you a calendar invite once locked in.&#10;&#10;Kind Regards,&#10;Daniel Chen&#10;Walter Design &amp; Development</div></div>
   </div>
 </div>
 <div class="erow" id="e_1a0c7e23fafba897">
@@ -412,7 +439,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <button type="button" class="dtoggle" onclick="tog('d_e_1a0ace6f28305c8c',this)">✏️ Draft Reply</button><div class="dbox" id="d_e_1a0ace6f28305c8c"><div class="dlabel">Draft Reply</div><div class="dcontent">Hi Yuki,&#10;&#10;Thanks — noted the owner is the same as P22-21. We're obtaining the hydraulic and civil engineering quotes for the stormwater/sump-pump design and overland-flow Performance Solution, and will forward the pricing to you as soon as it comes through.&#10;&#10;Kind Regards,&#10;Daniel Chen&#10;Walter Design &amp; Development</div></div>
   </div>
 </div>
-      <div class="slabel">⏳ Awaiting Reply</div>
+<div class="slabel">⏳ Awaiting Reply</div>
 <div class="erow" id="e_1a0c7c316cbaedb9">
   <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0c7c316cbaedb9')">
   <div class="ubar u-grey"></div>
@@ -521,15 +548,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">WDD emailed HIA contract enquiries about the late-completion fee under the HIA contract, noting the project is almost ready for handover (only landscaping outstanding) and WDD is willing to pay the late fee. Awaiting HIA's response (relates to the Mizhai settlement/landscaping dispute).</div>
   </div>
 </div>
-<div class="erow" id="e_1a0ad8f4dc4210a1">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0ad8f4dc4210a1')">
-  <div class="ubar u-grey"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-dan">P2023-0011</span><span class="esdr">WDD → Erynn (owner)</span><span class="etag etag-await">Awaiting</span><span class="etime">17 Sep, 2:10 PM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">19 Pine St — joinery/cabinetry quotes sent; mid-Dec completion noted</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">WDD sent Erynn the negotiated joinery/cabinetry quotations and acknowledged the mid-December completion target (to secure the solar rebate); the client is discussing the (significant) expense with the household and will revert. Awaiting the client's decision on the joinery quote (sheeting start date still being confirmed with Walter/supervisor).</div>
-  </div>
-</div>
 <div class="erow" id="e_1a0ad21561141c79">
   <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0ad21561141c79')">
   <div class="ubar u-grey"></div>
@@ -557,15 +575,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">The owner (David) sent a report documenting the defects found at the two QBCC-licensed inspections on 16 Sep; WDD acknowledged and will review it with Walter and the on-site supervisor before responding. Sensitive given the ongoing stage-payment/handover dispute. Monitoring — WDD to revert with its position.</div>
   </div>
 </div>
-<div class="erow" id="e_1a0a77ac366ce858">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a77ac366ce858')">
-  <div class="ubar u-grey"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-dan">P2023-0022</span><span class="esdr">WDD → Troy (owner) / broker</span><span class="etag etag-await">Awaiting</span><span class="etime">16 Sep, 9:50 AM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">36 Hydrangea Ave — Fixing Stage invoice / stage-payment notice sent</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">WDD advised owner Troy (cc broker at Top Finance) that the Fixing Stage for 36 Hydrangea Avenue, Redland Bay is scheduled for completion on 18/09/2026 and attached the stage invoice as early notice of the upcoming stage payment. Awaiting acknowledgement / payment arrangement.</div>
-  </div>
-</div>
     </div>
 
     <!-- DAVID -->
@@ -579,17 +588,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
           <div class="proj-chips" id="chipsDavid"></div>
         </div>
       </div>
-      <div class="slabel">📩 Action Needed</div>
-<div class="erow" id="e_1a0cb54f06a3f85f">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0cb54f06a3f85f')">
-  <div class="ubar u-red"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-david">T2023-0009</span><span class="esdr">HCE Engineers (V. Rylance)</span><span class="etag etag-urgent">Urgent</span><span class="etime">23 Sep, 8:55 AM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">Higyed Rd — HCE confirming full payment TODAY (23 Sep)</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">Viv Rylance (HCE Business Manager) is asking Grace to confirm invoice HCE17947 (23112 Higyed Rd) will be paid in full today, per the extension HCE granted to 23 September. HCE has already ceased services under Clause 4.3 — David to check with accounts/director that payment goes out today and send remittance.</div>
-    <button type="button" class="dtoggle" onclick="tog('d_e_1a0cb54f06a3f85f',this)">✏️ Draft Reply</button><div class="dbox" id="d_e_1a0cb54f06a3f85f"><div class="dlabel">Draft Reply</div><div class="dcontent">Hi Viv,&#10;&#10;Thank you for your email. We confirm we are processing payment of invoice HCE17947 today in line with the agreed extension, and will forward the remittance advice as soon as it has been released.&#10;&#10;Kind Regards,&#10;David Chen&#10;Walter Design &amp; Development</div></div>
-  </div>
-</div>
+<div class="slabel">📩 Action Needed</div>
 <div class="erow" id="e_1a0cb2f0665eabde">
   <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0cb2f0665eabde')">
   <div class="ubar u-amber"></div>
@@ -630,37 +629,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <button type="button" class="dtoggle" onclick="tog('d_e_1a0ac8aad50b4a3d',this)">✏️ Draft Reply</button><div class="dbox" id="d_e_1a0ac8aad50b4a3d"><div class="dlabel">Draft Reply</div><div class="dcontent">Hi Hannah,&#10;&#10;Thank you — we're arranging payment of the outstanding invoice now and will let you know as soon as it has been processed so the project can be taken off hold.&#10;&#10;Kind Regards,&#10;David Chen&#10;Walter Design &amp; Development</div></div>
   </div>
 </div>
-<div class="erow" id="e_1a0a8ba3f77cce44">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a8ba3f77cce44')">
-  <div class="ubar u-amber"></div>
+<div class="slabel">⏳ Awaiting Reply</div>
+<div class="erow" id="e_1a0ccfb4960f97b3">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0ccfb4960f97b3')">
+  <div class="ubar u-grey"></div>
   <div class="ebody">
-    <div class="etop"><span class="ptag ptag-david">P2023-0012</span><span class="esdr">Larry (client)</span><span class="etag etag-review">Reply</span><span class="etime">16 Sep, 3:39 PM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">Curtain contractor contact provided — client thanks</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">Per Larry’s request (via Walter), WDD passed on the curtain/blinds contractor contact (AllGood Blinds n Shutters); Larry replied “Thanks David.” Courtesy close — no reply strictly required.</div>
-    <button type="button" class="dtoggle" onclick="tog('d_e_1a0a8ba3f77cce44',this)">✏️ Draft Reply</button><div class="dbox" id="d_e_1a0a8ba3f77cce44"><div class="dlabel">Draft Reply</div><div class="dcontent">Hi Larry,&#10;&#10;You’re welcome — please reach out to AllGood Blinds directly, and let us know if you need anything further from us.&#10;&#10;Kind Regards,&#10;David Chen&#10;Walter Design &amp; Development</div></div>
+    <div class="etop"><span class="ptag ptag-david">T2023-0009</span><span class="esdr">WDD &rarr; HCE Engineers (Viv Rylance)</span><span class="etag etag-await">Awaiting</span><span class="etime">23 Sep, 4:36 PM</span></div>
+    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">23112 Higyed Rd &mdash; confirmed payment processed today per HCE's extension</div>
+    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">David/accounts confirmed to Viv Rylance that payment on invoice HCE17947 was prepared and awaiting Walter's processing, with Walter then confirming it would be released today per the agreed 23 September extension. Awaiting HCE's acknowledgement that the account is cleared.</div>
   </div>
 </div>
-<div class="erow" id="e_1a0a8775332cbc62">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a8775332cbc62')">
-  <div class="ubar u-amber"></div>
+<div class="erow" id="e_1a0cb7cbd4248110">
+  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0cb7cbd4248110')">
+  <div class="ubar u-grey"></div>
   <div class="ebody">
-    <div class="etop"><span class="ptag ptag-david">P2022-0011</span><span class="esdr">GoTiles (Jessica)</span><span class="etag etag-review">Action</span><span class="etime">16 Sep, 2:26 PM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">Foyer floor — hexagon tile only available in one colour</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">In response to WDD’s foyer-floor hexagon-tile enquiry (colours similar to EZ Range Sand / Galaxy White / Light Grey), the supplier (Jessica, GoTiles) advised the hexagon tile is only available in the single colour shown on their website, with no other colour options. David to review and select an alternative product or confirm the available colour.</div>
-    <button type="button" class="dtoggle" onclick="tog('d_e_1a0a8775332cbc62',this)">✏️ Draft Reply</button><div class="dbox" id="d_e_1a0a8775332cbc62"><div class="dlabel">Draft Reply</div><div class="dcontent">Hi Jessica,&#10;&#10;Thank you for confirming. We’ll review the available hexagon option and consider suitable alternatives, and come back to you with our selection.&#10;&#10;Kind Regards,&#10;David Chen&#10;Walter Design &amp; Development</div></div>
+    <div class="etop"><span class="ptag ptag-david">T2023-0009</span><span class="esdr">WDD &rarr; Nebula Display (Pansy)</span><span class="etag etag-await">Awaiting</span><span class="etime">23 Sep, 9:39 AM</span></div>
+    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">House sales sign &mdash; final artwork sent, quotation requested</div>
+    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">WDD is ready to place the order for the ACM house sales sign and sent Pansy the final artwork file, requesting a quotation. Awaiting Nebula Display's price and lead time.</div>
   </div>
 </div>
-<div class="erow" id="e_1a0a80a85dd82864">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a80a85dd82864')">
-  <div class="ubar u-amber"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-david">P2022-0011</span><span class="esdr">Akira Interiors (Emy)</span><span class="etag etag-review">Action</span><span class="etime">16 Sep, 12:27 PM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">TOTO price review — smart-toilet set builder pricing provided</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">On the TOTO 2026 price review, Akira Interiors (Emy) supplied a complete smart-toilet set option and confirmed the builder pricing (Zero Wall-Hung Whirlpool pan + in-wall cistern $750+GST; TCF34220GAU S5 washlet $2,240+GST). David to review the set against the client’s selection and confirm the order.</div>
-    <button type="button" class="dtoggle" onclick="tog('d_e_1a0a80a85dd82864',this)">✏️ Draft Reply</button><div class="dbox" id="d_e_1a0a80a85dd82864"><div class="dlabel">Draft Reply</div><div class="dcontent">Hi Emy,&#10;&#10;Thank you for the pricing and the complete-set option. We’ll review this against the client’s selection and confirm how we’d like to proceed shortly.&#10;&#10;Kind Regards,&#10;David Chen&#10;Walter Design &amp; Development</div></div>
-  </div>
-</div>
-      <div class="slabel">⏳ Awaiting Reply</div>
 <div class="erow" id="e_1a0c76cb7264ad66">
   <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0c76cb7264ad66')">
   <div class="ubar u-grey"></div>
@@ -733,48 +720,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">On the exterior-revision/pool proposals (client adopted OPTION 1), David confirmed the video meeting with Walter for Mon 21 Sep — the client rescheduled to Taiwan 9:00 AM / Brisbane 11:00 AM — and will send the meeting link; the interior construction schedule is to be prepared for the meeting. See Meetings to Confirm. Awaiting the meeting.</div>
   </div>
 </div>
-<div class="erow" id="e_1a0a9dc364533ada">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a9dc364533ada')">
-  <div class="ubar u-grey"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-david">P2022-0011</span><span class="esdr">WDD → Adam (Serenity Waters BC)</span><span class="etag etag-await">Awaiting</span><span class="etime">16 Sep, 8:56 PM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">Pallets on common property — WDD responds to body corporate</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">Owner Sophia forwarded a body-corporate notice (Serenity Waters BC, Adam Moore) about pallets/rubbish on common property near the site. WDD (sales) replied to the BC secretary explaining the rubbish was dumped by neighbours carrying out pool works opposite, not by WDD. Awaiting the body corporate’s response.</div>
-  </div>
-</div>
-<div class="erow" id="e_1a0a8aabf6d78152">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a8aabf6d78152')">
-  <div class="ubar u-grey"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-david">P2023-0012</span><span class="esdr">WDD → Office (Energex EWR)</span><span class="etag etag-await">Awaiting</span><span class="etime">16 Sep, 3:22 PM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">Energex EWR received — forwarded internally to progress connection</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">Client Lydia Weng forwarded an Energex confirmation that an Electrical Work Request (EWR) has been received for network-connection contract CX26LIN1340051A; WDD forwarded it internally to the office team to progress the connection. Thread now carries the P2023-0012 label. Monitoring — office to action the connection.</div>
-  </div>
-</div>
-<div class="erow" id="e_1a0a86f6f4a53701">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a86f6f4a53701')">
-  <div class="ubar u-grey"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-david">P2023-0018</span><span class="esdr">WDD → Accounts (Ray paid)</span><span class="etag etag-await">Awaiting</span><span class="etime">16 Sep, 2:17 PM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">Pool fence — owner confirms additional items &amp; pays $797.50</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">On the P23-18 pool fence, owner Ray confirmed the two additional items recommended after the site measure and paid $797.50 (proof attached); WDD forwarded the payment to accounts. Ray also requested an updated construction program (addressed in the Outstanding-works thread). Monitoring.</div>
-  </div>
-</div>
-<div class="erow" id="e_1a0a7b10cc04399e">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a7b10cc04399e')">
-  <div class="ubar u-grey"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-david">P2022-0011</span><span class="esdr">WDD → Nic (Ukoh)</span><span class="etag etag-await">Awaiting</span><span class="etime">16 Sep, 10:49 AM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">Aluminium doors — follow-up on freight cost confirmation</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">WDD (David) again followed up Ukoh’s Nic on the outstanding item — confirming the freight cost for the two aluminium doors (previously quoted $3,000 + GST) — before proceeding with the QT-202608-003 order and 50% deposit. Awaiting Nic’s freight confirmation.</div>
-  </div>
-</div>
     </div>
 
   </div><!-- /two-col -->
 
   <div class="card" id="cardUnassigned">
-    <div class="card-hdr style-neutral"><span class="icon">❓</span><h2>Unassigned / Needs Triage</h2><span class="cnt">7</span></div>
+    <div class="card-hdr style-neutral"><span class="icon">❓</span><h2>Unassigned / Needs Triage</h2><span class="cnt">4</span></div>
 <div class="erow" id="e_1a0c11400505f50f">
   <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0c11400505f50f')">
   <div class="ubar u-amber"></div>
@@ -809,33 +760,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="etop"><span class="ptag ptag-un">P2026-0012</span><span class="esdr">WDD → Austron (Patrick/Eric)</span><span class="etag etag-review">Triage</span><span class="etime">17 Sep, 9:35 AM</span></div>
     <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">10 Marston Ave — Preliminary Part 01 payment received (receipt sent)</div>
     <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">WDD confirmed receipt of Austron's payment for the Preliminary Part 01 invoice at 10 Marston Avenue, Indooroopilly, and sent a receipt. Labelled P2026-0012, which isn't in either designer's list — needs triage to allocate the project owner. No action pending (payment received).</div>
-  </div>
-</div>
-<div class="erow" id="e_1a0a99a3e1c27b1e">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a99a3e1c27b1e')">
-  <div class="ubar u-amber"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-un">(no project)</span><span class="esdr">Fish Wang (Nördicö Design)</span><span class="etag etag-review">Triage</span><span class="etime">16 Sep, 7:43 PM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">60 Lakeview Blvd, Mermaid Waters — price/quote enquiry</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">Fish Wang (Nördicö Interior Design, Taipei) emailed Walter directly requesting a competitive price/quote for 60 Lakeview Blvd, Mermaid Waters, with design info and reference images attached. No Projects/ label or WDD project number — needs triage to log the enquiry and assign an owner to quote.</div>
-  </div>
-</div>
-<div class="erow" id="e_1a0a9435bedde900">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a9435bedde900')">
-  <div class="ubar u-amber"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-un">(no project)</span><span class="esdr">Frasers Property (Sally Ho)</span><span class="etag etag-review">Triage</span><span class="etime">16 Sep, 6:08 PM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">The Promenade Collection — Lots 910-921 title registration &amp; settlement called</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">Frasers Property (Sally Ho) advised “builder partners” that The Promenade Collection Lots 910-921 have received title registration and settlement has been formally called, with customer settlement to follow. No Projects/ label — needs triage to confirm whether any WDD client build relates to these lots.</div>
-  </div>
-</div>
-<div class="erow" id="e_1a0a80685d48a78a">
-  <input type="checkbox" class="ecb" onchange="toggleEmail('e_1a0a80685d48a78a')">
-  <div class="ubar u-amber"></div>
-  <div class="ebody">
-    <div class="etop"><span class="ptag ptag-un">(no project)</span><span class="esdr">WDD → Patrick (Austron Property)</span><span class="etag etag-review">Triage</span><span class="etime">16 Sep, 12:23 PM</span></div>
-    <div class="esubj" style="font-size:12px;font-weight:600;color:var(--p2);margin:1px 0 2px;">24 Calliandra Place, Mount Gravatt East — standard-house plan sent</div>
-    <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">WDD (David) sent Patrick at Austron Property a standard-house plan for 24 Calliandra Place, Mount Gravatt East. No Projects/ label or WDD project number assigned — needs triage to open/allocate a project number and owner. Awaiting Austron’s response.</div>
   </div>
 </div>
   </div>
@@ -884,10 +808,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 
 </div><!-- /wrap -->
-<div class="footer">Walter Design &amp; Development &nbsp;·&nbsp; Morning Briefing 23 September 2026 &nbsp;·&nbsp; Generated by Claude</div>
+<div class="footer">Walter Design &amp; Development &nbsp;·&nbsp; Morning Briefing 24 September 2026 &nbsp;·&nbsp; Generated by Claude</div>
 
 <script>
-var TODAY='2026-09-23';
+var TODAY='2026-09-24';
 function tog(id,btn){var b=document.getElementById(id);var open=b.classList.toggle('open');btn.textContent=open?'✕ Close Draft':'✏️ Draft Reply';}
 
 /* ---- Design Team Tasks + Gantt + Project lists + shared email checkboxes — SHARED via GitHub repo (tasks.json) ---- */
