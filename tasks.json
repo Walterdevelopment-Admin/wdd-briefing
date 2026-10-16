@@ -478,7 +478,7 @@
       "assignedBy": "",
       "start": "2026-10-15",
       "end": "2026-10-15",
-      "done": false
+      "done": true
     }
   ],
   "projects": {
@@ -516,7 +516,6 @@
   },
   "emails": {},
   "meetings": {
-    "m_1a08dd6c82a47dd2": "2026-09-15",
     "m_1a0a89263f7e45fe": "2026-09-18"
   },
   "procedure": {
