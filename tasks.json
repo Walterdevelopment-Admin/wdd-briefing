@@ -479,6 +479,16 @@
       "start": "2026-10-15",
       "end": "2026-10-15",
       "done": true
+    },
+    {
+      "id": "t1792548721599",
+      "title": "P25-05(B) BA Amendment",
+      "assignee": "david",
+      "project": "P2025-0005(B)",
+      "assignedBy": "",
+      "start": "2026-10-21",
+      "end": "2026-10-22",
+      "done": false
     }
   ],
   "projects": {
@@ -515,9 +525,7 @@
     ]
   },
   "emails": {},
-  "meetings": {
-    "m_1a0a89263f7e45fe": "2026-09-18"
-  },
+  "meetings": {},
   "procedure": {
     "P2021-0002": {
       "stage": "fixing2",
