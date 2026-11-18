@@ -549,6 +549,16 @@
       "start": "",
       "end": "",
       "done": true
+    },
+    {
+      "id": "t1794984164871",
+      "title": "P26-12 Concept Design",
+      "assignee": "david",
+      "project": "P2026-0012",
+      "assignedBy": "",
+      "start": "2026-11-19",
+      "end": "2026-11-20",
+      "done": false
     }
   ],
   "projects": {
